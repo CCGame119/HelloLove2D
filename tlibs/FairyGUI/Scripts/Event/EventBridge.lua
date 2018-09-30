@@ -12,6 +12,7 @@ local EventCallback1 = FairyGUI.EventCallback1
 
 ---@class FairyGUI.EventBridge : ClassType
 ---@field public isEmpty boolean
+---@field public owner FairyGUI.EventDispatcher
 local EventBridge = {
     ---@type FairyGUI.EventDispatcher
     owner = nil,

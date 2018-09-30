@@ -10,19 +10,17 @@ local init_get = Class.init_get
 local EventContext = {
     ---@type FairyGUI.EventDispatcher
     sender = nil,
-    ---@type ClassType
     initiator = nil,
     ---@type FairyGUI.InputEvent
     inputEvent = nil,
     type = "",
-    ---@type ClassType
     data = nil,
 
     _defaultPrevented = false,
     _stopsPropagation = false,
     _touchCapture = false,
 
-    ---@type FairyGUI.EventDispatcher[]
+    ---@type FairyGUI.EventBridge[]
     callChain = {}
 }
 EventContext = Class.class('EventContext', EventContext)

@@ -9,6 +9,7 @@ local metatable = getmetatable
 ---@field public __cls_name string @ 类名称
 ClassType = {}
 function ClassType.new(...) end
+function ClassType.__cls_ctor(cls) end
 function ClassType:__ctor(...) end
 function ClassType:class(...) end
 function ClassType:superClass(...) end
@@ -86,6 +87,26 @@ function Class.inheritsFrom(cls_name, t, baseClass)
     end
 
     return new_class
+end
+
+---@generic T, K: ClassType
+---@param data T
+---@param clazz K
+---@return boolean
+function Class.isa(data, clazz)
+    local clazz_type = type(clazz)
+    local data_type = type(data)
+    if clazz_type == 'table' then
+        if data_type == 'table' and
+                data.isa and
+                data.isa(clazz) then
+            return true
+        end
+    else
+        return clazz_type == data_type
+    end
+
+    return false
 end
 
 ---属性访问函数：支持通过第三个参数传递对象指针

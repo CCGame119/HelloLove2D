@@ -7,11 +7,11 @@
 local Class = require('libs.Class')
 local EventDispatcher = FairyGUI.EventDispatcher
 
----@class DisplayObject : FairyGUI.EventDispatcher
+---@class FairyGUI.DisplayObject : FairyGUI.EventDispatcher
 local DisplayObject = {
 
 }
-DisplayObject = Class.inheritsFrom('DisplayObject', DisplayObject, DisplayObject)
+DisplayObject = Class.inheritsFrom('DisplayObject', DisplayObject, EventDispatcher)
 
 --TODO: DisplayObject
 

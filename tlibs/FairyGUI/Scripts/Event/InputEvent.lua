@@ -8,7 +8,8 @@ local Vector2 = require('MathLibs.Vector2')
 local init_get = Class.init_get
 local EventModifiers = FairyGUI.EventModifiers
 
----@class InputEvent:ClassType
+---@class FairyGUI.InputEvent:ClassType
+---@field public touchId number
 local InputEvent = {
     x = 0,
     y = 0,

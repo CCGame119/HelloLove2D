@@ -91,6 +91,17 @@ function table.tostr2(table)
     return tmpStr
 end
 
+---@param t table
+---@param e any
+function table.indexOf(t, e)
+    for i, v in ipairs(t) do
+        if v == e then
+            return i
+        end
+    end
+    return -1
+end
+
 --- 打印lua table 内容
 ---@param table table  @lua table
 ---@param level number @缩进等级
