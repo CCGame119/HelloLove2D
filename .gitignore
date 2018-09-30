@@ -1,0 +1,15 @@
+# ignore folders
+
+
+# ignore files
+.DS_Store
+
+# Jetbrains IDEA local file
+projs/idea/out
+projs/idea/src
+workspace.xml
+vcs.xml
+misc.xml
+Administrator.xml
+encodings.xml
+terminal.xml

@@ -1,0 +1,34 @@
+--
+-- Created by IntelliJ IDEA.
+-- AUTHOR: ChenCY
+-- Date: 2018/9/26 17:31
+--
+local Class = require('libs.Class')
+
+---@class Pool @ 对象池
+---@field protected cls Class @对象类
+---@field protected _objs @对象列表
+local Pool = Class.class('Pool')
+
+function Pool:__ctor(cls)
+    self.cls = cls
+    self._objs = {}
+end
+
+---回收对象
+---@param obj cls @ 对象
+function Pool:push(obj)
+    table.insert(self._objs, obj)
+end
+
+---弹出对象
+---@return cls @ 对象
+function Pool:pop()
+    if #self._objs > 0 then
+        return table.remove(self._objs)
+    end
+
+    return self.cls.new()
+end
+
+return Pool
