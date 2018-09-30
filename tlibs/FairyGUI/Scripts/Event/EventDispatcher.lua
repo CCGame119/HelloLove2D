@@ -7,6 +7,7 @@ local Class = require('libs.Class')
 local Delegate = require('Utils.Delegate')
 local IEventDispatcher = FairyGUI.IEventDispatcher
 local EventBridge = FairyGUI.EventBridge
+local InputEvent = FairyGUI.InputEvent
 
 --========================= 声明回调委托=========================
 ---@class FairyGUI.EventCallback0:Delegate
@@ -21,7 +22,7 @@ local EventDispatcher = {
     ---@type table<string, FairyGUI.EventBridge>
     _dic = {},
 }
-EventDispatcher = Class.class('EventDispatcher', EventDispatcher, IEventDispatcher)
+EventDispatcher = Class.inheritsFrom('EventDispatcher', EventDispatcher, IEventDispatcher)
 
 ---@param strType string
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
@@ -87,10 +88,9 @@ local function GetEventBridge(self, strType)
     return bridge
 end
 
---TODO: static InputEvent sCurrentInputEvent = new InputEvent();
-
+EventDispatcher.sCurrentInputEvent = InputEvent()
 local function InternalDispatchEvent(strType, bridge, data, initiator)
-
+    if bridge ==
 end
 
 ---@param strType string

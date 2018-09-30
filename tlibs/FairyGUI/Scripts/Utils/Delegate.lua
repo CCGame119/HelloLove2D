@@ -17,10 +17,10 @@ local Delegate = {
     _count = 0,
     deleg_name = 'Delegate'
 }
-Delegate = Class.class('Delegate', Delegate)
+Delegate = Class.inheritsFrom('Delegate', Delegate)
 
 function Delegate.newDelegate(deleg_name, t)
-    local delegate = Class.class('Delegate', t, Delegate)
+    local delegate = Class.inheritsFrom('Delegate', t, Delegate)
     delegate.deleg_name = deleg_name
     delegate.__call = Delegate.__call
     return delegate

@@ -42,9 +42,9 @@ end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
 function EventBridge:Add(callback, obj)
-    if EventCallback0.__cls_name == callback.__cls_name then
+    if callback:isa(EventCallback0) then
         self._callback0:Add(callback, obj)
-    elseif EventCallback0.__cls_name == callback.__cls_name then
+    elseif callback:isa(EventCallback1) then
         self._callback1:Add(callback, obj)
     end
     assert(false, "type mismatch")
@@ -52,9 +52,9 @@ end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
 function EventBridge:Remove(callback)
-    if EventCallback0.__cls_name == callback.__cls_name then
+    if callback:isa(EventCallback0) then
         self._callback0:Remove(callback, obj)
-    elseif EventCallback0.__cls_name == callback.__cls_name then
+    elseif callback:isa(EventCallback1) then
         self._callback1:Remove(callback, obj)
     end
     assert(false, "type mismatch")
@@ -102,10 +102,10 @@ function EventBridge:CallCaptureInternal(context)
 end
 
 --==============属性访问器================
-local __get = init_get(EventBridge)
+local get = init_get(EventBridge)
 
 ---@param self FairyGUI.EventBridge
-__get.isEmpty = function(self)
+get.isEmpty = function(self)
     return self._callback1.isEmpty and self._callback0.isEmpty and self._captureCallback.isEmpty
 end
 

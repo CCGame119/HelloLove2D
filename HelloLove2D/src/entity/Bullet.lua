@@ -11,7 +11,7 @@ local graphics = love.graphics
 local t = {x = 0, y = 0, speed = 500, uri = 'assets/textures/bullet.png', img = nil}
 
 ---@class Bullet:Sprite @ 子弹类
-local Bullet = Class.class('Bullet', t, Sprite)
+local Bullet = Class.inheritsFrom('Bullet', t, Sprite)
 
 function Bullet:move(dt)
     self.y = self.y - self.speed * dt

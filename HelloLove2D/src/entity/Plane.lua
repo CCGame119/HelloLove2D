@@ -13,7 +13,7 @@ local graphics = love.graphics
 local t = { x = 200, y = 710, speed = 150, uri = 'assets/textures/plane.png', img = nil}
 
 ---@class Plane : Sprite @ 飞机类
-local Plane = Class.class('Plane', t, Sprite)
+local Plane = Class.inheritsFrom('Plane', t, Sprite)
 
 function Plane:move(rx, ry, dt)
     self.x = self.x + rx * dt * self.speed

@@ -17,7 +17,7 @@ local t = { x = 0, y = 0, speed = 0, uri = '', img = nil, __get={}}
 ---@field public uri number @ 资源uri
 ---@field private img number @ 资源
 ---@field private pool Pool @ 对象池
-local Sprite = Class.class('Sprite', t)
+local Sprite = Class.inheritsFrom('Sprite', t)
 
 --- 回调：构造函数
 function Sprite:__ctor(...)

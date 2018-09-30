@@ -8,7 +8,7 @@ local Class = require('libs.Class')
 ---@class Pool @ 对象池
 ---@field protected cls Class @对象类
 ---@field protected _objs @对象列表
-local Pool = Class.class('Pool')
+local Pool = Class.inheritsFrom('Pool')
 
 function Pool:__ctor(cls)
     self.cls = cls

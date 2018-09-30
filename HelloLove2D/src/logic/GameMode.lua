@@ -23,7 +23,7 @@ local Screen = require('libs.devices.Screen')
 ---@field public createEnemyTimerMax number @ 创建敌人间隔
 ---@field public createEnemyTimer number @ 创建敌人计时器
 ---@field public enemys Enemy[] @ 子弹列表
-local GameMode = Class.class('GameMode')
+local GameMode = Class.inheritsFrom('GameMode')
 
 function GameMode:onLoad()
     self.score = 0

@@ -64,10 +64,10 @@ end
 
 
 --===============属性访问器================
-local __get = init_get(EventContext)
+local get = init_get(EventContext)
 
 ---@param self FairyGUI.EventContext
-__get.isDefaultPrevented = function(self)
+get.isDefaultPrevented = function(self)
     return self._defaultPrevented
 end
 

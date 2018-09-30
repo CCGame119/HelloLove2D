@@ -10,7 +10,7 @@ local Sprite = require('libs.Sprite')
 local t = { x = 0, y = 0, speed = 200, uri = 'assets/textures/enemy.png', img = nil}
 
 ---@class Enemy : Sprite @ 敌人类
-local Enemy = Class.class('Enemy', t, Sprite)
+local Enemy = Class.inheritsFrom('Enemy', t, Sprite)
 
 function Enemy:move(dt)
     self.y = self.y + self.speed * dt
