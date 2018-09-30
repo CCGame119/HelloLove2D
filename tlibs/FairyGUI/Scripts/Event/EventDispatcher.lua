@@ -8,6 +8,8 @@ local Delegate = require('Utils.Delegate')
 local IEventDispatcher = FairyGUI.IEventDispatcher
 local EventBridge = FairyGUI.EventBridge
 local InputEvent = FairyGUI.InputEvent
+local DisplayObject = FairyGUI.DisplayObject
+local EventContext = FairyGUI.EventContext
 
 --========================= 声明回调委托=========================
 ---@class FairyGUI.EventCallback0:Delegate
@@ -62,9 +64,8 @@ function EventDispatcher:RemoveEventListeners(strType)
     end
 end
 
----@param self FairyGUI.EventDispatcher
 ---@param strType string
-local function TryGetEventBridge(self, strType)
+function EventDispatcher:TryGetEventBridge(strType)
     if nil == self._dic then return nil end
 
     local bridge = self._dic[strType]
@@ -75,9 +76,8 @@ local function TryGetEventBridge(self, strType)
     return bridge
 end
 
----@param self FairyGUI.EventDispatcher
 ---@param strType string
-local function GetEventBridge(self, strType)
+function EventDispatcher:GetEventBridge(strType)
     if nil == self._dic then self._dic = {} end
 
     local bridge = self._dic[strType]
@@ -89,13 +89,56 @@ local function GetEventBridge(self, strType)
 end
 
 EventDispatcher.sCurrentInputEvent = InputEvent()
-local function InternalDispatchEvent(strType, bridge, data, initiator)
-    if bridge ==
+
+---@param strType string
+---@param bridge FairyGUI.EventBridge
+---@param data ClassType
+---@param initiator ClassType
+---@return boolean
+function EventDispatcher:InternalDispatchEvent(strType, bridge, data, initiator)
+    if nil == bridge then bridge = self:TryGetEventBridge(self, strType) end
+
+    local gBridge
+    if self.isa(DisplayObject) and nil ~= self.gOwner then
+        gBridge = self.gOwner:TryGetEventBridge(strType)
+    end
+
+    local b1 = nil ~= bridge and not bridge.isEmpty
+    local b2 = nil ~= gBridge and not gBridge.isEmpty
+    if b1 or b2 then
+        local context = EventContext.Get()
+        context.initiator = (nil ~= initiator and initiator or self)
+        context.type = strType
+        context.data = data
+        if data.isa(InputEvent) then
+            EventDispatcher.sCurrentInputEvent = data
+        end
+        context.inputEvent = EventDispatcher.sCurrentInputEvent
+
+        if b1 then
+            bridge:CallCaptureInternal(context)
+            bridge:CallInternal(context)
+        end
+
+        if b2 then
+            gBridge:CallCaptureInternal(context)
+            gBridge:CallInternal(context)
+        end
+
+        EventContext.Return(context)
+        context.initiator = null
+        context.sender = null
+        context.data = null
+
+        return context._defaultPrevented
+    end
+
+    return false
 end
 
 ---@param strType string
----@param data any
----@param initiator any
+---@param data ClassType
+---@param initiator ClassType
 ---@return boolean
 function EventDispatcher:DispatchEvent(strType, data, initiator)
     return InternalDispatchEvent(strType, null, data, initiator)
