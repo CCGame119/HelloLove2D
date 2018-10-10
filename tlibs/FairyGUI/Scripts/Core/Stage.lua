@@ -8,10 +8,9 @@ local Class = require('libs.Class')
 local Container = FairyGUI.Container
 
 ---@class FairyGUI.Stage : FairyGUI.Container
-local Stage = {}
-Stage = Class.inheritsFrom('Stage', Stage, Container)
+local Stage = Class.inheritsFrom('Stage', nil, Container)
 
---TODO: Stage
+--TODO: FairyGUI.Stage
 
 FairyGUI.Stage = Stage
 return Stage

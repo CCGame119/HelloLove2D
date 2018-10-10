@@ -7,15 +7,18 @@
 ---@class FairyGUI
 FairyGUI = {name='FairyGUI'}
 
+---@class FairyGUI.EventModifiers
 FairyGUI.EventModifiers = {
     None = 0,
     Shift = 1,
     Control = 2,
     Alt = 4,
     Command = 8,
-    Numeric = 16, // 0x00000010
-    CapsLock = 32, // 0x00000020
-    FunctionKey = 64, // 0x00000040
+    Numeric = 16, -- 0x00000010
+    CapsLock = 32, -- 0x00000020
+    FunctionKey = 64, -- 0x00000040
 }
+
+require('Event.InputEvent')
 
 return FairyGUI

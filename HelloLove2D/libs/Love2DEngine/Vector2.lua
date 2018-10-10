@@ -12,6 +12,14 @@ local math = math
 local acos = math.acos
 local max = math.max
 
+---@class Love2DEngine.Vector2:ClassType
+---@field public up Love2DEngine.Vector3
+---@field public right Love2DEngine.Vector3
+---@field public zero Love2DEngine.Vector3
+---@field public one Love2DEngine.Vector3
+---@field public magnitude number
+---@field public normalized Love2DEngine.Vector3
+---@field public sqrMagnitude number
 local Vector2 = {}
 local get = Class.init_get(Vector2)
 
@@ -309,5 +317,6 @@ get.magnitude 		= Vector2.Magnitude
 get.normalized 		= Vector2.Normalize
 get.sqrMagnitude 	= Vector2.SqrMagnitude
 
+Love2DEngine.Vector2 = Vector2
 setmetatable(Vector2, Vector2)
 return Vector2

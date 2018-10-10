@@ -6,6 +6,7 @@
 
 local Class = require('libs.Class')
 local Pool = require('libs.Pool')
+local Assets = Love2DEngine.Assets
 local graphics = love.graphics
 
 local t = { x = 0, y = 0, speed = 0, uri = '', img = nil, __get={}}
@@ -40,8 +41,13 @@ function Sprite:init(x, y, speed, uri)
     self.x = x or self.x
     self.y = y or self.y
     self.speed = speed or self.speed
+    local old_uri = self.uri
     self.uri = uri or self.uri
-    self.img = graphics.newImage(self.uri)
+    if self.img and old_uri ~= self.uri then
+        Assets.returnImg(old_uri)
+    end
+    self.img = Assets.getImg(self.uri)
+    --self.img = graphics.newImage(self.uri)
     self:updateWH()
     return self
 end
@@ -83,9 +89,17 @@ function Sprite.recycle(cls, obj)
     cls.pool:push(obj)
 end
 
+
+--==============属性访问器================
 local __get = Class.init_get(Sprite)
+local __set = Class.init_set(Sprite)
+
 __get.name = function (self)
-    return 'Sprite'
+    return rawget(self, '_name')
+end
+
+__set.name = function (self, val)
+    rawset(self, '_name', val)
 end
 
 return Sprite

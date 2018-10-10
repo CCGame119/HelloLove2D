@@ -3,9 +3,17 @@
 -- AUTHOR: ChenCY
 -- Date: 2018/9/26 16:41
 --
+
+local Class = require('libs.Class')
+
+local setmetatable = setmetatable
 local graphics = love.graphics
 
----@class Screen @ 屏幕封装类
+---@class Love2DEngine.Screen @ 屏幕封装类
+---@field height number
+---@field width number
+---@field w number
+---@field h number
 local Screen = {}
 
 --- 获取屏幕相对位置
@@ -20,6 +28,18 @@ function Screen.updateHW()
     Screen.h = graphics.getHeight()
 end
 
+local __get = Class.init_get(Screen)
+
+__get.width = function(self)
+    return self.w
+end
+
+__get.height = function(self)
+    return self.h
+end
+
 Screen.updateHW()
 
+Love2DEngine.Screen = Screen
+setmetatable(Screen, Screen)
 return Screen

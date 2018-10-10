@@ -6,29 +6,25 @@
 
 local Class = require('libs.Class')
 local functor = require('Utils.functor')
-local init_get = Class.init_get
 local EventCallback0 = FairyGUI.EventCallback0
 local EventCallback1 = FairyGUI.EventCallback1
 
----@class FairyGUI.EventBridge : ClassType
----@field public isEmpty boolean
+---@class FairyGUI.EventBridge:ClassType
 ---@field public owner FairyGUI.EventDispatcher
-local EventBridge = {
-    ---@type FairyGUI.EventDispatcher
-    owner = nil,
-    ---@type FairyGUI.EventCallback0
-    _callback0 = EventCallback0.newCls(),
-    ---@type FairyGUI.EventCallback1
-    _callback1 = FairyGUI.EventCallback1.newCls(),
-    ---@type FairyGUI.EventCallback1
-    _captureCallback = EventCallback1.newCls(),
-    _dispatching = false,
-}
-EventBridge = Class.class('EventBridge', EventBridge)
+---@field private _callback0 FairyGUI.EventCallback0
+---@field private _callback1 FairyGUI.EventCallback1
+---@field private _captureCallback FairyGUI.EventCallback1
+---@field public _dispatching boolean
+---@field public isEmpty boolean
+local EventBridge = Class.class('EventBridge', {_dispatching = false})
 
 ---@param owner FairyGUI.EventDispatcher
 function EventBridge:__ctor(owner)
     self.owner = owner
+
+    self._callback0 = EventCallback0.new()
+    self._callback1 = EventCallback1.new()
+    self._captureCallback = EventCallback1.new()
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
@@ -52,7 +48,7 @@ function EventBridge:Add(callback, obj)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventBridge:Remove(callback)
+function EventBridge:Remove(callback, obj)
     if callback:isa(EventCallback0) then
         self._callback0:Remove(callback, obj)
     elseif callback:isa(EventCallback1) then
@@ -103,7 +99,7 @@ function EventBridge:CallCaptureInternal(context)
 end
 
 --==============属性访问器================
-local get = init_get(EventBridge)
+local get = Class.init_get(EventBridge)
 
 ---@param self FairyGUI.EventBridge
 get.isEmpty = function(self)

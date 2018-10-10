@@ -6,7 +6,7 @@
 
 --- 粒子系统
 
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 local graphics = love.graphics
 
 local img_logo = graphics.newImage('assets/textures/O.png')

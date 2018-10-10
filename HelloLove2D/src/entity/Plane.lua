@@ -7,7 +7,7 @@ require('libs.utils.math_ex')
 local Class = require('libs.Class')
 local Sprite = require('libs.Sprite')
 local Bullet = require('src.entity.Bullet')
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 local graphics = love.graphics
 
 local t = { x = 200, y = 710, speed = 150, uri = 'assets/textures/plane.png', img = nil}
@@ -26,6 +26,18 @@ end
 
 function Plane:bulletSpawnPoint()
     return self.x + self.w / 2 - Bullet.w / 2, self. y
+end
+
+--==============属性访问器================
+local __get = Class.init_get(Plane)
+local __set = Class.init_set(Plane)
+
+__get.name = function (self)
+    return rawget(self, '_name')
+end
+
+__set.name = function (self, val)
+    rawset(self, '_name', val .. "_fasfsf")
 end
 
 return Plane

@@ -5,12 +5,12 @@
 --
 
 local Class = require('libs.Class')
-local VInputDevice = require('libs.devices.Input')
+local VInputDevice = require('libs.Love2DEngine.Devices.Input')
 local Bullet = require('src.entity.Bullet')
 local Plane = require('src.entity.Plane')
 local Enemy = require('src.entity.Enemy')
 local Collision = require('libs.physics.Collision')
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 
 ---@class GameMode:table @游戏Mode
 ---@field public score number @ 分数
@@ -145,7 +145,9 @@ end
 --- 渲染
 function GameMode:onDraw()
     love.graphics.print("Sorce: " .. self.score, Screen.pos(0.02, 0.01))
-    love.graphics.print("FPS: " .. love.timer.getFPS(), Screen.pos(0.9, 0.01))
+    love.graphics.print("FPS: " .. love.timer.getFPS(), Screen.pos(0.8, 0.01))
+    love.graphics.print("MEM: " .. collectgarbage('count'), Screen.pos(0.8, 0.025))
+    love.graphics.print("PLAYER: " .. self.player.name, Screen.pos(0.8, 0.035))
     if self.isAlive then
         self.player:onDraw()
     else

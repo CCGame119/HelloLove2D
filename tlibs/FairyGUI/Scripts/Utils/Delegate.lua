@@ -4,7 +4,6 @@
 -- Date: 2018/9/29 12:05
 --
 local Class = require('libs.Class')
-local init_get = Class.init_get
 local functor = require('Utils.functor')
 
 ---@class Delegate:ClassType @C#委托模拟
@@ -56,7 +55,7 @@ function Delegate:Clear()
 end
 
 --==============属性访问器================
-local __get = init_get(Delegate)
+local __get = Class.init_get(Delegate)
 
 __get.isEmpty = function(self)
     return self.__count == 0

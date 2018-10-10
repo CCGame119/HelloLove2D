@@ -4,26 +4,23 @@
 -- Date: 2018/9/29 18:06
 --
 local Class = require('libs.Class')
-local init_get = Class.init_get
+local lua_type = type
 
----@class FairyGUI.EventContext : ClassType
-local EventContext = {
-    ---@type FairyGUI.EventDispatcher
-    sender = nil,
-    initiator = nil,
-    ---@type FairyGUI.InputEvent
-    inputEvent = nil,
-    type = "",
-    data = nil,
+---@class FairyGUI.EventContext:ClassType
+---@field public sender FairyGUI.EventDispatcher
+---@field public initiator any
+---@field public inputEvent FairyGUI.InputEvent
+---@field public type string
+---@field public data any
+---@field public _defaultPrevented boolean
+---@field public _stopsPropagation boolean
+---@field public _touchCapture boolean
+---@field public callChain FairyGUI.EventBridge[]
+local EventContext = Class.inheritsFrom('EventContext')
 
-    _defaultPrevented = false,
-    _stopsPropagation = false,
-    _touchCapture = false,
-
-    ---@type FairyGUI.EventBridge[]
-    callChain = {}
-}
-EventContext = Class.class('EventContext', EventContext)
+function EventContext:__ctor(...)
+    self.callChain = {}
+end
 
 function EventContext:StopPropagation()
     self._stopsPropagation = true
@@ -64,7 +61,7 @@ end
 
 
 --===============属性访问器================
-local get = init_get(EventContext)
+local get = Class.init_get(EventContext)
 
 ---@param self FairyGUI.EventContext
 get.isDefaultPrevented = function(self)

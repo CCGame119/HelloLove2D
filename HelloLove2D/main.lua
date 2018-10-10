@@ -1,3 +1,5 @@
+require('libs.Love2DEngine')
+
 require('libs.utils.package_ex')
 package.addSearchPath("/tlibs/FairyGUI/Scripts/?.lua")
 
@@ -6,10 +8,12 @@ require('FairyGUI')
 require('Event.EventDispatcher')
 local delegate = FairyGUI.EventCallback0.new()
 
-local VInputDevice = require('libs.devices.Input')
+local VInputDevice = require('libs.Love2DEngine.Devices.Input')
 local GameMode = require('src.logic.GameMode')
 local graphics_case = require('test.graphics_case')
 local Sprite = require('libs.Sprite')
+
+require('testLove2DEngine.testRect')
 
 mx, my = 0, 0
 
@@ -18,12 +22,19 @@ function love.load()
     GameMode:onLoad()
 
     delegate:Add(GameMode.onShoot, GameMode)
+
+    GameMode.player.name = 'test'
+
+    Rect_tostring()
 end
 
 -- Updating
 function love.update(dt)
     if love.keyboard.isDown('escape') then
         love.event.push('quit')
+    end
+    if love.keyboard.isDown('p') then
+        collectgarbage('collect')
     end
 
     if love.mouse.isDown(1) then
@@ -42,7 +53,7 @@ function love.draw()
 
     GameMode:onDraw()
 
-    graphics_case.newText_cases()
+    --graphics_case.newText_cases()
 end
 
 function addSearchPath(path)

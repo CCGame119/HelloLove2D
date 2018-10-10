@@ -4,7 +4,7 @@
 -- Date: 2018/9/27 11:19
 --
 require('libs.utils.table_ex')
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 local graphics = love.graphics
 
 

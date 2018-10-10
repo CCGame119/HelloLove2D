@@ -5,42 +5,97 @@
 --
 local metatable = getmetatable
 
----@class ClassType @ 类类型
+---@class ClassType @ 类类型，用于辅助提示
 ---@field public __cls_name string @ 类名称
 ClassType = {}
+---构造函数
 function ClassType.new(...) end
+---构造类回调
 function ClassType.__cls_ctor(cls) end
+---构造回调
 function ClassType:__ctor(...) end
+---类
 function ClassType:class(...) end
+---基类
 function ClassType:superClass(...) end
+---类型判断
 function ClassType:isa(...) end
 
 ---@class Class @ Lua 类模拟辅助类
 local Class = {}
 local __index = nil
+local __newindex = nil
 local __index_with_get = nil
+local __newindex_with_set = nil
 
-function Class.init_get(cls)
+---为类cls初始化属性访问器__get表
+---@generic T:ClassType
+---@param cls T
+---@param value_cls boolean
+---@return table
+function Class.init_get(cls, value_cls)
+    local value_cls = value_cls or false
     local __get = {}
     rawset(cls, '__get', __get)
-    rawset(cls, '__index', __index_with_get)
+    if not value_cls then
+        rawset(cls, '__index', __index_with_get)
+    else
+        local __newindex_with_set_value = function(t, k)
+            local var = rawget(cls, k)
+
+            if var == nil then
+                var = rawget(__get, k)
+
+                if var ~= nil then
+                    return var(t)
+                end
+            end
+
+            return var
+        end
+        rawset(cls, '__index', __newindex_with_set_value)
+    end
     return __get
 end
 
+---为类cls初始化属性访问器__set表
+---@generic T:ClassType
+---@param cls T
+---@param value_cls boolean
+---@return table
+function Class.init_set(cls, value_cls)
+    local value_cls = value_cls or false
+    local __set = {}
+    rawset(cls, '__set', __set)
+    if not value_cls then
+        rawset(cls, '__newindex', __newindex_with_set)
+    else
+        local __newindex_with_set_value = function(t, k, v)
+            if rawget(cls, k) ~= nil then
+                rawset(t, k, v)
+                return
+            end
+
+            local var = rawget(__set, k)
+            if var ~= nil then
+                var(t, v)
+                return
+            end
+
+            rawset(t, k, v)
+        end
+        rawset(cls, '__newindex', __newindex_with_set_value)
+    end
+    return __set
+end
+
+---创建类: 指定类名，类的初始化列表，并指定要继承的基类
 ---@param t table|nil @ 要创建的类的初始化表
 ---@param baseClass table|nil @ 基类
 function Class.inheritsFrom(cls_name, t, baseClass)
     -- set cls index
     local new_class = t or {}
     new_class.__cls_name = cls_name
-    new_class.__index = __index
-    setmetatable(new_class, baseClass or {})
-    if baseClass then
-        local base_index = rawget(baseClass, '__index')
-        if base_index then
-            rawset(new_class, '__index', base_index)
-        end
-    end
 
     -- declare new function
     function new_class.new(...)
@@ -82,10 +137,14 @@ function Class.inheritsFrom(cls_name, t, baseClass)
         return b_isa
     end
 
+    new_class.__index = __index
+    setmetatable(new_class, baseClass or {})
+
     if new_class.__cls_ctor then
         new_class.__cls_ctor(new_class)
     end
 
+    new_class.__newindex = __newindex
     return new_class
 end
 
@@ -110,63 +169,97 @@ function Class.isa(data, clazz)
 end
 
 ---属性访问函数：支持通过第三个参数传递对象指针
----@param table table @ 属性访问链中的表，可能是对象指针，也可能是类
----@param key any @ 键值
----@param obj table @ 属性访问链中的第一个表，即对象指针
-__index = function (table, key, obj)
+---@param t table @ 属性访问链中的表，可能是对象指针，也可能是类
+---@param k any @ 键值
+---@param o table @ 属性访问链中的第一个表，即对象指针
+__index = function (t, k, o)
     local h, mt
-    obj = obj or table
-    while table do
-        if type(table) == "table" then
-            if table ~= obj then
-                local v = rawget(table, key)
+    o = o or t
+    while t do
+        if type(t) == "table" then
+            if not rawequal(t, o) then
+                local v = rawget(t, k)
                 if v ~= nil then return v end
             end
 
-            mt = metatable(table)
+            mt = metatable(t)
             h = mt.__index
             if h == nil then return nil end
         else
-            mt = metatable(table)
+            mt = metatable(t)
             h = mt.__index
             if h == nil then
                 error("metatable must has a __index")
             end
         end
         if type(h) == "function" then
-            return (h(mt, key, obj or table))     -- call the handler
+            return (h(mt, k, o or t))     -- call the handler
         else
-            table = mt
+            t = h
         end
     end
 end
 
 ---属性访问函数：支持通过第三个参数传递对象指针，同时支持属性重载
----@param table table @ 属性访问链中的表，可能是对象指针，也可能是类
----@param key any @ 键值
----@param obj table @ 属性访问链中的第一个表，即对象指针
-__index_with_get = function(table, key, obj)
+---@param t table @ 属性访问链中的表，可能是对象指针，也可能是类
+---@param k any @ 键
+---@param v any @ 值
+---@param o table @ 属性访问链中的第一个表，即对象指针
+__newindex = function(t, k, v, o)
     local h, mt
+    o = o or t
+    while t do
+        if type(t) == 'table' then
+            mt = metatable(t)
+            h = mt.__newindex
+            if h == nil then return false end
+        else
+            mt = metatable(t)
+            h = mt.__newindex
+            if h == nil then
+                error("metatable must has a __newindex")
+            end
+        end
 
-    obj = obj or table
-    while table do
-        if type(table) == "table" then
-            local __get = rawget(table, '__get')
+        if type(h) == "function" then
+            local rt = h(mt, k, v, o or t)
+            if not rt then           -- call the handler
+                if rawequal(t, o) then
+                    rawset(o, k, v); return
+                end
+            end
+            return rt
+        else
+            t = h
+        end
+    end
+end
+
+---属性访问函数：支持通过第三个参数传递对象指针，同时支持属性重载
+---@param t table @ 属性访问链中的表，可能是对象指针，也可能是类
+---@param k any @ 键值
+---@param o table @ 属性访问链中的第一个表，即对象指针
+__index_with_get = function(t, k, o)
+    local h, mt
+    o = o or t
+    while t do
+        if type(t) == "table" then
+            local __get = rawget(t, '__get')
             if __get ~= nil then
-                local v = rawget(__get, key)
-                if v ~= nil then return (v(obj or table)) end
+                local v = rawget(__get, k)
+                if v ~= nil then return (v(o or t)) end
             end
 
-            if table ~= obj then
-                local v = rawget(table, key)
+            if not rawequal(t, o) then
+                local v = rawget(t, k)
                 if v ~= nil then return v end
             end
 
-            mt = metatable(table)
+            mt = metatable(t)
             h = mt.__index
             if h == nil then return nil end
         else
-            mt = metatable(table)
+            mt = metatable(t)
             h = mt.__index
             if h == nil then
                 error("metatable must has a __index")
@@ -174,9 +267,50 @@ __index_with_get = function(table, key, obj)
         end
 
         if type(h) == "function" then
-            return (h(mt, key, obj or table))     -- call the handler
+            return (h(mt, k, o or t))     -- call the handler
         else
-            table = mt
+            t = h
+        end
+    end
+end
+
+---属性访问函数：支持通过第三个参数传递对象指针，同时支持属性重载
+---@param t table @ 属性访问链中的表，可能是对象指针，也可能是类
+---@param k any @ 键
+---@param v any @ 值
+---@param o table @ 属性访问链中的第一个表，即对象指针
+__newindex_with_set = function(t, k, v, o)
+    local h, mt
+    o = o or t
+    while t do
+        if type(t) == 'table' then
+            local __set = rawget(t, '__set')
+            if __set ~= nil then
+                local sv = rawget(__set, k)
+                if sv ~= nil then sv(o, v); return true end
+            end
+
+            mt = metatable(t)
+            h = mt.__newindex
+            if h == nil then return false end
+        else
+            mt = metatable(t)
+            h = mt.__newindex
+            if h == nil then
+                error("metatable must has a __newindex")
+            end
+        end
+
+        if type(h) == "function" then
+            local rt = h(mt, k, v, o or t)
+            if not rt then           -- call the handler
+                if rawequal(t, o) then
+                    rawset(o, k, v); return
+                end
+            end
+            return rt
+        else
+            t = h
         end
     end
 end

@@ -36,4 +36,5 @@ function Input:isResetDown()
     return keyboard.isDown('r')
 end
 
+Love2DEngine.Input = Input
 return Input

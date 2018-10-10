@@ -6,7 +6,7 @@
 
 ---quad 可以用来绘制图集中的指定区域，用途：绘制图集序列帧动画等
 
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 local graphics = love.graphics
 
 local img_logo = graphics.newImage('assets/textures/O.png')

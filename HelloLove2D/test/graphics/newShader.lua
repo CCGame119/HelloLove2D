@@ -3,7 +3,7 @@
 -- AUTHOR: ChenCY
 -- Date: 2018/9/28 16:43
 --
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 local graphics = love.graphics
 
 local img_logo = graphics.newImage('assets/textures/O.png')

@@ -9,7 +9,7 @@
     2. 绘制任意形状的图片： 例如：用于绘制圆形进度条
 ]]
 
-local Screen = require('libs.devices.Screen')
+local Screen = require('libs.Love2DEngine.Devices.Screen')
 local graphics = love.graphics
 
 local img_plane = graphics.newImage('assets/textures/plane.png')
