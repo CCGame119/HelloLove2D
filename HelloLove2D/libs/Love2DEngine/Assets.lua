@@ -69,6 +69,11 @@ function Assets.returnImg(uri)
     end
 end
 
+---@param assetToUnload Love2DEngine.Object
+function Assets.UnloadAsset(assetToUnload)
+    --TODO: Assets.UnloadAsset
+end
+
 Love2DEngine.AssetType = AssetType
 Love2DEngine.AssetItem = AssetItem
 Love2DEngine.Assets = Assets

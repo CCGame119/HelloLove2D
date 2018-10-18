@@ -43,11 +43,13 @@ function Delegate:Remove(func, obj)
     end
 end
 
-function Delegate:__call(...)
+function Delegate:Invoke(...)
     for _, v in pairs(self._funcs) do
         v(...)
     end
 end
+
+Delegate.__call = Delegate.Invoke
 
 function Delegate:Clear()
     self._funcs = {}

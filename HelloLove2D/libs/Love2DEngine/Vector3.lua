@@ -73,6 +73,10 @@ function Vector3:Set(x,y,z)
 	self.z = z or 0
 end
 
+function Vector3:Assign(v)
+    self.x, self.y, self.z = v.x, v.y, v.z
+end
+
 function Vector3.Get(v)		
 	return v.x, v.y, v.z	
 end

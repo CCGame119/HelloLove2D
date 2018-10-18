@@ -17,6 +17,9 @@ local Material = Love2DEngine.Material
 local RenderMode = Love2DEngine.RenderMode
 local DisplayOptions = Love2DEngine.DisplayOptions
 local Screen = Love2DEngine.Screen
+local Color = Love2DEngine.Color
+local Object = Love2DEngine.Object
+local Quaternion = Love2DEngine.Quaternion
 
 local EventDispatcher = FairyGUI.EventDispatcher
 local Container = FairyGUI.Container
@@ -31,6 +34,12 @@ local ToolSet = FairyGUI.ToolSet
 local ShaderConfig = FairyGUI.ShaderConfig
 local CaptureCamera = FairyGUI.CaptureCamera
 local HitTestContext = FairyGUI.HitTestContext
+local MeshColliderHitTest = FairyGUI.MeshColliderHitTest
+local Stage = FairyGUI.Stage
+local NTexture = FairyGUI.NTexture
+local UIConfig = FairyGUI.UIConfig
+local UpdateContext = FairyGUI.UpdateContext
+local Stats = FairyGUI.Stats
 
 local Approximately = math.Approximately
 local bit = require('bit')
@@ -98,6 +107,7 @@ local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 ---@field public cacheAsBitmap boolean
 ---@field public filter FairyGUI.IFilter
 ---@field public blendMode FairyGUI.BlendMode
+---@field public home Love2DEngine.Transform
 ---@field private _visible boolean
 ---@field private _touchable boolean
 ---@field private _pivot Love2DEngine.Vector2
@@ -187,7 +197,7 @@ end
 
 function DisplayObject:DestroyGameObject()
     if self._ownsGameObject and self.gameObject ~= nil then
-        GameObject.recycle(self.gameObject)
+        Object.DestroyImmediate(self.gameObject)
         self.gameObject = nil
         self.cachedTransform = nil
     end
@@ -267,7 +277,42 @@ end
 
 function DisplayObject:UpdateTransformMatrix()
     local matrix = Matrix4x4.identity
-    --TODO:DisplayObject:UpdateTransformMatrix
+    if self._skew.x ~= 0 or self._skew.y ~= 0 then
+        ToolSet.SkewMatrix(matrix, self.skew.x, self.skew.y)
+    end
+    if self._perspective then
+        matrix:Multiply(Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(self._rotation), Vector3.one))
+    end
+    local camPos = Vector3.zero
+    if matrix.isIdentity then
+        self._transformMatrix = nil
+    else
+        self._transformMatrix = matrix
+        camPos = Vector3(self._pivot.x * self._contentRect.width, -self._pivot.y * self._contentRect.height, self._focalLenght)
+    end
+
+    --组件的transformMatrix是通过paintingMode实现的，因为全部通过矩阵变换的话，和unity自身的变换混杂在一起，无力理清。
+    if self._transformMatrix ~= nil then
+        if self:isa(Container) then
+            self:EnterPaintingMode(4, nil)
+        end
+    else
+        if self:isa(Container) then
+            self:LeavePaintingMode(4)
+        end
+    end
+
+    if self._paintingMode > 0 then
+        self.paintingGraphics.cameraPosition = camPos
+        self.paintingGraphics.vertexMatrix = self._transformMatrix
+        self._paintingFlag = 1
+    elseif self.graphics ~= nil then
+        self.graphics.cameraPosition = camPos
+        self.graphics.vertexMatrix = self._transformMatrix
+        self._requireUpdateMesh = true
+    end
+
+    self._outlineChanged = true
 end
 
 function DisplayObject:UpdatePivotOffset()
@@ -381,6 +426,7 @@ function DisplayObject:LeavePaintingMode(requestorId)
 end
 
 ---@param targetSpace
+---@return Love2DEngine.Rect
 function DisplayObject:GetBounds(targetSpace)
     self:EnsureSizeCorrect()
 
@@ -396,6 +442,7 @@ function DisplayObject:GetBounds(targetSpace)
     return self:TransformRect(self._contentRect, targetSpace)
 end
 
+---@return FairyGUI.DisplayObject
 function DisplayObject:InternalHitTest()
     if not self._visible or (HitTestContext.forTouch and (not self._touchable or self._touchDisabled)) then
         return nil
@@ -403,6 +450,7 @@ function DisplayObject:InternalHitTest()
     return self:HitTest()
 end
 
+---@return FairyGUI.DisplayObject
 function DisplayObject:InternalHitTestMask()
     if self._visible then
         return self:HitTest()
@@ -410,6 +458,7 @@ function DisplayObject:InternalHitTestMask()
     return nil
 end
 
+---@return FairyGUI.DisplayObject
 function DisplayObject:HitTest()
     local rect = self:GetBounds(self)
     if rect.width == 0 or rect.height == 0 then
@@ -424,6 +473,8 @@ function DisplayObject:HitTest()
 end
 
 ---将舞台坐标转换为本地坐标
+---@param point Love2DEngine.Vector2
+---@return Love2DEngine.Vector2
 function DisplayObject:GlobalToLocal(point)
     local wsc = self.worldSpaceContainer
 
@@ -435,9 +486,285 @@ function DisplayObject:GlobalToLocal(point)
         screenPoint.y = Screen.height - point.y
 
         if wsc.hitArea:isa(MeshColliderHitTest) then
-            --TODO: DisplayObject:GlobalToLocal
+            if wsc.hitArea:ScreenToLocal(cam, screenPoint, point) then
+                local worldPoint = Stage.inst.cachedTransform:TransformPoint(point.x, -point.y, 0)
+                local direction = Vector3.back
+            else
+                return Vector2(math.nan, math.nan)
+            end
+        else
+            screenPoint.z = cam:WorldToScreenPoint(self.cachedTransform.position).z
+            worldPoint = cam:WorldToScreenPoint(screenPoint)
+            local ray = cam:ScreenPointToRay(screenPoint)
+            direction = Vector3.zero - ray.direction
+        end
+
+        return self:WorldToLocal(worldPoint, direction)
+    end
+
+    local worldPoint = Stage.inst.cachedTransform.TransformPoint(point.x, -point.y, 0)
+    return self:WorldToLocal(worldPoint, Vector3.back)
+end
+
+---将本地坐标转换为舞台坐标
+---@param point Love2DEngine.Vector2
+---@return Love2DEngine.Vector2
+function DisplayObject:LocalToGlobal(point)
+    local wsc = self.worldSpaceContainer
+    local worldPoint = self.cachedTransform:TransformPoint(point.x, -point.y, 0)
+    if nil ~= wsc then
+        if wsc.hitArea:isa(MeshColliderHitTest) then
+            return Vector2(math.nan, math.nan)
+        end
+        local screenPoint = wsc:GetRenderCamera():WorldToScreenPoint(worldPoint)
+        return Vector2(screenPoint.x, Stage.inst.stageHeight - screenPoint.y)
+    end
+
+    local point = Stage.inst.cachedTransform:InverseTransformPoint(worldPoint)
+    point.y = -point.y
+    return point
+end
+
+---转换世界坐标点到等效的本地xy平面的点。等效的意思是他们在屏幕方向看到的位置一样。
+---返回的点是在对象的本地坐标空间，且z=0
+---@param worldPoint Love2DEngine.Vector3
+---@param direction Love2DEngine.Vector3
+---@return Love2DEngine.Vector3
+function DisplayObject:WorldToLocal(worldPoint, direction)
+    local localPoint = self.cachedTransform:InverseTransformPoint(worldPoint)
+    if localPoint.z ~= 0 then --如果对象绕x轴或y轴旋转过，或者对象是在透视相机，那么z值可能不为0，
+        --将世界坐标的摄影机方向在本地空间上投射，求出与xy平面的交点
+        local direction = self.cachedTransform:InverseTransformPoint(direction)
+        local distOnLine = Vector3.Dot(Vector3.zero - localPoint, Vector3.forward) / Vector3.Dot(direction, Vector3.forward)
+        if distOnLine == math.inf then
+            return Vector2()
+        end
+        localPoint = localPoint + direction * distOnLine
+    elseif self._transformMatrix ~= nil then
+        local mm = self._transformMatrix
+        local camPos = Vector3(self._pivot.x * self._contentRect.width, -self._pivot.y * self._contentRect.height, self._focalLenght)
+        local center = Vector3(camPos.x, camPos.y, 0)
+        center:Sub(mm:MultiplyPoint(center))
+        mm = mm.inverse
+        --相机位置需要变换！
+        camPos = mm:MultiplyPoint(camPos)
+        --消除轴心影响
+        localPoint:Sub(center)
+        localPoint = mm:MultiplyPoint(localPoint)
+        --获得与平面交点
+        local vec = localPoint - camPos
+        local lambda = -camPos.z / vec.z
+        localPoint.x = camPos.x + lambda * vec.x
+        localPoint.y = camPos.y + lambda * vec.y
+        localPoint.z = 0
+
+        --在这写可能不大合适，但要转回世界坐标，才能保证孩子的点击检测正确进行
+        HitTestContext.worldPoint = self.cachedTransform:TransformPoint(localPoint)
+    end
+    localPoint.y = - localPoint.y
+    return localPoint
+end
+
+---@param point Love2DEngine.Vector2
+---@param targetSpace FairyGUI.DisplayObject
+---@return Love2DEngine.Vector2
+function DisplayObject:TransformPoint(point, targetSpace)
+    if targetSpace == self then
+        return point
+    end
+
+    point.y = -point.y
+    local v = self.cachedTransform:TransformPoint(point)
+    if targetSpace ~= nil then
+        v = targetSpace.cachedTransform:InverseTransformPoint(v)
+        v.y = -v.y
+    end
+    return v
+end
+
+---@param rect Love2DEngine.Rect
+---@param targetSpace FairyGUI.DisplayObject
+---@return Love2DEngine.Rect
+function DisplayObject:TransformRect(rect, targetSpace)
+    if self == targetSpace then
+        return rect
+    end
+
+    if targetSpace == self.parent and self._rotation.z == 0 then
+        local vec = self.cachedTransform.localScale
+        return Rect((self.x + rect.x) * vec.x, (self.y + rect.y) * vec.y, rect.width * vec.x, rect.height * vec.y)
+    end
+
+    local result = Rect.MinMaxRect(math.fmaxval, math.fmaxval, math.fminval, math.fminval)
+
+    self:TransformRectPoint(rect.xMin, rect.yMin, targetSpace, result)
+    self:TransformRectPoint(rect.xMax, rect.yMin, targetSpace, result)
+    self:TransformRectPoint(rect.xMin, rect.yMax, targetSpace, result)
+    self:TransformRectPoint(rect.xMax, rect.yMax, targetSpace, result)
+    return result
+end
+
+---@param px number
+---@param py number
+---@param targetSpace FairyGUI.DisplayObject
+---@param rect Love2DEngine.Rect
+function DisplayObject:TranformRectPoint(px, py, targetSpace, rect)
+    local v = self.cachedTransform:TransformPoint(px, -py, 0)
+    if targetSpace ~= nil then
+        v = targetSpace.cachedTransform:InverseTransformPoint(v)
+        v.y = -v.y
+    end
+    if rect.xMin > v.x then rect.xMin = v.x end
+    if rect.xMax < v.x then rect.xMax = v.x end
+    if rect.yMin > v.y then rect.yMin = v.y end
+    if rect.yMax < v.y then rect.yMax = v.y end
+end
+
+function DisplayObject:RemoveFromParent()
+    if self.parent ~= nil then
+        self.parent:RemoveChild(self)
+    end
+end
+
+function DisplayObject:InvalidateBatchingState()
+    if self.parent ~= nil then
+        self.parent:InvalidateBatchingState(true)
+    end
+end
+
+---@param context Conte
+function DisplayObject:Update(context)
+    if self.graphics ~= nil then
+        self.graphics.alpha = context.alpha * self._alpha
+        self.graphics.grayed = context.grayed or self._grayed
+        self.graphics:UPdateMaterial(context)
+    end
+
+    if self._paintingMode ~= 0 then
+        local paintingTexture = self.paintingGraphics.texture
+        if paintingTexture ~=nil and paintingTexture.disposed then --Texture可能已被Stage.MonitorTexture销毁
+            paintingTexture = nil
+            self._paintingFlag = 1
+        end
+        if self._paintingFlag == 1 then
+            self._paintingFlag = 0
+            --从优化考虑，决定使用绘画模式的容器都需要明确指定大小，而不是自动计算包围。这在UI使用上并没有问题，因为组件总是有固定大小的
+            local textureWidth = math.round(self._contentRect.width + self._paintingMargin.left + self._paintingMargin.right)
+            local textureHeight = math.round(self._contentRect.height + self._paintingMargin.top + self._paintingMargin.bottom)
+            if (paintingTexture == nil or paintingTexture.width ~= textureWidth or paintingTexture.height ~= textureHeight) then
+                if (paintingTexture ~= nil) then
+                    paintingTexture:Dispose()
+                end
+                if (textureWidth > 0 and textureHeight > 0) then
+                    paintingTexture = NTexture(CaptureCamera:CreateRenderTexture(textureWidth, textureHeight, UIConfig.depthSupportForPaintingMode))
+                    Stage.inst:MonitorTexture(paintingTexture)
+                else
+                    paintingTexture = nil
+                end
+                self.paintingGraphics.texture = paintingTexture
+            end
+
+            if (paintingTexture ~= nil) then
+                self.paintingGraphics:DrawRect(
+                    Rect(-self._paintingMargin.left, -self._paintingMargin.top, paintingTexture.width, paintingTexture.height),
+                    Rect(0, 0, 1, 1), Color.white)
+                self.paintingGraphics:UpdateMesh()
+            else
+                self.paintingGraphics:ClearMesh()
+            end
+        end
+
+        if paintingTexture ~= nil then
+            self.paintingGraphics:DrawRect(
+                    Rect(-self._paintingMargin.left, -self._paintingMargin.top, paintingTexture.width, paintingTexture.height),
+                    Rect(0, 0, 1, 1), Color.white)
+            self.paintingGraphics:UpdateMesh()
+        else
+            self.paintingGraphics:ClearMesh()
+        end
+
+        if paintingTexture ~= nil then
+            paintingTexture.lastActive = os.time()
+            --如果是容器，这句移到Container.Update的最后执行，因为容器中可能也有需要Capture的内容，要等他们完成后再进行容器的Capture
+            if self:isa(Container) and (self._paintingFlag ~= 2 or not self._cacheAsBitmap) then
+                UpdateContext.OnEnd:Add(self._captureDelegate)
+            end
+        end
+
+        self.paintingGraphics:UpdateMaterial(context)
+    end
+
+    if self._filter ~= nil then
+        self._filter:Update()
+    end
+
+    Stats.ObjectCount = Stats.ObjectCount + 1
+end
+
+function DisplayObject:Capture()
+    local offset = Vector2(self._paintingMargin.left, self._paintingMargin.top)
+    CaptureCamera.Capture(self, self.paintingGraphics.texture.nativeTexture, offset)
+
+    self._paintingFlag = 2 --2表示已完成一次Capture
+    if (self.onPaint ~= nil) then
+        self:onPaint()
+    end
+end
+
+function DisplayObject:UpdateHierachy()
+    if not self._ownsGameObject then
+        if self.gameObject ~= nil then
+            if self.parent ~= nil and self.visible then
+                self.gameObject:SetActive(true)
+            else
+                self.gameObject:SetActive(false)
+            end
+        end
+    elseif self.parent ~= nil then
+        ToolSet.SetParent(self.cachedTransform, self.parent.cachedTransform)
+
+        if self._visible then
+            self.gameObject:SetActive(true)
+        end
+        
+        local layerValue = self.parent.gameObject.layer
+        if self.parent._paintingMode ~= 0 then
+            layerValue = CaptureCamera.hiddenLayer            
+        end
+
+        if self:isa(Container) and self.gameObject.layer ~= layerValue and self._paintingMode == 0 then
+            self:SetChildrenLayer(layerValue)
+        end
+
+        self.layer = layerValue
+    elseif not self._disposed and self.gameObject ~= nil and not StageEngine.beginQuit then
+        self.gameObject:SetActive(false)
+    end
+end
+
+function DisplayObject:DisPose()
+    if self._disposed then return end
+
+    self._disposed = true
+    self:RemoveFromParent()
+    self:RemoveEventListeners()
+    if self.graphics ~= nil then
+        self.graphics:Dispose()
+    end
+    if self._filter ~= nil then
+        self._filter:Dispose()
+    end
+    if self.paintingGraphics ~= nil then
+        if self.paintingGraphics.texture ~= nil then
+            self.paintingGraphics.texture:Dispose()
+        end
+        if self._paintingMaterial ~= nil then
+            Object.Destroy(self.paintingGraphics.gameObject)
+        else
+            Object.DestroyImmediate(self.paintingGraphics.gameObject)
         end
     end
+    self:DestroyGameObject()
 end
 
 --endregion
@@ -956,7 +1283,17 @@ __set.blendMode = function(self, val)
     end
 end
 
+---@param self FairyGUI.DisplayObject
+__get.home = function(self) return self._home end
 
+---@param self FairyGUI.DisplayObject
+---@param val Love2DEngine.Transform
+__set.home = function(self, val)
+    self._home = val
+    if val ~= nil and self.cachedTransform.parent == nil then
+        ToolSet.SetParent(self.cachedTransform, val)
+    end
+end
 
 --endregion
 --TODO: FairyGUI.DisplayObject

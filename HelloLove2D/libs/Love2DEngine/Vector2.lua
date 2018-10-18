@@ -50,6 +50,10 @@ function Vector2:Set(x,y)
 	self.y = y or 0	
 end
 
+function Vector2:Assign(v)
+    self.x, self.y = v.x, v.y
+end
+
 function Vector2:Get()
 	return self.x, self.y
 end

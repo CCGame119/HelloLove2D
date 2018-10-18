@@ -9,7 +9,7 @@ local Quaternion = Love2DEngine.Quaternion
 local Vector2 = Love2DEngine.Vector2
 local Vector3 = Love2DEngine.Vector3
 
----@class Love2DEngine.Transform:ClassType
+---@class Love2DEngine.Transform:Love2DEngine.Component
 ---@field public position Love2DEngine.Vector3
 ---@field public localPosition Love2DEngine.Vector3
 ---@field public eulerAngles Love2DEngine.Vector3
@@ -22,6 +22,36 @@ local Vector3 = Love2DEngine.Vector3
 ---@field public localScale Love2DEngine.Vector3
 ---@field public parent Love2DEngine.Transform
 local Transform = Class.inheritsFrom('Transform')
+
+---Transforms position from local space to world space
+---@param x_v number|Love2DEngine.Vector3
+---@param y number
+---@param z number
+function Transform:TransformPoint(x_v, y, z)
+    local pos = Vector3()
+    if type(x_v) == 'number' then
+        pos:Set(x_v, y, z)
+    else
+        pos:Assign(x_v)
+    end
+
+    return pos:Add(self.position)
+end
+
+---Transforms position from world space to local space.
+---@param x_v number|Love2DEngine.Vector3
+---@param y number
+---@param z number
+function Transform:InverseTransformPoint(x_v, y, z)
+    local pos = Vector3()
+    if type(x_v) == 'number' then
+        pos:Set(x_v, y, z)
+    else
+        pos:Assign(x_v)
+    end
+
+    return pos:Sub(self.position)
+end
 
 --TODO: Love2DEngine.Transform
 ---===============属性访问器======================

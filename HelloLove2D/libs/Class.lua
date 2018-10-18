@@ -11,6 +11,8 @@ local rawget = rawget
 local rawequal = rawequal
 local error = error
 
+---@class Class @ Lua 类构造类
+local Class = {}
 local __index = nil
 local __newindex = nil
 local __index_with_get = nil
@@ -304,25 +306,3 @@ __newindex_with_set = function(t, k, v, o)
 end
 
 return Class
-
---region 辅助提示类型
-
----@class byte:number
-
----@class ClassType @ 类类型，用于辅助提示
----@field public __cls_name string @ 类名称
-ClassType = {}
----构造函数
-function ClassType.new(...) end
----构造类回调
-function ClassType.__cls_ctor(cls) end
----构造回调
-function ClassType:__ctor(...) end
----类
-function ClassType:class(...) end
----基类
-function ClassType:superClass(...) end
----类型判断
-function ClassType:isa(...) end
-
---endregion

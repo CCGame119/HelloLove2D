@@ -189,16 +189,17 @@ function graphics_case.newFont_cases()
     graphics.setFont(oldFont)
 end
 
-require('test.graphics.newMesh')
-require('test.graphics.newParticleSystem')
-require('test.graphics.newQuad')
-require('test.graphics.newShader')
-require('test.graphics.newSpriteBatch')
-require('test.graphics.newText')
+require('test.Love2D.graphics.newMesh')
+require('test.Love2D.graphics.newParticleSystem')
+require('test.Love2D.graphics.newQuad')
+require('test.Love2D.graphics.newShader')
+require('test.Love2D.graphics.newSpriteBatch')
+require('test.Love2D.graphics.newText')
 
 --print(table.tostr(love.graphics.getSupported()))
 --print(table.tostr(love.graphics.getTextureTypes( )))
 --print(table.tostr(love.graphics.getCanvasFormats( )))
 --print(table.tostr(love.graphics.getSystemLimits()))
 
+Love2D_Cases.graphics_case = graphics_case
 return graphics_case

@@ -8,6 +8,7 @@ local Class = require('libs.Class')
 
 local Component = Love2DEngine.Component
 
+---@class Love2DEngine.Collider
 local Collider = Class.inheritsFrom('Collider', nil, Component)
 
 --TODO: Love2DEngine.Collider

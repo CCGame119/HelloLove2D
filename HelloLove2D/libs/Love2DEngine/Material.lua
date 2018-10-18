@@ -6,9 +6,22 @@
 
 local Class = require('libs.Class')
 
----@class Love2DEngine.Material
-local Material = {}
-Material = Class.inheritsFrom('Material', Material)
+local Object = Love2DEngine.Object
+
+---@class Love2DEngine.Material:Love2DEngine.Object
+---@field mainTexture Love2DEngine.Texture
+local Material = Class.inheritsFrom('Material', nil, Object)
+
+---@param name string|number
+---@param value Love2DEngine.Texture
+function Material:SetTexture(name_or_id, value)
+    --TODO: Material:SetTexture
+end
+
+---@param keyword string
+function Material:EnableKeyword(keyword)
+    --TODO: Material:EnableKeyword
+end
 
 --TODO: Love2DEngine.Material
 

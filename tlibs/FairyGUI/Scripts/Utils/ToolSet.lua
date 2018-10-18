@@ -15,6 +15,13 @@ function ToolSet.SetParent(t, parent)
     --TODO: ToolSet.SetParent
 end
 
+---@param rect1 Love2DEngine.Rect
+---@param rect2 Love2DEngine.Rect
+---@return Love2DEngine.Rect
+function ToolSet.Intersection(rect1, rect2)
+    --TODO: ToolSet.Intersection
+end
+
 --TODO: FairyGUI.ToolSet
 
 FairyGUI.ToolSet = ToolSet

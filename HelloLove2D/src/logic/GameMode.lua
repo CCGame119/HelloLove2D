@@ -144,16 +144,6 @@ end
 
 --- 渲染
 function GameMode:onDraw()
-    love.graphics.print("Sorce: " .. self.score, Screen.pos(0.02, 0.01))
-    love.graphics.print("FPS: " .. love.timer.getFPS(), Screen.pos(0.8, 0.01))
-    love.graphics.print("MEM: " .. collectgarbage('count'), Screen.pos(0.8, 0.025))
-    love.graphics.print("PLAYER: " .. self.player.name, Screen.pos(0.8, 0.035))
-    if self.isAlive then
-        self.player:onDraw()
-    else
-        love.graphics.print("Press 'R' to restart", Screen.pos(0.45, 0.49))
-    end
-
     for i, enemy in ipairs(self.enemys) do
         enemy:onDraw()
     end
@@ -161,6 +151,16 @@ function GameMode:onDraw()
     for i, bullet in ipairs(self.bullets) do
         bullet:onDraw()
     end
+
+    if self.isAlive then
+        self.player:onDraw()
+    else
+        love.graphics.print("Press 'R' to restart", Screen.pos(0.45, 0.49))
+    end
+
+    love.graphics.print("Sorce: " .. self.score, Screen.pos(0.02, 0.01))
+    love.graphics.print("FPS: " .. love.timer.getFPS(), Screen.pos(0.8, 0.01))
+    love.graphics.print("MEM: " .. collectgarbage('count'), Screen.pos(0.8, 0.025))
 end
 
 return GameMode

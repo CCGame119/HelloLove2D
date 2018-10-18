@@ -1,19 +1,10 @@
-require('libs.Love2DEngine')
-
-require('libs.utils.package_ex')
-package.addSearchPath("/tlibs/FairyGUI/Scripts/?.lua")
-
-require('Utils.Delegate')
-require('FairyGUI')
-require('Event.EventDispatcher')
-local delegate = FairyGUI.EventCallback0.new()
-
-local VInputDevice = require('libs.Love2DEngine.Devices.Input')
+require('libs.Love2DEngine.Love2DEngine')
 local GameMode = require('src.logic.GameMode')
-local graphics_case = require('test.graphics_case')
-local Sprite = require('libs.Sprite')
 
-require('testLove2DEngine.testRect')
+---============test============
+require('test.Love2DEngine.main')
+require('test.Love2D.main')
+require('test.FairyGUI.main')
 
 mx, my = 0, 0
 
@@ -21,11 +12,9 @@ mx, my = 0, 0
 function love.load()
     GameMode:onLoad()
 
-    delegate:Add(GameMode.onShoot, GameMode)
+    FairyGUI_Cases.EventCallback0_case(GameMode.onShoot, GameMode)
 
-    GameMode.player.name = 'test'
-
-    Rect_tostring()
+    Love2DEngine_Cases.Matrix4x4_case()
 end
 
 -- Updating
@@ -41,7 +30,7 @@ function love.update(dt)
         mx = love.mouse.getX()
         my = love.mouse.getY()
 
-        delegate(dt)
+        FairyGUI_Cases.callback0:Invoke()
     end
 
     GameMode:onUpdate(dt)
@@ -49,14 +38,8 @@ end
 
 -- 渲染颜色矩形.
 function love.draw()
-    --graphics_case.clear_cases()
 
     GameMode:onDraw()
 
-    --graphics_case.newText_cases()
-end
-
-function addSearchPath(path)
-    local fullPath = string.format(";%s%s", love.filesystem.getSourceBaseDirectory(), path)
-    package.path = package.path .. fullPath
+    Love2D_Cases.graphics_case.newText_cases()
 end

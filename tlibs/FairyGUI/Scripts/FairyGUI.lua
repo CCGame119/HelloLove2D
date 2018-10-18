@@ -4,7 +4,7 @@
 -- Date: 2018/9/29 11:32
 --
 
----@class FairyGUI
+---@class FairyGUI:namespace
 FairyGUI = {name='FairyGUI'}
 
 ---@class FairyGUI.EventModifiers
@@ -20,5 +20,6 @@ FairyGUI.EventModifiers = {
 }
 
 require('Event.InputEvent')
+require('Event.EventDispatcher')
 
 return FairyGUI

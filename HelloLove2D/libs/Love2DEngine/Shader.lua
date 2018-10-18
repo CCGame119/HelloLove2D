@@ -6,8 +6,10 @@
 
 local Class = require('libs.Class')
 
----@class Love2DEngine.Shader:ClassType
-local Shader = Class.inheritsFrom('Shader')
+local Object = Love2DEngine.Object
+
+---@class Love2DEngine.Shader:Love2DEngine.Object
+local Shader = Class.inheritsFrom('Shader', nil, Object)
 
 --TODO: Love2DEngine.Shader
 

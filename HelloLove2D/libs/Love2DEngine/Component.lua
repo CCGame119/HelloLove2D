@@ -6,8 +6,10 @@
 
 local Class = require('libs.Class')
 
----@class Love2DEngine.Component:ClassType
-local Component = Class.inheritsFrom('Component')
+local Object = Love2DEngine.Object
+
+---@class Love2DEngine.Component:Love2DEngine.Object
+local Component = Class.inheritsFrom('Component', nil, Object)
 
 --TODO: Love2DEngine.Component
 

@@ -113,6 +113,10 @@ function Quaternion.Equals(a, b)
 end
 
 function Quaternion.Euler(x, y, z)
+    if type(x) ~= 'number' then
+        local v = x
+        x, y, z = v.x, v.y, v.z
+    end
 	x = x * 0.0087266462599716
     y = y * 0.0087266462599716
     z = z * 0.0087266462599716

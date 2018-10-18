@@ -17,9 +17,9 @@ local GComponent = FairyGUI.GComponent
 
 --========================= 声明回调委托=========================
 ---@class FairyGUI.EventCallback0:Delegate
-FairyGUI.EventCallback0 = Delegate.newDelegate("EventCallback0")
+local EventCallback0 = Delegate.newDelegate("EventCallback0")
 ---@class FairyGUI.EventCallback1:Delegate
-FairyGUI.EventCallback1 = Delegate.newDelegate("EventCallback1")
+local EventCallback1 = Delegate.newDelegate("EventCallback1")
 
 
 --========================= FairyGUI.EventDispatcher ===========
@@ -359,5 +359,7 @@ function EventDispatcher:GetChainBridges(strType, chain, bubble)
     end
 end
 
+FairyGUI.EventCallback0 = EventCallback0
+FairyGUI.EventCallback1 = EventCallback1
 FairyGUI.EventDispatcher = EventDispatcher
 return EventDispatcher

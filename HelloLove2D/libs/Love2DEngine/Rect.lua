@@ -75,9 +75,23 @@ function Rect:Set(x, y, w, h)
     self._XMin, self._YMin, self._Width, self._Height = x, y, w, h
 end
 
+---@param rect Love2DEngine.Rect
+function Rect:Assign(rect)
+    self._XMin, self._YMin, self._Width, self._Height = rect.x, rect.y, rect.w, rect.h
+end
+
 ---@return Love2DEngine.Rect
 function Rect:Clone()
     return Rect.new(self)
+end
+
+---@param xmin number
+---@param ymin number
+---@param xmax number
+---@param ymax number
+---@return Love2DEngine.Rect
+function Rect.MinMaxRect(xmin, ymin, xmax, ymax)
+    return Rect(xmin, ymin, xmax - xmin, ymax - ymin)
 end
 
 --endregion

@@ -7,12 +7,15 @@
 local Class = require('libs.Class')
 local Pool = require('libs.Pool')
 local Transform = Love2DEngine.Transform
+local Object = Love2DEngine.Object
 
----@class Love2DEngine.GameObject:ClassType
+---@generic T:Love2DEngine.Component
+---@class Love2DEngine.GameObject:Love2DEngine.Object
 ---@field public transform Love2DEngine.Transform
 ---@field public layer number
 ---@field private _active boolean
-local GameObject = Class.inheritsFrom('GameObject')
+---@field private _components table<T, Love2DEngine.Component[]>
+local GameObject = Class.inheritsFrom('GameObject', nil, Object)
 
 --- 回调：构造函数
 function Sprite:__ctor(...)
@@ -51,6 +54,16 @@ end
 ---@param active boolean
 function GameObject:SetActive(active)
     self._active = active
+end
+
+---@generic T:Love2DEngine.Component
+---@param t T
+---@return T
+function GameObject:AddComponent(t)
+    local comp = t.new()
+    if self._components[t] == nil then self._components[t] = {} end
+    table.insert(self._components[t], comp)
+    return comp
 end
 --TODO: Love2DEngine.GameObject
 
