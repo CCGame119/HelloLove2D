@@ -8,6 +8,7 @@ local Class = require('libs.Class')
 local Quaternion = Love2DEngine.Quaternion
 local Vector2 = Love2DEngine.Vector2
 local Vector3 = Love2DEngine.Vector3
+local Matrix4x4 = Love2DEngine.Matrix4x4
 
 ---@class Love2DEngine.Transform:Love2DEngine.Component
 ---@field public position Love2DEngine.Vector3
@@ -21,6 +22,7 @@ local Vector3 = Love2DEngine.Vector3
 ---@field public localRotation Love2DEngine.Quaternion
 ---@field public localScale Love2DEngine.Vector3
 ---@field public parent Love2DEngine.Transform
+---@field public localToWorldMatrix Love2DEngine.Matrix4x4
 local Transform = Class.inheritsFrom('Transform')
 
 ---Transforms position from local space to world space
@@ -122,6 +124,12 @@ end
 ---@param val Love2DEngine.Vector3
 __set.localScale = function(self, val)
     self.sx, self.sy, self.sz = val.x, val.y, val.z
+end
+
+---@param self Love2DEngine.Transform
+__get.localToWorldMatrix = function(self)
+    local mat = Matrix4x4.Translate(self.position)
+    return mat
 end
 
 Love2DEngine.Transform = Transform

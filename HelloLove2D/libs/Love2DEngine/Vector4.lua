@@ -13,6 +13,7 @@ local setmetatable = setmetatable
 local rawget = rawget
 
 ---@class Love2DEngine.Vector4
+---@field public magnitude number
 local Vector4 = {}
 local get = Class.init_get(Vector4)
 

@@ -260,6 +260,12 @@ function Matrix4x4:Multiply(mat)
     return self
 end
 
+---@param vec Love2DEngine.Vector3
+function Matrix4x4.Translate(vec)
+    local mat = Matrix4x4.identity
+    mat.e41, mat.e42, mat.e43 = pos.x, pos.y, pos.z
+end
+
 ---@param val number
 ---@return Love2DEngine.Matrix4x4
 function Matrix4x4:Div(val)
@@ -282,6 +288,29 @@ Matrix4x4.__tostring = function(mat)
     local r4 = string.format(fmt, mat.e41, mat.e42, mat.e43, mat.e44)
     local str = string.format('%s\n%s\n%s\n%s\n', r1, r2, r3, r4)
     return str
+end
+
+Matrix4x4.__mul = function(lhs, rhs)
+    local mat = Matrix4x4.identity
+
+    mat.e11 = lhs.e11*rhs.e11 + lhs.e12*rhs.e21 + lhs.e13*rhs.e31 + lhs.e14*rhs.e41
+    mat.e12 = lhs.e11*rhs.e12 + lhs.e12*rhs.e22 + lhs.e13*rhs.e32 + lhs.e14*rhs.e42
+    mat.e13 = lhs.e11*rhs.e13 + lhs.e12*rhs.e23 + lhs.e13*rhs.e33 + lhs.e14*rhs.e43
+    mat.e14 = lhs.e11*rhs.e14 + lhs.e12*rhs.e24 + lhs.e13*rhs.e34 + lhs.e14*rhs.e44
+    mat.e21 = lhs.e21*rhs.e11 + lhs.e22*rhs.e21 + lhs.e23*rhs.e31 + lhs.e24*rhs.e41
+    mat.e22 = lhs.e21*rhs.e12 + lhs.e22*rhs.e22 + lhs.e23*rhs.e32 + lhs.e24*rhs.e42
+    mat.e23 = lhs.e21*rhs.e13 + lhs.e22*rhs.e23 + lhs.e23*rhs.e33 + lhs.e24*rhs.e43
+    mat.e24 = lhs.e21*rhs.e14 + lhs.e22*rhs.e24 + lhs.e23*rhs.e34 + lhs.e24*rhs.e44
+    mat.e31 = lhs.e31*rhs.e11 + lhs.e32*rhs.e21 + lhs.e33*rhs.e31 + lhs.e34*rhs.e41
+    mat.e32 = lhs.e31*rhs.e12 + lhs.e32*rhs.e22 + lhs.e33*rhs.e32 + lhs.e34*rhs.e42
+    mat.e33 = lhs.e31*rhs.e13 + lhs.e32*rhs.e23 + lhs.e33*rhs.e33 + lhs.e34*rhs.e43
+    mat.e34 = lhs.e31*rhs.e14 + lhs.e32*rhs.e24 + lhs.e33*rhs.e34 + lhs.e34*rhs.e44
+    mat.e41 = lhs.e41*rhs.e11 + lhs.e42*rhs.e21 + lhs.e43*rhs.e31 + lhs.e44*rhs.e41
+    mat.e42 = lhs.e41*rhs.e12 + lhs.e42*rhs.e22 + lhs.e43*rhs.e32 + lhs.e44*rhs.e42
+    mat.e43 = lhs.e41*rhs.e13 + lhs.e42*rhs.e23 + lhs.e43*rhs.e33 + lhs.e44*rhs.e43
+    mat.e44 = lhs.e41*rhs.e14 + lhs.e42*rhs.e24 + lhs.e43*rhs.e34 + lhs.e44*rhs.e44
+
+    return mat
 end
 
 local __get = Class.init_get(Matrix4x4, true)

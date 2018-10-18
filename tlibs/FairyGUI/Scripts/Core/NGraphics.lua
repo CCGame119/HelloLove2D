@@ -49,7 +49,7 @@ local StencilEraser = Class.inheritsFrom('StencilEraser')
 
 ---@param parent Love2DEngine.Transform
 function StencilEraser:__ctor(parent)
-    self.gameObject = GameObject.new('Eraser')
+    self.gameObject = GameObject:get('Eraser')
     ToolSet.SetParent(self.gameObject.transform, parent)
     self.meshFilter = self.gameObject:AddComponent(MeshModifier)
     self.meshRenderer = self.gameObject:AddComponent(MeshRenderer)

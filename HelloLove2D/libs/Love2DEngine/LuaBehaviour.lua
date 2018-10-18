@@ -12,7 +12,11 @@ local Behaviour = Love2DEngine.Behaviour
 local LuaBehaviour = Class.inheritsFrom('LuaBehaviour', nil, Behaviour)
 
 function LuaBehaviour:Start() end
+function LuaBehaviour:OnEnable() end
+function LuaBehaviour:OnDisable() end
 function LuaBehaviour:LateUpdate() end
+function LuaBehaviour:Update() end
+function LuaBehaviour:FixedUpdate() end
 function LuaBehaviour:OnGUI() end
 function LuaBehaviour:OnApplicationQuit() end
 

@@ -362,7 +362,8 @@ function Quaternion.Lerp(q1, q2, t)
 	return q
 end
 
-
+---@param forward Love2DEngine.Vector3
+---@param up Love2DEngine.Vector3
 function Quaternion.LookRotation(forward, up)
 	local mag = forward:Magnitude()
 	if mag < 1e-6 then
