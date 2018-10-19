@@ -5,7 +5,7 @@
 --
 
 local Class = require('libs.Class')
-local functor = require('Utils.functor')
+local functor = require('libs.functor')
 local EventCallback0 = FairyGUI.EventCallback0
 local EventCallback1 = FairyGUI.EventCallback1
 

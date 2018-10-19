@@ -4,7 +4,7 @@
 -- Date: 2018/9/29 14:07
 --
 local Class = require('libs.Class')
-local Delegate = require('Utils.Delegate')
+local Delegate = require('libs.Delegate')
 local IEventDispatcher = FairyGUI.IEventDispatcher
 local EventBridge = FairyGUI.EventBridge
 local InputEvent = FairyGUI.InputEvent

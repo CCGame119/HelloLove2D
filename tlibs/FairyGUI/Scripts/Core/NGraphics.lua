@@ -6,7 +6,7 @@
 
 --region 模块引用
 local Class = require('libs.Class')
-local Delegate = require('Utils.Delegate')
+local Delegate = require('libs.Delegate')
 
 local GameObject = Love2DEngine.GameObject
 local DisplayOptions = FairyGUI.DisplayOptions

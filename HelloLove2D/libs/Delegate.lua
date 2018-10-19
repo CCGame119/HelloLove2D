@@ -4,7 +4,7 @@
 -- Date: 2018/9/29 12:05
 --
 local Class = require('libs.Class')
-local functor = require('Utils.functor')
+local functor = require('libs.functor')
 
 ---@class Delegate:ClassType @C#委托模拟
 ---@field public isEmpty boolean
