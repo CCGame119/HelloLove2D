@@ -8,7 +8,7 @@ local Class = require('libs.Class')
 
 local HideFlags = Love2DEngine.HideFlags
 
----@class Love2DEngine.DisplayOptions:ClassType
+---@class FairyGUI.DisplayOptions:ClassType
 ---@field public hideFlags Love2DEngine.HideFlags
 local DisplayOptions = Class.inheritsFrom('DisplayOptions')
 
@@ -18,5 +18,5 @@ function DisplayOptions.SetEditModeHideFlags()
     DisplayOptions.hideFlags = HideFlags.DontSaveInEditor
 end
 
-Love2DEngine.DisplayOptions = DisplayOptions
+FairyGUI.DisplayOptions = DisplayOptions
 return DisplayOptions

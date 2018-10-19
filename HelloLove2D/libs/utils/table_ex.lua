@@ -4,6 +4,24 @@
 -- Date: 2018/9/20 15:05
 --
 
+---list table copy
+---@param source table
+---@param dest table
+function table.copy_l(source, dest)
+    for i, v in ipairs(source) do
+        dest[i] = v
+    end
+end
+
+---dict table copy
+---@param source table
+---@param dest table
+function table.copy_d(source, dest)
+    for i, v in pairs(source) do
+        dest[i] = v
+    end
+end
+
 ---获取lua table t 的格式化字符串格式
 ---@param table table  @lua table
 ---@param level number @缩进等级
@@ -108,3 +126,4 @@ end
 function printT(t, lv)
     print(table.tostr(t, lv))
 end
+

@@ -9,7 +9,7 @@ local Class = require('libs.Class')
 local Delegate = require('Utils.Delegate')
 
 local GameObject = Love2DEngine.GameObject
-local DisplayOptions = Love2DEngine.DisplayOptions
+local DisplayOptions = FairyGUI.DisplayOptions
 local MeshFilter = Love2DEngine.MeshFilter
 local MeshRenderer = Love2DEngine.MeshRenderer
 local Mesh = Love2DEngine.Mesh
