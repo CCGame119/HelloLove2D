@@ -93,7 +93,7 @@ end
 ---@param data any|nil
 ---@return boolean
 function EventListener:BroadcastCall(data)
-    return self.owner:BroadcastCall(data)
+    return self.owner:BroadcastEvent(self._type, nil)
 end
 
 --==============属性访问器================

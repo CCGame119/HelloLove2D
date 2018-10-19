@@ -84,14 +84,14 @@ function UpdateContext:Begin()
     Stats.ObjectCount = 0
     Stats.GraphicsCount = 0
 
-    self._tmpBegin = self.OnBegin
-    self.OnBegin = nil
+    self._tmpBegin = self.OnBegin:Clone()
+    self.OnBegin:Clear()
 
     --允许OnBegin里再次Add，这里没有做死锁检查
-    while self._tmpBegin ~= nil do
+    while not self._tmpBegin.isEmpty do
         self._tmpBegin:Invoke()
-        self._tmpBegin = self.OnBegin
-        self.OnBegin = nil
+        self._tmpBegin = self.OnBegin:Clone()
+        self.OnBegin:Clear()
     end
     self.working = true
 end
@@ -99,11 +99,11 @@ end
 function UpdateContext:End()
     self.working = false
 
-    if self.OnEnd ~= nil then
+    if not self.OnEnd.isEmpty then
         self.OnEnd:Invoke()
     end
 
-    self.OnEnd = nil
+    self.OnEnd:Clear()
 end
 
 ---@param clipId number

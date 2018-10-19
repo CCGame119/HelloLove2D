@@ -10,6 +10,7 @@ local Object = Love2DEngine.Object
 
 ---@class Love2DEngine.Component:Love2DEngine.Object
 ---@field public gameObject Love2DEngine.GameObject
+---@field public transform Love2DEngine.Transform
 ---@field private _gameObject Love2DEngine.GameObject
 local Component = Class.inheritsFrom('Component', nil, Object)
 
@@ -32,6 +33,8 @@ __set.gameObject = function(self, val)
     self._gameObject = val
 end
 
+---@param self Love2DEngine.Component
+__get.transform = function(self) return self._gameObject.transform end
 
 Love2DEngine.Component = Component
 return Component

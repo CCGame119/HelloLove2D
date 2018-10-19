@@ -132,11 +132,11 @@ local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 ---@field protected _requireUpdateMesh boolean
 ---@field protected _transformMatrix Love2DEngine.Matrix4x4
 ---@field protected _ownsGameObject boolean
----@field public _disposed boolean
----@field public _touchDisabled boolean
----@field public _internal_bounds number[]
----@field public _skipInFairyBatching boolean
----@field public _outlineChanged boolean
+---@field protected _disposed boolean
+---@field protected _touchDisabled boolean
+---@field protected _internal_bounds number[]
+---@field protected _skipInFairyBatching boolean
+---@field protected _outlineChanged boolean
 local DisplayObject = Class.inheritsFrom('DisplayObject', {}, EventDispatcher)
 --endregion
 
@@ -632,7 +632,7 @@ function DisplayObject:InvalidateBatchingState()
     end
 end
 
----@param context Conte
+---@param context FairyGUI.UpdateContext
 function DisplayObject:Update(context)
     if self.graphics ~= nil then
         self.graphics.alpha = context.alpha * self._alpha
@@ -706,7 +706,7 @@ function DisplayObject:Capture()
     CaptureCamera.Capture(self, self.paintingGraphics.texture.nativeTexture, offset)
 
     self._paintingFlag = 2 --2表示已完成一次Capture
-    if (self.onPaint ~= nil) then
+    if not self.onPaint.isEmpty then
         self:onPaint()
     end
 end
@@ -742,7 +742,7 @@ function DisplayObject:UpdateHierachy()
     end
 end
 
-function DisplayObject:DisPose()
+function DisplayObject:Dispose()
     if self._disposed then return end
 
     self._disposed = true

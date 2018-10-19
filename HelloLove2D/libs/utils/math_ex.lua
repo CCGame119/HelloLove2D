@@ -54,3 +54,6 @@ math.nan = 0/0
 
 math.fmaxval = 3.402823E+38
 math.fminval = -3.402823E+38
+
+math.maxval = 2147483647
+math.minval = -2147483648

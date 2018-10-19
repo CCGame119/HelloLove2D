@@ -49,6 +49,18 @@ function Delegate:Invoke(...)
     end
 end
 
+---@generic T:Delegate
+---@return T
+function Delegate:Clone()
+    ---@type Delegate
+    local delegate = self:class().new()
+    delegate._count = self._count
+    for k, v in pairs(self._funcs) do
+        delegate._funcs[k] = v
+    end
+    return delegate
+end
+
 Delegate.__call = Delegate.Invoke
 
 function Delegate:Clear()

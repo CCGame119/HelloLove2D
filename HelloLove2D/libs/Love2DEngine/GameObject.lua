@@ -24,7 +24,7 @@ GameObject._gameObjects = {}
 
 --- 回调：GameObject
 function GameObject:__ctor(...)
-    self.transform = Transform.new()
+    self.transform = self:AddComponent(Transform)
     self:init(...)
 end
 
@@ -74,6 +74,7 @@ function GameObject:AddComponent(t)
     local comp = t.new()
     if self._components[t] == nil then self._components[t] = {} end
     table.insert(self._components[t], comp)
+    comp.gameObject = self
     return comp
 end
 
