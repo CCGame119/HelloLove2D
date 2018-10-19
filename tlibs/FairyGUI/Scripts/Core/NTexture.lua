@@ -37,6 +37,7 @@ local DestroyMethod = { Destroy = 0, Unload = 1, None = 2 }
 ---@field public disposed boolean
 ---@field public nativeTexture Love2DEngine.Texture
 ---@field public alphaTexture Love2DEngine.Texture
+---@field public Empty boolean
 ---@field private _nativeTexture Love2DEngine.Texture
 ---@field private _alphaTexture Love2DEngine.Texture
 ---@field private _region Love2DEngine.Rect
