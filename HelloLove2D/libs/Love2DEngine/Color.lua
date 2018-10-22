@@ -22,6 +22,10 @@ function Color:__ctor(r, g, b, a)
     self.r, self.g, self.b, self.a = r, g, b, a or 1
 end
 
+function Color:Clone()
+    return Color.new(self.r, self.g, self.b, self.a)
+end
+
 --TODO: Love2DEngine.Color
 
 local __get = Class.init_get(Color, true)

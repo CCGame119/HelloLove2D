@@ -49,6 +49,8 @@ local Frame = Class.inheritsFrom('Frame')
 local MovieClip = Class.inheritsFrom('MovieClip', nil, Image)
 
 function MovieClip:__ctor()
+    Image.__ctor(self)
+
     self._timerDelegate = TimerCallback.new()
 
     self.interval = 0.1

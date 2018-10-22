@@ -1296,7 +1296,7 @@ __set.home = function(self, val)
 end
 
 --endregion
---TODO: FairyGUI.DisplayObject
+
 
 --region 模块定义
 FairyGUI.DisplayObject = DisplayObject
