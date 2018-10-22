@@ -16,7 +16,7 @@ local FlipType = {
     Both = 3
 }
 
----@class FairyGUI.Image:ClassType
+---@class FairyGUI.Image:FairyGUI.DisplayObject
 local Image = Class.inheritsFrom('Image', nil, DisplayObject)
 
 --TODO: FairyGUI.Image
