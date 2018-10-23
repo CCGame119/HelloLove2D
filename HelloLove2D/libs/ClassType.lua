@@ -9,6 +9,12 @@
 ---@class namespace:table @名称空间
 ---@class byte:number @字节类型
 ---@class enum:table<string,number> @枚举类型
+---@class char:string
+
+---@class size:table
+---@field public width number
+---@field public height number
+local size = { width = 0, height = 0}
 
 ---@class ClassType @ 类类型，用于辅助提示
 ---@field public __cls_name string @ 类名称
