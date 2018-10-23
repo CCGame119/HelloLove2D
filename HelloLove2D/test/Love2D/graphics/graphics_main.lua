@@ -16,7 +16,11 @@ local img_arr = graphics.newArrayImage(sprites)
 
 ---@class graphics_case @love.graphics 测试用例
 graphics_case = {}
-graphics_case.fonts = {STLITI=love.graphics.newFont("assets/fonts/STLITI.TTF", 30)}
+graphics_case.fonts = {
+    STLITI=love.graphics.newFont("assets/fonts/STLITI.TTF", 30),
+    STLITI24=love.graphics.newFont("assets/fonts/STLITI.TTF", 24),
+    STLITI40=love.graphics.newFont("assets/fonts/STLITI.TTF", 40),
+}
 
 function graphics_case.arc_cases()
     graphics.setColor( 1, 1, 0 )
