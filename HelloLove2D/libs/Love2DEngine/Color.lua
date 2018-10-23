@@ -12,6 +12,7 @@ local Class = require('libs.Class')
 ---@field public b number
 ---@field public a number
 ---@field public white Love2DEngine.Color
+---@field public clear Love2DEngine.Color
 local Color = Class.inheritsFrom('Color')
 
 ---@field r number
@@ -32,6 +33,7 @@ local __get = Class.init_get(Color, true)
 local __set = Class.init_set(Color, true)
 
 __get.white = function(self) return Color.new(1,1,1,1) end
+__get.clear = function(self) return Color.new(0,0,0,0) end
 
 Love2DEngine.Color = Color
 setmetatable(Color, Color)
