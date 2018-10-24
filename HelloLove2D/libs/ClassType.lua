@@ -20,6 +20,8 @@ local size = { width = 0, height = 0}
 ---@field public __cls_name string @ 类名称
 ClassType = {}
 ---构造函数
+---@generic T:ClassType
+---@return T
 function ClassType.new(...) end
 ---构造类回调
 function ClassType.__cls_ctor(cls) end

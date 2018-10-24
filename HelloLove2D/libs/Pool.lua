@@ -8,6 +8,7 @@ local Class = require('libs.Class')
 ---@class Pool:ClassType @ 对象池
 ---@field protected cls Class @对象类
 ---@field protected _objs @对象列表
+---@field public count number
 local Pool = Class.inheritsFrom('Pool')
 
 function Pool:__ctor(cls)
@@ -29,6 +30,13 @@ function Pool:pop()
     end
 
     return self.cls.new()
+end
+
+local __get = Class.init_get(Pool)
+
+---@param self Pool
+__get.count = function(self)
+    return #self._objs
 end
 
 return Pool
