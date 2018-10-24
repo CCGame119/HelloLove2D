@@ -22,6 +22,14 @@ function table.copy_d(source, dest)
     end
 end
 
+---@param source table
+---@return table
+function table.clone(source)
+    local ret = {}
+    table.copy_l(source, ret)
+    return ret
+end
+
 ---获取lua table t 的格式化字符串格式
 ---@param table table  @lua table
 ---@param level number @缩进等级
