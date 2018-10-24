@@ -23,50 +23,50 @@ function EventListener:__ctor(owner, type)
 end
 
 ---@param callback FairyGUI.EventCallback1
-function EventListener:AddCapture(callback, obj)
+function EventListener:AddCapture(callback)
     if nil == self._bridge then
         self._bridge = self.owner:GetEventBridge(self._type)
     end
 
-    self._bridge:AddCapture(callback, obj)
+    self._bridge:AddCapture(callback)
 end
 
 ---@param callback FairyGUI.EventCallback1
-function EventListener:RemoveCapture(callback, obj)
+function EventListener:RemoveCapture(callback)
     if nil == self._bridge then
         self._bridge = self.owner:GetEventBridge(self._type)
     end
 
-    self._bridge:RemoveCapture(callback, obj)
+    self._bridge:RemoveCapture(callback)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventListener:Add(callback, obj)
+function EventListener:Add(callback)
     if nil == self._bridge then
         self._bridge = self.owner:GetEventBridge(self._type)
     end
 
-    self._bridge:Add(callback, obj)
+    self._bridge:Add(callback)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventListener:Remove(callback, obj)
+function EventListener:Remove(callback)
     if nil == self._bridge then
         self._bridge = self.owner:GetEventBridge(self._type)
     end
 
-    self._bridge:Remove(callback, obj)
+    self._bridge:Remove(callback)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventListener:Set(callback, obj)
+function EventListener:Set(callback)
     if nil == self._bridge then
         self._bridge = self.owner:GetEventBridge(self._type)
     end
 
     self._bridge:Clear()
     if nil ~= callback then
-        self._bridge:Add(callback, obj)
+        self._bridge:Add(callback)
     end
 end
 

@@ -10,11 +10,11 @@ local IEventDispatcher = Class.class("IEventDispatcher")
 
 ---@param strType string
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function IEventDispatcher:AddEventListener(strType, callback, obj)end
+function IEventDispatcher:AddEventListener(strType, callback)end
 
 ---@param strType string
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function IEventDispatcher:RemoveEventListener(strType, callback, obj)end
+function IEventDispatcher:RemoveEventListener(strType, callback)end
 
 FairyGUI.IEventDispatcher = IEventDispatcher
 return IEventDispatcher

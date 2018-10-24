@@ -28,31 +28,31 @@ function EventBridge:__ctor(owner)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventBridge:AddCapture(callback, obj)
-    self._captureCallback:Add(callback, obj)
+function EventBridge:AddCapture(callback)
+    self._captureCallback:Add(callback)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventBridge:RemoveCapture(callback, obj)
-    self._captureCallback:Remove(callback, obj)
+function EventBridge:RemoveCapture(callback)
+    self._captureCallback:Remove(callback)
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventBridge:Add(callback, obj)
+function EventBridge:Add(callback)
     if callback:isa(EventCallback0) then
-        self._callback0:Add(callback, obj)
+        self._callback0:Add(callback)
     elseif callback:isa(EventCallback1) then
-        self._callback1:Add(callback, obj)
+        self._callback1:Add(callback)
     end
     assert(false, "type mismatch")
 end
 
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventBridge:Remove(callback, obj)
+function EventBridge:Remove(callback)
     if callback:isa(EventCallback0) then
-        self._callback0:Remove(callback, obj)
+        self._callback0:Remove(callback)
     elseif callback:isa(EventCallback1) then
-        self._callback1:Remove(callback, obj)
+        self._callback1:Remove(callback)
     end
     assert(false, "type mismatch")
 end

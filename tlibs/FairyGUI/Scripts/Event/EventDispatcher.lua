@@ -29,7 +29,7 @@ local EventDispatcher = Class.inheritsFrom('EventDispatcher', nil, IEventDispatc
 
 ---@param strType string
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventDispatcher:AddEventListener(strType, callback, obj)
+function EventDispatcher:AddEventListener(strType, callback)
     assert(strType, "event type cant be null")
 
     if nil == self._dic then self._dic = {} end
@@ -39,17 +39,17 @@ function EventDispatcher:AddEventListener(strType, callback, obj)
         bridge = EventBridge.new()
         self._dic[strType] = bridge
     end
-    bridge:Add(callback, obj)
+    bridge:Add(callback)
 end
 
 ---@param strType string
 ---@param callback FairyGUI.EventCallback0|FairyGUI.EventCallback1
-function EventDispatcher:RemoveEventListener(strType, callback, obj)
+function EventDispatcher:RemoveEventListener(strType, callback)
     if nil == self._dic then return end
 
     local bridge = self._dic[strType]
     if bridge then
-        bridge:Remove(callback, obj)
+        bridge:Remove(callback)
     end
 end
 
