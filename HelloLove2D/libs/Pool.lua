@@ -32,6 +32,13 @@ function Pool:pop()
     return self.cls.new()
 end
 
+---清空
+function Pool:clear()
+    for i = #self._objs, 1, -1 do
+        table.remove(self._objs, i)
+    end
+end
+
 local __get = Class.init_get(Pool)
 
 ---@param self Pool
