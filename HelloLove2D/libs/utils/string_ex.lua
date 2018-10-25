@@ -25,3 +25,10 @@ function string.endWith(str, substr)
     end
     return string.sub(str, len - lenSub + 1) == substr
 end
+
+local whitespace = {[0x9]=1, [0xA]=1, [0xB]=1, [0xC]=1, [0xD]=1, [0x20]=1, [0x85]=1, [0xA0]=1, [0x1680]=1, [0x2000]=1, [0x2001]=1}
+---@param ch char
+function string.isWhiteSpace(ch)
+    local ret = whitespace[string.char(ch)]
+    return ret == 1
+end
