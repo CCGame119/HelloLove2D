@@ -10,6 +10,7 @@ local Debug = Love2DEngine.Debug
 local GComboBox = FairyGUI.GComboBox
 local RichTextField = FairyGUI.RichTextField
 local EventCallback0 = FairyGUI.EventCallback0
+local UIPackage = FairyGUI.UIPackage
 local IHtmlObject = Utils.HtmlElement
 
 ---@class Utils.HtmlSelect:Utils.IHtmlObject
