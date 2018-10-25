@@ -28,7 +28,7 @@ function HtmlSelect:__ctor()
     if self.resource ~= nil then
         self.comboBox = UIPackage.CreateObjectFromURL(HtmlSelect.resource).asComboBox
         self._changeHandler:Add(function(self)
-            self._owner:DispatchEvent(HtmlSelect.CHANGED_EVENT, nil, self)
+            self._owner:DispatchEvent(self.CHANGED_EVENT, nil, self)
         end, self)
     else
         Debug.LogWarn("FairyGUI: Set HtmlSelect.resource first")
