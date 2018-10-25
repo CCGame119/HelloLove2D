@@ -9,6 +9,7 @@ local GComponent = FairyGUI.GComponent
 
 ---@class FairyGUI.GObject:FairyGUI.EventDispatcher
 ---@field public parent FairyGUI.GComponent
+---@field public displayObject FairyGUI.DisplayObject
 local GObject = Class.inheritsFrom('GObject', nil, EventDispatcher)
 
 --TODO: FairyGUI.GObject

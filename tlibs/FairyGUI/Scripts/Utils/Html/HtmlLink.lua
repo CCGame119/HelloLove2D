@@ -83,7 +83,7 @@ function HtmlLink:SetPosition(x, y)
 end
 
 function HtmlLink:Add()
-    self._owner:AddChildAt(self._shape, 0)
+    self._owner:AddChildAt(self._shape, 1)
 end
 
 function HtmlLink:Remove()
@@ -105,7 +105,6 @@ function HtmlLink:Dispose()
 end
 
 local __get = Class.init_get(HtmlLink)
-local __set = Class.init_set(HtmlLink)
 
 ---@param self Utils.HtmlLink
 __get.displayObject = function(self)
