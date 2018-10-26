@@ -12,7 +12,7 @@ local Image = FairyGUI.Image
 local EventListener = FairyGUI.EventListener
 local TimerCallback = FairyGUI.TimerCallback
 local Timers = FairyGUI.Timers
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 local FlipType = FairyGUI.FlipType
 local NGraphics = FairyGUI.NGraphics
 

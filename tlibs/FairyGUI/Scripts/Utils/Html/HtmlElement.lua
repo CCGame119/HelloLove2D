@@ -9,7 +9,7 @@ local Pool = require('libs.Pool')
 
 local Vector2 = Love2DEngine.Vector2
 local TextFormat = FairyGUI.TextFormat
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 local IHtmlObject = Utils.IHtmlObject
 local XMLIterator = Utils.XMLIterator
 

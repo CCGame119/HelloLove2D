@@ -6,10 +6,10 @@
 
 local Class = require('libs.Class')
 
----@class FairyGUI.ByteBuffer:ClassType
+---@class Utils.ByteBuffer:ClassType
 local ByteBuffer = Class.inheritsFrom('ByteBuffer')
 
---TODO: FairyGUI.ByteBuffer
+--TODO: Utils.ByteBuffer
 
-FairyGUI.ByteBuffer = ByteBuffer
+Utils.ByteBuffer = ByteBuffer
 return ByteBuffer

@@ -8,7 +8,7 @@ local Class = require('libs.Class')
 
 local Color32 = Love2DEngine.Color32
 local TextFormat = FairyGUI.TextFormat
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 local AlignType = FairyGUI.AlignType
 local XMLIterator = Utils.XMLIterator
 local XMLTagType = Utils.XMLTagType

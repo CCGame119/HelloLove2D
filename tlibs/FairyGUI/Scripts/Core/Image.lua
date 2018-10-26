@@ -14,7 +14,7 @@ local DisplayObject = FairyGUI.DisplayObject
 local NGraphics = FairyGUI.NGraphics
 local ShaderConfig = FairyGUI.ShaderConfig
 local NTexture = FairyGUI.NTexture
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 local FillMethod = FairyGUI.FillMethod
 local FlipType = FairyGUI.FlipType
 

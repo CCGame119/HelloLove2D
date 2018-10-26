@@ -20,7 +20,7 @@ local Color32 = Love2DEngine.Color32
 local Color = Love2DEngine.Color
 local Rect = Love2DEngine.Rect
 
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 local ShaderConfig = FairyGUI.ShaderConfig
 local Stats = FairyGUI.Stats
 local NMaterial = FairyGUI.NMaterial

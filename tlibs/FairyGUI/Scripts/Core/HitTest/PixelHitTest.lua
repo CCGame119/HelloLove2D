@@ -7,7 +7,7 @@
 local Class = require('libs.Class')
 
 local IHitTest = FairyGUI.IHitTest
-local ByteBuffer = FairyGUI.ByteBuffer
+local ByteBuffer = Utils.ByteBuffer
 
 local floor = math.floor
 local bit = require('bit')
@@ -22,7 +22,7 @@ local rshift = bit.rshift
 ---@field public pixelsOffset number
 local PixelHitTestData = Class.inheritsFrom('PixelHitTestData')
 
----@param ba FairyGUI.ByteBuffer
+---@param ba Utils.ByteBuffer
 function PixelHitTestData:Load(ba)
     ba:ReadInt()
     self.pixelWidth = ba:ReadInt()

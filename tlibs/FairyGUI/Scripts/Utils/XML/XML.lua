@@ -8,7 +8,7 @@ local Class = require('libs.Class')
 local Stack = require('libs.Pool')
 
 local Vector2 = Love2DEngine.Vector2
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 local XMLList = Utils.XMLList
 local XMLIterator = Utils.XMLIterator
 local XMLTagType = Utils.XMLTagType

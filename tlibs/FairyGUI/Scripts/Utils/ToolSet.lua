@@ -6,7 +6,7 @@
 
 local Class = require('libs.Class')
 
----@class FairyGUI.ToolSet:ClassType
+---@class Utils.ToolSet:ClassType
 local ToolSet = Class.inheritsFrom('ToolSet')
 
 ---@param t Love2DEngine.Transform
@@ -22,7 +22,7 @@ function ToolSet.Intersection(rect1, rect2)
     --TODO: ToolSet.Intersection
 end
 
---TODO: FairyGUI.ToolSet
+--TODO: Utils.ToolSet
 
-FairyGUI.ToolSet = ToolSet
+Utils.ToolSet = ToolSet
 return ToolSet

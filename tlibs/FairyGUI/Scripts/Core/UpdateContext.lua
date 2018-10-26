@@ -11,7 +11,7 @@ local Rect = Love2DEngine.Rect
 local Vector4 = Love2DEngine.Vector4
 local EventCallback0 = FairyGUI.EventCallback0
 local Stats = FairyGUI.Stats
-local ToolSet = FairyGUI.ToolSet
+local ToolSet = Utils.ToolSet
 
 local  bit = require('bit')
 local lshift, rshift = bit.lshift, bit.rshift
