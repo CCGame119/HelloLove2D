@@ -8,9 +8,139 @@ local EventDispatcher = FairyGUI.EventDispatcher
 local GComponent = FairyGUI.GComponent
 
 ---@class FairyGUI.GObject:FairyGUI.EventDispatcher
----@field public parent FairyGUI.GComponent
----@field public displayObject FairyGUI.DisplayObject
+---@field public id string @id is for internal use only.
+---@field public name string @Name of the object.
+---@field public data any @User defined data.
+---@field public sourceWidth number @The source width of the object.
+---@field public sourceHeight number @The source height of the object.
+---@field public initWidth number @The initial width of the object.
+---@field public initHeight number @The initial height of the object.
+---@field public minWidth number @
+---@field public maxWidth number @
+---@field public minHeight number @
+---@field public maxHeight number @
+---@field public relations FairyGUI.Relations @Relations Object.
+---@field public dragBounds Love2DEngine.Rect @Restricted range of dragging.
+---@field public parent FairyGUI.GComponent @Parent object.
+---@field public displayObject DisplayObject @Lowlevel display object.
+---@field public onClick FairyGUI.EventListener @Dispatched when the object or its child was clicked.
+---@field public onRightClick FairyGUI.EventListener @Dispatched when the object or its child was clicked by right mouse button. Web only.
+---@field public onTouchBegin FairyGUI.EventListener @Dispatched when the finger touched the object or its child just now.
+---@field public onTouchMove FairyGUI.EventListener @
+---@field public onTouchEnd FairyGUI.EventListener @Dispatched when the finger was lifted from the screen or from the mouse button.
+---@field public onRollOver FairyGUI.EventListener @The cursor or finger hovers over an object.
+---@field public onRollOut FairyGUI.EventListener @The cursor or finger leave an object.
+---@field public onAddedToStage FairyGUI.EventListener @Dispatched when the object was added to the stage.
+---@field public onRemovedFromStage FairyGUI.EventListener @Dispatched when the object was removed from the stage.
+---@field public onKeyDown FairyGUI.EventListener @Dispatched on key pressed when the object is in focus.
+---@field public onClickLink FairyGUI.EventListener @Dispatched when links in the object or its child was clicked.
+---@field public onPositionChanged FairyGUI.EventListener @Dispatched when the object was moved.
+---@field public onSizeChanged FairyGUI.EventListener @Dispatched when the object was resized.
+---@field public onDragStart FairyGUI.EventListener @Dispatched when drag start.
+---@field public onDragMove FairyGUI.EventListener @Dispatched when dragging.
+---@field public onDragEnd FairyGUI.EventListener @Dispatched when drag end.
+---@field public OnGearStop FairyGUI.EventListener @
+---@field public packageItem FairyGUI.PackageItem
+---@field public x number
+---@field public y number
+---@field public z number
+---@field public xy Love2DEngine.Vector2
+---@field public position Love2DEngine.Vector3
+---@field public width number
+---@field public height number
+---@field public size Love2DEngine.Vector2
+---@field public actualWidth number
+---@field public actualHeight number
+---@field public xMin number
+---@field public yMin number
+---@field public scaleX number
+---@field public scaleY number
+---@field public scale Love2DEngine.Vector2
+---@field public skew Love2DEngine.Vector2
+---@field public pivotX number
+---@field public pivotY number
+---@field public pivot Love2DEngine.Vector2
+---@field public pivotAsAnchor boolean
+---@field public touchable boolean
+---@field public grayed boolean
+---@field public enabled boolean
+---@field public rotation number
+---@field public rotationX number
+---@field public rotationY number
+---@field public alpha number
+---@field public visible boolean
+---@field public internalVisible boolean
+---@field public internalVisible2 boolean
+---@field public sortingOrder number
+---@field public focusable boolean
+---@field public tooltips string
+---@field public filter FairyGUI.IFilter
+---@field public blendMode FairyGUI.BlendMode
+---@field public gameObjectName string
+---@field public inContainer boolean
+---@field public onStage boolean
+---@field public resourceURL string
+---@field public gearXY FairyGUI.GearXY
+---@field public gearSize FairyGUI.GearSize
+---@field public gearLook FairyGUI.GearLook
+---@field public group FairyGUI.GGroup
+---@field public root FairyGUI.GRoot
+---@field public text string
+---@field public icon string
+---@field public draggable boolean
+---@field public asImage FairyGUI.GImage
+---@field public asCom FairyGUI.GComponent
+---@field public asButton FairyGUI.GButton
+---@field public asLabel FairyGUI.GLabel
+---@field public asProgress FairyGUI.GProgressBar
+---@field public asSlider FairyGUI.GSlider
+---@field public asComboBox FairyGUI.GComboBox
+---@field public asTextField FairyGUI.GTextField
+---@field public asRichTextField FairyGUI.GRichTextField
+---@field public asTextInput FairyGUI.GTextInput
+---@field public asLoader FairyGUI.GLoader
+---@field public asList FairyGUI.GList
+---@field public asGraph FairyGUI.GGraph
+---@field public asGroup FairyGUI.GGroup
+---@field public asMovieClip FairyGUI.GMovieClip
+---@field private _x number
+---@field private _y number
+---@field private _z number
+---@field private _pivotX number
+---@field private _pivotY number
+---@field private _pivotAsAnchor boolean
+---@field private _alpha number
+---@field private _rotation number
+---@field private _rotationX number
+---@field private _rotationY number
+---@field private _visible boolean
+---@field private _numberernalVisible boolean
+---@field private _handlingController boolean
+---@field private _touchable boolean
+---@field private _grayed boolean
+---@field private _draggable boolean
+---@field private _scaleX number
+---@field private _scaleY number
+---@field private _sortingOrder number
+---@field private _focusable boolean
+---@field private _tooltips string
+---@field private _pixelSnapping boolean
+---@field private _group FairyGUI.GGroup
+---@field private _gears FairyGUI.GearBase[]
+---@field protected _sizeImplType number
+---@field protected underConstruct boolean
+---@field protected _width number
+---@field protected _height number
+---@field protected _rawWidth number
+---@field protected _rawHeight number
+---@field protected _gearLocked boolean
+---@field protected _sizePercentInGroup number
+---@field protected _disposed boolean
 local GObject = Class.inheritsFrom('GObject', nil, EventDispatcher)
+
+GObject._gInstanceCounter = 0
+---@type FairyGUI.GObject
+GObject.draggingObject = nil
 
 --TODO: FairyGUI.GObject
 

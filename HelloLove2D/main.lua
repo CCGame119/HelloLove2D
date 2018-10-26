@@ -13,6 +13,7 @@ function love.load()
     GameMode:onLoad()
 
     FairyGUI_Cases.EventCallback0_case(GameMode.onShoot, GameMode)
+    FairyGUI_Cases.TweenValue_calse()
 
     Love2DEngine_Cases.Matrix4x4_case()
 end

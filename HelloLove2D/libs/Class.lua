@@ -20,19 +20,27 @@ local __newindex_with_set = nil
 
 ---为类cls初始化属性访问器__get表
 ---@generic T:ClassType
----@param cls T
----@param value_cls boolean
+---@param cls T @类类型
+---@param value_cls boolean @是否属于值类型 default: false
+---@param sup_indexer boolean @是否支持索引，只有在value_cls=true时候才会生效。 default: false
 ---@return table
-function Class.init_get(cls, value_cls)
+function Class.init_get(cls, value_cls, sup_indexer)
     local value_cls = value_cls or false
+    local sup_indexer = sup_indexer or false
     local __get = {}
     rawset(cls, '__get', __get)
     if not value_cls then
         rawset(cls, '__index', __index_with_get)
     else
         local __newindex_with_set_value = function(t, k)
-            local var = rawget(cls, k)
+            if sup_indexer and type(k) == 'number' then
+                local indexder = rawget(__get, '__indexer')
+                if indexder ~= nil then
+                    return indexder(t, k)
+                end
+            end
 
+            local var = rawget(cls, k)
             if var == nil then
                 var = rawget(__get, k)
 
@@ -50,17 +58,26 @@ end
 
 ---为类cls初始化属性访问器__set表
 ---@generic T:ClassType
----@param cls T
----@param value_cls boolean
+---@param cls T @类类型
+---@param value_cls boolean @是否属于值类型 default: false
+---@param sup_indexer boolean @是否支持索引,只有在value_cls=true时候才会生效。 default: false
 ---@return table
-function Class.init_set(cls, value_cls)
+function Class.init_set(cls, value_cls, sup_indexer)
     local value_cls = value_cls or false
+    local sup_indexer = sup_indexer or false
     local __set = {}
     rawset(cls, '__set', __set)
     if not value_cls then
         rawset(cls, '__newindex', __newindex_with_set)
     else
         local __newindex_with_set_value = function(t, k, v)
+            if sup_indexer and type(k) == 'number' then
+                local indexder = rawget(__set, '__indexer')
+                if indexder ~= nil then
+                    return indexder(t, k, v)
+                end
+            end
+
             if rawget(cls, k) ~= nil then
                 rawset(t, k, v)
                 return

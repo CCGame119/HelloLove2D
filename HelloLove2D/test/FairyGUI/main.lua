@@ -17,4 +17,7 @@ function FairyGUI_Cases.EventCallback0_case(func, obj)
 end
 
 FairyGUI_Cases.callback0 = callback0
+
+require('test.FairyGUI.testTweenValue')
+
 return FairyGUI_Cases

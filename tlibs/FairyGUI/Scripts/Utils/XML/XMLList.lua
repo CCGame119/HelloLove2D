@@ -117,10 +117,14 @@ function XMLList:GetEnumerator(selector)
 end
 
 
-local __get = Class.init_get(XMLList)
+local __get = Class.init_get(XMLList, true, true)
 
 ---@param self Utils.XMLList
 __get.Count = function(self) return #self.rawList end
+
+---@param self Utils.XMLList
+---@param idx number
+__get.__indexer = function(self, idx) return self.rawList[idx]  end
 
 
 XMLList.Enumerator = Enumerator

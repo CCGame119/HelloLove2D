@@ -42,7 +42,7 @@ end
 
 ---@param owner FairyGUI.RichTextField
 ---@param element Utils.HtmlElement
-function HtmlButton.Button:Create(owner, element)
+function HtmlButton:Create(owner, element)
     self._owner = owner
     self._element = element
 
@@ -60,25 +60,25 @@ end
 
 ---@param x number
 ---@param y number
-function HtmlButton.Button:SetPosition(x, y)
+function HtmlButton:SetPosition(x, y)
     if self.button ~= nil then
         self.button:SetXY(x, y)
     end
 end
 
-function HtmlButton.Button:Add()
+function HtmlButton:Add()
     if self.button ~= nil then
         self._owner:AddChild(self.button.displayObject)
     end
 end
 
-function HtmlButton.Button:Remove()
+function HtmlButton:Remove()
     if self.button ~= nil and self.button.displayObject.parent ~= nil then
         self._owner:RemoveChild(self.button.displayObject)
     end
 end
 
-function HtmlButton.Button:Release()
+function HtmlButton:Release()
     if self.button ~= nil then
         self.button:RemoveEventListeners()
     end
@@ -86,7 +86,7 @@ function HtmlButton.Button:Release()
     self._element = nil
 end
 
-function HtmlButton.Button:Dispose()
+function HtmlButton:Dispose()
     if self.button ~= nil then
         self.button:Dispose()
     end

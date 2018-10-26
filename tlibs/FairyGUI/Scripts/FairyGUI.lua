@@ -19,8 +19,15 @@ FairyGUI.EventModifiers = {
     FunctionKey = 64, -- 0x00000040
 }
 
-require('Utils.Html.Html')
+---Tween
+require('Tween.TweenValue')
+
+---Html
+require('Utils.Utils')
+
 require('Event.InputEvent')
 require('Event.EventDispatcher')
+
+
 
 return FairyGUI
