@@ -6,29 +6,92 @@
 
 ---@param str string
 ---@param ch char
+---@return string[]
 function string.split(str, ch)
     local words = {}
     local pattern = string.format('([^%s]+)%s?', ch, ch)
     for w in string.gmatch(str, pattern) do
         table.insert(words, w)
-        print(w)
     end
     return words
 end
 
 ---@param substr string
-function string.endWith(str, substr)
-    local len = string.len(str)
-    local lenSub = string.len(substr)
-    if lenSub > len then
-        return false
-    end
-    return string.sub(str, len - lenSub + 1) == substr
+---@return boolean
+function string.endWith(str, ending)
+    return ending == "" or str:sub(-#ending) == ending
 end
 
 local whitespace = {[0x9]=1, [0xA]=1, [0xB]=1, [0xC]=1, [0xD]=1, [0x20]=1, [0x85]=1, [0xA0]=1, [0x1680]=1, [0x2000]=1, [0x2001]=1}
 ---@param ch char
-function string.isWhiteSpace(ch)
+---@return boolean
+function string.isSpace(ch)
     local ret = whitespace[string.char(ch)]
     return ret == 1
 end
+
+---@param str string
+---@return string
+function string.trimEnd(str)
+    return (str:gsub("(.-)%s*$", "%1"))
+end
+
+---@param str string
+---@return string
+function string.trimBeg(str)
+    return (str:gsub("^%s*(.-)", "%1"))
+end
+
+---扩展string
+local mt = getmetatable('')
+
+--[[
+-- demo
+a='abcdef'
+return a[4]      --> d
+]]
+mt.__index = function(str,i)
+    if type(i) == 'number' then
+        return string.sub(str,i,i)
+    else
+        return string[i]
+    end
+end
+
+
+
+--[[
+-- demo
+a='abcdef'
+return a(3,5)    --> cde
+return a(4)      --> def -- equivalent to a(4,-1)
+]]
+mt.__call = string.sub
+
+--[[
+'\t',
+'\n',
+'\v',
+'\f',
+'\r',
+' ',
+'\x0085',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+' ',
+'\x200B',
+'\x2028',
+'\x2029',
+'　',
+'\xFEFF'
+]]
