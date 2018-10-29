@@ -72,7 +72,7 @@ function PixelHitTest:HitTest(container, localPoint)
     end
 
     local pos = y * _data.pixelWidth + x
-    local pos2 = pos / 8
+    local pos2 = math.round(pos / 8)
     local pos3 = pos % 8
 
     if pos2 >= 0 and pos2 < _data.pixelsLength then
