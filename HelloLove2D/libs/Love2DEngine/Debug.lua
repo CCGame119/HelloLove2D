@@ -7,6 +7,7 @@
 local Class = require('libs.Class')
 
 ---@class Love2DEngine.Debug:ClassType
+---@field public traceback fun(msg:string):string
 local Debug = Class.inheritsFrom('Debug')
 
 ---@param msg string
@@ -28,6 +29,8 @@ end
 function Debug.LogError(msg)
     print(msg)
 end
+
+
 --TODO: Love2DEngine.Debug
 
 Love2DEngine.Debug = Debug

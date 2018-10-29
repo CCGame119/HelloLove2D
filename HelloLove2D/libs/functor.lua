@@ -4,15 +4,21 @@
 -- Date: 2018/9/29 13:33
 --
 
-local traceback = traceback or function(...) end
+local Debug = Love2DEngine.Debug
+
+local traceback = function(msg)
+    Debug.LogError(msg)
+    Debug.LogError(debug.traceback())
+end
+
 local _xpcall = {}
 
 _xpcall.__call = function(self, ...)
     if jit then
         if nil == self.obj then
-            return xpcall(self.func, traceback, ...)
+            return xpcall(self.func, Debug.traceback or traceback, ...)
         else
-            return xpcall(self.func, traceback, self.obj, ...)
+            return xpcall(self.func, Debug.traceback or traceback, self.obj, ...)
         end
     else
         local args = {...}
