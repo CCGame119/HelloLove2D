@@ -9,6 +9,9 @@ local Class = require('libs.Class')
 ---@class FairyGUI.TweenManager:ClassType
 local TweenManager = Class.inheritsFrom('TweenManager')
 
+---@return FairyGUI.GTweener
+function TweenManager.CreateTween() end
+
 --TODO: FairyGUI.TweenManager
 
 FairyGUI.TweenManager = TweenManager

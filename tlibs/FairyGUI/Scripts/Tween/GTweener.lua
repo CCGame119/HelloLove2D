@@ -282,7 +282,7 @@ function GTweener:Kill(complete)
 end
 
 ---@param start number|Love2DEngine.Vector2|Love2DEngine.Vector3|Love2DEngine.Vector4|Love2DEngine.Color
----@param End number
+---@param End number|Love2DEngine.Vector2|Love2DEngine.Vector3|Love2DEngine.Vector4|Love2DEngine.Color
 ---@param Delegate number
 ---@return FairyGUI.GTweener
 function GTweener:_To(start, End, duration)
