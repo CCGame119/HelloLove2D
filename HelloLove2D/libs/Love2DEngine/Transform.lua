@@ -55,6 +55,20 @@ function Transform:InverseTransformPoint(x_v, y, z)
     return pos:Sub(self.position)
 end
 
+---@param parent Love2DEngine.Transform
+---@param worldPositionStays boolean @default: true
+function Transform:SetParent(parent, worldPositionStays)
+    local p = self.localPosition
+    local s = self.localScale
+    local q = self.localRotation
+    self.parent = parent
+    if not worldPositionStays then
+        self.localPosition = p
+        self.localScale = s
+        self.localRotation = q
+    end
+end
+
 --TODO: Love2DEngine.Transform
 ---===============属性访问器======================
 local __get = Class.init_get(Transform)
