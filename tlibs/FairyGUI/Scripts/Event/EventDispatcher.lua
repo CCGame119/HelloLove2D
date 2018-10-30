@@ -16,9 +16,9 @@ local GComponent = FairyGUI.GComponent
 
 
 --========================= 声明回调委托=========================
----@class FairyGUI.EventCallback0:Delegate
+---@class FairyGUI.EventCallback0:Delegate @fun()
 local EventCallback0 = Delegate.newDelegate("EventCallback0")
----@class FairyGUI.EventCallback1:Delegate
+---@class FairyGUI.EventCallback1:Delegate @fun(context:FairyGUI.EventContext)
 local EventCallback1 = Delegate.newDelegate("EventCallback1")
 
 

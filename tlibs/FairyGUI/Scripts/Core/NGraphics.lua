@@ -37,7 +37,7 @@ local bor, rshift = bit.bor, bit.rshift
 
 --region FairyGUI.NGraphics.MeshModifier
 
----@class FairyGUI.NGraphics.MeshModifier:Delegate
+---@class FairyGUI.NGraphics.MeshModifier:Delegate @fun()
 local MeshModifier = Delegate.newDelegate('MeshModifier')
 
 ---@class FairyGUI.StencilEraser:ClassType

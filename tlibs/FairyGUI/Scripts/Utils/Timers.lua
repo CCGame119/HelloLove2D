@@ -7,7 +7,7 @@
 local Class = require('libs.Class')
 local Delegate = require('libs.Delegate')
 
----@class FairyGUI.TimerCallback:Delegate
+---@class FairyGUI.TimerCallback:Delegate @fun(param:any)
 local TimerCallback = Delegate.newDelegate('TimerCallback')
 
 ---@class FairyGUI.Timers:ClassType
