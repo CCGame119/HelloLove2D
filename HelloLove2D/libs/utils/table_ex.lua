@@ -13,6 +13,17 @@ function table.copy_l(source, dest)
     end
 end
 
+---list table copy
+---@param source table
+---@param dest table
+function table.copy_l2(source, s_idx, dest, d_idx, count)
+    local k = 0
+    for i = s_idx, s_idx + count - 1 do
+        k = k + 1
+       dest[d_idx + k] = source[i]
+    end
+end
+
 ---dict table copy
 ---@param source table
 ---@param dest table
