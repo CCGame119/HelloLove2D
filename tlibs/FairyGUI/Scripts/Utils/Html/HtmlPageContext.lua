@@ -22,11 +22,11 @@ local HtmlSelect = Utils.HtmlSelect
 local HtmlLink = Utils.HtmlLink
 
 ---@class Utils.HtmlPageContext:Utils.IHtmlPageContext
----@field private _imagePool Pool
----@field private _inputPool Pool
----@field private _buttonPool Pool
----@field private _selectPool Pool
----@field private _linkPool Pool
+---@field private _imagePool Pool<Utils.HtmlImage>
+---@field private _inputPool Pool<Utils.HtmlInput>
+---@field private _buttonPool Pool<Utils.HtmlButton>
+---@field private _selectPool Pool<Utils.HtmlSelect>
+---@field private _linkPool Pool<Utils.HtmlLink>
 local HtmlPageContext = Class.inheritsFrom('HtmlPageContext', nil, IHtmlPageContext)
 
 HtmlPageContext.inst = HtmlPageContext.new()

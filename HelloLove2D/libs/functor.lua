@@ -11,6 +11,7 @@ local traceback = function(msg)
     Debug.LogError(debug.traceback())
 end
 
+---@class _xpcall
 local _xpcall = {}
 
 _xpcall.__call = function(self, ...)
@@ -37,6 +38,9 @@ _xpcall.__eq = function(lhs, rhs)
     return lhs.func == rhs.func and lhs.obj == rhs.obj
 end
 
+---@param func fun()
+---@param obj any
+---@return _xpcall
 local function xfunctor(func, obj)
     return setmetatable({func = func, obj = obj}, _xpcall)
 end

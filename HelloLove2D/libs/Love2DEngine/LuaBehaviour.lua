@@ -20,6 +20,13 @@ function LuaBehaviour:FixedUpdate() end
 function LuaBehaviour:OnGUI() end
 function LuaBehaviour:OnApplicationQuit() end
 
+---@param routine fun():thread
+function LuaBehaviour:StartCoroutine(routine)
+    local  co = coroutine.create(routine)
+    coroutine.resume(co)
+    return co
+end
+
 --TODO: Love2DEngine.LuaBehaviour
 
 Love2DEngine.LuaBehaviour = LuaBehaviour

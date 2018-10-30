@@ -18,6 +18,8 @@ local Delegate = {
 }
 Delegate = Class.inheritsFrom('Delegate', Delegate)
 
+---@param deleg_name string
+---@param t table @ 初始化列表
 function Delegate.newDelegate(deleg_name, t)
     local delegate = Class.inheritsFrom('Delegate', t, Delegate)
     delegate.deleg_name = deleg_name
@@ -25,6 +27,8 @@ function Delegate.newDelegate(deleg_name, t)
     return delegate
 end
 
+---@param func fun()
+---@param obj any
 function Delegate:Add(func, obj)
     assert(func, 'func is nil')
     local func = functor(func, obj)
@@ -32,6 +36,8 @@ function Delegate:Add(func, obj)
     self._count = self._count + 1
 end
 
+---@param func fun()
+---@param obj any
 function Delegate:Remove(func, obj)
     assert(func, 'func is nil')
     local func = functor(func, obj)

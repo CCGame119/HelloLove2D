@@ -23,9 +23,9 @@ local EaseManager = FairyGUI.EaseManager
 
 
 --========================= 声明回调委托 =========================
----@class FairyGUI.GTweenCallback:Delegate @@fun()
+---@class FairyGUI.GTweenCallback:Delegate @fun()
 local GTweenCallback = Delegate.newDelegate('GTweenCallback')
----@class FairyGUI.GTweenCallback1:Delegate @func(tweener:FairyGUI.GTweener)
+---@class FairyGUI.GTweenCallback1:Delegate @fun(tweener:FairyGUI.GTweener)
 local GTweenCallback1 = Delegate.newDelegate('GTweenCallback1')
 
 --========================= ITweenListener =========================

@@ -21,7 +21,7 @@ local m = TweenManager
 
 ---@type FairyGUI.GTweener[]
 TweenManager._activeTweens = {}
----@type Pool
+---@type Pool<FairyGUI.GTweener>
 TweenManager._tweenerPool = Pool.new(GTweener)
 TweenManager._totalActiveTweens = 0
 TweenManager._inited = false
