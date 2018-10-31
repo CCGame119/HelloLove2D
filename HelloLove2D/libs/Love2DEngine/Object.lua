@@ -5,6 +5,7 @@
 --
 
 local Class = require('libs.Class')
+local Pool = require('libs.Pool')
 
 local GameObject = Love2DEngine.GameObject
 
@@ -12,6 +13,13 @@ local GameObject = Love2DEngine.GameObject
 ---@field public name string
 ---@field public hideFlags Love2DEngine.HideFlags
 local Object = Class.inheritsFrom('Object')
+
+--- 回调：类类型构造函数
+---@generic T:Love2DEngine.Object
+---@param cls:T
+function Object.__cls_ctor(cls)
+    cls.pool = Pool.new(cls)
+end
 
 ---@generic T:Love2DEngine.Object
 ---@param obj T

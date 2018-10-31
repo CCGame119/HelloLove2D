@@ -38,7 +38,7 @@ Love2DEngine.HideFlags = HideFlags
 --region Love2DEngine 模块初始化
 require('libs.Love2DEngine.Debug')
 require('libs.Love2DEngine.Assets')
-
+require('libs.Love2DEngine.Transform')
 require('libs.Love2DEngine.Color')
 require('libs.Love2DEngine.Color32')
 require('libs.Love2DEngine.Vector2')
@@ -48,6 +48,9 @@ require('libs.Love2DEngine.Quaternion')
 require('libs.Love2DEngine.Rect')
 require('libs.Love2DEngine.Ray')
 require('libs.Love2DEngine.Matrix4x4')
+
+require('libs.Love2DEngine.Object')
+require('libs.Love2DEngine.GameObject')
 
 require('libs.Love2DEngine.Devices.Screen')
 require('libs.Love2DEngine.Devices.Input')

@@ -24,15 +24,9 @@ GameObject._gameObjects = {}
 
 --- 回调：GameObject
 function GameObject:__ctor(...)
+    self._components = {}
     self.transform = self:AddComponent(Transform)
     self:init(...)
-end
-
---- 回调：类类型构造函数
----@generic T:GameObject
----@param cls T
-function GameObject.__cls_ctor(cls)
-    cls.pool = Pool.new(cls)
 end
 
 --- 工厂函数

@@ -21,6 +21,5 @@ require('Utils.Html.HtmlParseOptions')
 require('Utils.Html.HtmlParser')
 require('Utils.Html.HtmlSelect')
 
-print(FairyGUI.Timers.inst)
 FairyGUI.Utils = Utils
 return Utils

@@ -36,7 +36,7 @@ Timers.catchCallbackExceptions = true
 
 function Timers:__ctor()
     self._inst = self
-    self.gameObject = GameObject.get("[FairyGUI.Timers]")
+    self.gameObject = GameObject:get("[FairyGUI.Timers]")
     self.gameObject.hideFlags = HideFlags.HideInHierarchy
     self.gameObject:SetActive(true)
     --Object.DontDestroyOnLoad(gameObject)
@@ -237,6 +237,7 @@ end
 
 FairyGUI.TimerCallback = TimerCallback
 FairyGUI.Anymous_T = Anymous_T
+FairyGUI.TimersEngine = TimersEngine
 FairyGUI.Timers = Timers
 setmetatable(Timers, Timers)
 return Timers
