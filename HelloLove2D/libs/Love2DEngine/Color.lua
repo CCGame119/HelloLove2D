@@ -28,6 +28,10 @@ function Color:Clone()
     return Color.new(self.r, self.g, self.b, self.a)
 end
 
+Color.__call = function(cls, r, g, b, a)
+    return Color.new(r, g, b, a)
+end
+
 --TODO: Love2DEngine.Color
 
 local __get = Class.init_get(Color, true)

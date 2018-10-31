@@ -5,14 +5,14 @@
 --
 
 local Class = require('libs.Class')
+local bit = require('bit')
+local band = bit.band
+local rshift = bit.rshift
+local floor = math.floor
 
 local IHitTest = FairyGUI.IHitTest
 local ByteBuffer = Utils.ByteBuffer
 
-local floor = math.floor
-local bit = require('bit')
-local band = bit.band
-local rshift = bit.rshift
 
 ---@class FairyGUI.PixelHitTestData:ClassType
 ---@field public pixelWidth number

@@ -31,7 +31,7 @@ function love.update(dt)
         mx = love.mouse.getX()
         my = love.mouse.getY()
 
-        FairyGUI_Cases.callback0:Invoke()
+        FairyGUI_Cases.callback0:Invoke(dt)
     end
 
     GameMode:onUpdate(dt)

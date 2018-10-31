@@ -322,4 +322,9 @@ __newindex_with_set = function(t, k, v, o)
     end
 end
 
+Class.__call = function(t, cls_name, init_t, baseClass)
+    return Class.inheritsFrom(cls_name, init_t, baseClass)
+end
+
+setmetatable(Class, Class)
 return Class

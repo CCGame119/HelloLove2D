@@ -7,6 +7,8 @@
 ---@class FairyGUI.Utils:namespace
 Utils = {name = 'Utils'}
 
+require('Utils.ToolSet')
+require('Utils.Timers')
 require('Utils.Html.IHtmlObject')
 require('Utils.Html.IHtmlPageContext')
 require('Utils.Html.HtmlButton')
@@ -19,5 +21,6 @@ require('Utils.Html.HtmlParseOptions')
 require('Utils.Html.HtmlParser')
 require('Utils.Html.HtmlSelect')
 
+print(FairyGUI.Timers.inst)
 FairyGUI.Utils = Utils
 return Utils

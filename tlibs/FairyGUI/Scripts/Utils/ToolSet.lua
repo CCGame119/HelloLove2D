@@ -5,16 +5,16 @@
 --
 
 local Class = require('libs.Class')
+local bit = require('bit')
+local bnot = bit.bnot
+local band, bor, bxor = bit.band, bit.bor, bit.bxor
+local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
 local Color = Love2DEngine.Color
 local Color32 = Love2DEngine.Color32
 local Rect = Love2DEngine.Rect
 local FlipType = FairyGUI.FlipType
 
-local bit = require('bit')
-local bnot = bit.bnot
-local band, bor, bxor = bit.band, bit.bor, bit.bxor
-local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
 local byte = string.byte
 local char = string.char

@@ -18,6 +18,7 @@ local LuaBehaviour = Love2DEngine.LuaBehaviour
 local TimerCallback = Delegate.newDelegate('TimerCallback')
 
 ---@class FairyGUI.Timers:ClassType
+---@field public inst FairyGUI.Timers
 ---@field private _items table<FairyGUI.TimerCallback, FairyGUI.Anymous_T>
 ---@field private _toAdd table<FairyGUI.TimerCallback, FairyGUI.Anymous_T>
 ---@field private _toRemove FairyGUI.Anymous_T[]
@@ -201,10 +202,10 @@ local __set = Class.init_set(Timers, true)
 
 ---@param self FairyGUI.Timers
 __get.inst = function(self)
-    if self._inst == nil then
-        self._inst = Timers.new()
+    if Timers._inst == nil then
+        Timers._inst = Timers.new()
     end
-    return self._inst
+    return Timers._inst
 end
 
 ---@class FairyGUI.Anymous_T:ClassType
@@ -237,4 +238,5 @@ end
 FairyGUI.TimerCallback = TimerCallback
 FairyGUI.Anymous_T = Anymous_T
 FairyGUI.Timers = Timers
+setmetatable(Timers, Timers)
 return Timers

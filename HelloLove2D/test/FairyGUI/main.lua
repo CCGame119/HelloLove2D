@@ -10,7 +10,7 @@ require('libs.utils.package_ex')
 package.addSearchPath("/tlibs/FairyGUI/Scripts/?.lua")
 require('FairyGUI')
 
-local callback0 = FairyGUI.EventCallback0.new()
+local callback0 = FairyGUI.EventCallback1.new()
 
 function FairyGUI_Cases.EventCallback0_case(func, obj)
     callback0:Add(func, obj)

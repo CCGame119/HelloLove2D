@@ -5,6 +5,8 @@
 --
 
 local Class = require('libs.Class')
+local bit = require('bit')
+local lshift = bit.lshift
 
 local LuaBehaviour = Love2DEngine.LuaBehaviour
 local Camera = Love2DEngine.Camera
@@ -22,8 +24,6 @@ local Quaternion = Love2DEngine.Quaternion
 
 local Container = FairyGUI.Container
 
-local bit = require('bit')
-local lshift = bit.lshift
 
 ---@class FairyGUI.CaptureCamera:Love2DEngine.LuaBehaviour
 ---@field public cachedTransform Love2DEngine.Transform

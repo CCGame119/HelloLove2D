@@ -5,6 +5,8 @@
 --
 
 local Class = require('libs.Class')
+local bit = require('bit')
+local lshift = bit.lshift
 
 local LuaBehaviour = Love2DEngine.LuaBehaviour
 local Transform = Love2DEngine.Transform
@@ -18,8 +20,6 @@ local LayerMask = Love2DEngine.LayerMask
 local EMRenderSupport = FairyGUI.EMRenderSupport
 local HitTestContext = FairyGUI.HitTestContext
 
-local bit = require('bit')
-local lshift = bit.lshift
 
 ---@class FairyGUI.StageCamera:Love2DEngine.LuaBehaviour
 ---@field public constantSize boolean

@@ -5,6 +5,10 @@
 --
 
 local Class = require('libs.Class')
+local bit = require('bit')
+local bnot = bit.bnot
+local band, bor, bxor = bit.band, bit.bor, bit.bxor
+local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
 local Color32 = Love2DEngine.Color32
 local TextFormat = FairyGUI.TextFormat
@@ -15,10 +19,6 @@ local XMLTagType = Utils.XMLTagType
 local HtmlElement = Utils.HtmlElement
 local HtmlElementType = Utils.HtmlElementType
 
-local bit = require('bit')
-local bnot = bit.bnot
-local band, bor, bxor = bit.band, bit.bor, bit.bxor
-local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
 ---@class Utils.HtmlParser.TextFormat2:FairyGUI.TextFormat
 ---@field colorChanged boolean

@@ -36,8 +36,11 @@ Love2DEngine.HideFlags = HideFlags
 --endregion
 
 --region Love2DEngine 模块初始化
+require('libs.Love2DEngine.Debug')
 require('libs.Love2DEngine.Assets')
 
+require('libs.Love2DEngine.Color')
+require('libs.Love2DEngine.Color32')
 require('libs.Love2DEngine.Vector2')
 require('libs.Love2DEngine.Vector3')
 require('libs.Love2DEngine.Vector4')

@@ -6,6 +6,11 @@
 
 --region 模块引用
 local Class = require('libs.Class')
+local bit = require('bit')
+local bnot = bit.bnot
+local band, bor, bxor = bit.band, bit.bor, bit.bxor
+local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
+local Approximately = math.Approximately
 
 local GameObject = Love2DEngine.GameObject
 local Transform = Love2DEngine.Transform
@@ -41,11 +46,6 @@ local UIConfig = FairyGUI.UIConfig
 local UpdateContext = FairyGUI.UpdateContext
 local Stats = FairyGUI.Stats
 
-local Approximately = math.Approximately
-local bit = require('bit')
-local bnot = bit.bnot
-local band, bor, bxor = bit.band, bit.bor, bit.bxor
-local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
 --endregion
 

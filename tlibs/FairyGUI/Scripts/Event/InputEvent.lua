@@ -4,6 +4,11 @@
 -- Date: 2018/9/30 9:54
 --
 local Class = require('libs.Class')
+local bit = require('bit')
+local bnot = bit.bnot
+local band, bor, bxor = bit.band, bit.bor, bit.bxor
+local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
+
 local Vector2 = Love2DEngine.Vector2
 local EventModifiers = FairyGUI.EventModifiers
 
@@ -37,11 +42,6 @@ end
 ---InputEvent() constructor
 local mt = getmetatable(InputEvent)
 mt.__call = function(t) return InputEvent.new() end
-
-local bit = require('bit')
-local bnot = bit.bnot
-local band, bor, bxor = bit.band, bit.bor, bit.bxor
-local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
 --=======================属性访问器=======================
 local get = Class.init_get(InputEvent)

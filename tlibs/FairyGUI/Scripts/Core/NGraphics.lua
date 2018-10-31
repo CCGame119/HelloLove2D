@@ -7,6 +7,8 @@
 --region 模块引用
 local Class = require('libs.Class')
 local Delegate = require('libs.Delegate')
+local bit = require('bit')
+local bor, rshift = bit.bor, bit.rshift
 
 local GameObject = Love2DEngine.GameObject
 local DisplayOptions = FairyGUI.DisplayOptions
@@ -30,8 +32,6 @@ local BlendModeUtils = FairyGUI.BlendModeUtils
 local FillMethod = FairyGUI.FillMethod
 local FillUtils = FairyGUI.FillUtils
 
-local bit = require('bit')
-local bor, rshift = bit.bor, bit.rshift
 
 --endregion
 

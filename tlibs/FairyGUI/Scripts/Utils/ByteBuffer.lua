@@ -11,6 +11,8 @@ local bnot = bit.bnot
 local band, bor, bxor = bit.band, bit.bor, bit.bxor
 local lshift, rshift, rol = bit.lshift, bit.rshift, bit.rol
 
+local Color32 = Love2DEngine.Color32
+
 ---@class Utils.ByteBuffer:ClassType
 ---@field public littleEndian boolean
 ---@field public stringTable string[]
