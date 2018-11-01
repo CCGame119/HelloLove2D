@@ -4,23 +4,11 @@
 -- Date: 2018/9/29 14:07
 --
 local Class = require('libs.Class')
-local Delegate = require('libs.Delegate')
+
 local IEventDispatcher = FairyGUI.IEventDispatcher
-local EventBridge = FairyGUI.EventBridge
-local InputEvent = FairyGUI.InputEvent
-local DisplayObject = FairyGUI.DisplayObject
 local EventContext = FairyGUI.EventContext
-local Stage = FairyGUI.Stage
-local Container = FairyGUI.Container
-local GComponent = FairyGUI.GComponent
-
-
---========================= 声明回调委托=========================
----@class FairyGUI.EventCallback0:Delegate @fun()
-local EventCallback0 = Delegate.newDelegate("EventCallback0")
----@class FairyGUI.EventCallback1:Delegate @fun(context:FairyGUI.EventContext)
-local EventCallback1 = Delegate.newDelegate("EventCallback1")
-
+local InputEvent = FairyGUI.InputEvent
+local EventBridge = FairyGUI.EventBridge
 
 --========================= FairyGUI.EventDispatcher ===========
 ---@class FairyGUI.EventDispatcher:FairyGUI.IEventDispatcher
@@ -101,6 +89,7 @@ EventDispatcher.sCurrentInputEvent = InputEvent()
 ---@param initiator any
 ---@return boolean
 function EventDispatcher:InternalDispatchEvent(strType, bridge, data, initiator)
+    local DisplayObject = FairyGUI.DisplayObject
     if nil == bridge then bridge = self:TryGetEventBridge(self, strType) end
 
     local gBridge
@@ -146,6 +135,7 @@ end
 ---@param initiator any
 ---@return boolean
 function EventDispatcher:DispatchEvent(strTypeOrContext, data, initiator)
+    local DisplayObject = FairyGUI.DisplayObject
     if type(strTypeOrContext) == 'string' then
         local strType = strTypeOrContext
         return InternalDispatchEvent(strType, null, data, initiator)
@@ -181,6 +171,7 @@ end
 ---@param addChain FairyGUI.EventBridge[]
 ---@return boolean
 function EventDispatcher:BubbleEvent(strType, data, addChain)
+    local Stage = FairyGUI.Stage
     local context = EventContext.Get()
     context.initiator = self
 
@@ -273,6 +264,7 @@ end
 ---@param container FairyGUI.Container|FairyGUI.GComponent
 ---@param bridges FairyGUI.EventBridge[]
 function EventDispatcher.GetChildEventBridges(strType, container, bridges)
+    local DisplayObject = FairyGUI.DisplayObject
     local isDisplayObjectContainer = container:isa(DisplayObject)
     local bridge = container:TryGetEventBridge(strType)
     if bridge ~= nil then
@@ -288,7 +280,7 @@ function EventDispatcher.GetChildEventBridges(strType, container, bridges)
     for i = 1, count do
         ---@type FairyGUI.GObject|FairyGUI.DisplayObject
         local obj = container:GetChildAt(i)
-        if obj:isa(Container) then
+        if obj:isa(FairyGUI.Container) then
             EventDispatcher.GetChildEventBridges(strType, obj, bridges)
         else
             bridge = obj:TryGetEventBridge(strType)
@@ -309,6 +301,7 @@ end
 ---@param chain FairyGUI.EventBridge[]
 ---@param bubble boolean
 function EventDispatcher:GetChainBridges(strType, chain, bubble)
+    local DisplayObject = FairyGUI.DisplayObject
     local bridge = self:TryGetEventBridge(strType)
     if nil ~= bridge and not bridge.isEmpty then
         table.insert(chain, bridge)
@@ -359,7 +352,5 @@ function EventDispatcher:GetChainBridges(strType, chain, bubble)
     end
 end
 
-FairyGUI.EventCallback0 = EventCallback0
-FairyGUI.EventCallback1 = EventCallback1
 FairyGUI.EventDispatcher = EventDispatcher
 return EventDispatcher

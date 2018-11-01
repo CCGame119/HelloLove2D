@@ -23,7 +23,8 @@ ClassType = {}
 ---@generic T:ClassType
 ---@return T
 function ClassType.new(...) end
----构造类回调
+---构造类回调: 注意这个方法在当前类不会被调用，只会调用基
+---类的实现，主要用于实现pool， 当前类实现，自己主动调用一下就可以了
 function ClassType.__cls_ctor(cls) end
 ---构造回调
 function ClassType:__ctor(...) end

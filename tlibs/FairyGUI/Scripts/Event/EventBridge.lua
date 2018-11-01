@@ -16,7 +16,7 @@ local EventCallback1 = FairyGUI.EventCallback1
 ---@field private _captureCallback FairyGUI.EventCallback1
 ---@field public _dispatching boolean
 ---@field public isEmpty boolean
-local EventBridge = Class.class('EventBridge', {_dispatching = false})
+local EventBridge = Class.inheritsFrom('EventBridge', {_dispatching = false})
 
 ---@param owner FairyGUI.EventDispatcher
 function EventBridge:__ctor(owner)
