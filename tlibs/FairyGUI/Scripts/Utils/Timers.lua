@@ -58,7 +58,7 @@ function Timers:Add(interval, Repeat, callback, callbackParam)
         Debug.LogWarn("timer callback is null, " .. interval + "," .. Repeat)
         return
     end
-
+    assert(not callback:isa(TimerCallback), "type mismatch")
 
     local t = self._items[callback]
     if nil ~= t then
@@ -115,6 +115,8 @@ end
 
 ---@param callback FairyGUI.TimerCallback
 function Timers:Remove(callback)
+    assert(not callback:isa(TimerCallback), "type mismatch")
+
     local t = self._toAdd[callback]
     if nil ~= t then
         self._toAdd[callback] = nil

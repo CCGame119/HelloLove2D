@@ -32,9 +32,12 @@ local TreeView = Class.inheritsFrom('TreeView', nil, EventDispatcher)
 
 ---@param list FairyGUI.GList
 function TreeView:__ctor(list)
+    self.__clickExpandButtonDelegate = EventCallback1.new(self.__clickExpandButton, self)
+    self.__clickItemDelegate = EventCallback1.new(self.__clickItem, self)
+
     self.list = list
-    list.onClickItem:Add(EventCallback1.new(self.__clickItem, self))
-    list.onRightClickItem:Add(EventCallback1.new(self.__clickItem, self))
+    list.onClickItem:Add(self.__clickItemDelegate)
+    list.onRightClickItem:Add(self.__clickItemDelegate)
     list:RemoveChildrenToPool()
 
     self.root = TreeNode.new(true)
@@ -174,7 +177,7 @@ function TreeView:CreateCell(node)
     if (expandButton ~= nil) then
         if (node.isFolder) then
             expandButton.visible = true
-            expandButton.onClick:Add(EventCallback1.new(self.__clickExpandButton, self))
+            expandButton.onClick:Add(self.__clickExpandButtonDelegate)
             expandButton.data = node
             expandButton.selected = node.expanded
         else
