@@ -18,6 +18,14 @@ local Delegate = {
 }
 Delegate = Class.inheritsFrom('Delegate', Delegate)
 
+---@param func fun()
+---@param obj any
+function Delegate:__ctor(func, obj)
+    if nil ~= func then
+        self:Add(func, obj)
+    end
+end
+
 ---@param deleg_name string
 ---@param t table @ 初始化列表
 function Delegate.newDelegate(deleg_name, t)

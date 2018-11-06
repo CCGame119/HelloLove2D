@@ -7,6 +7,15 @@
 local keyboard = love.keyboard
 local mouse = love.mouse
 
+---@class Love2DEngine.TouchPhase:enum
+local TouchPhase = {
+    Began = 0,
+    Moved = 1,
+    Stationary = 2,
+    Ended = 3,
+    Canceled = 4,
+}
+
 ---@class Input:table @虚拟摇杆
 local Input = {}
 
@@ -36,5 +45,6 @@ function Input:isResetDown()
     return keyboard.isDown('r')
 end
 
+Love2DEngine.TouchPhase = TouchPhase
 Love2DEngine.Input = Input
 return Input

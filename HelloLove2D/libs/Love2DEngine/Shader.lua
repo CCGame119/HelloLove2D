@@ -11,6 +11,12 @@ local Object = Love2DEngine.Object
 ---@class Love2DEngine.Shader:Love2DEngine.Object
 local Shader = Class.inheritsFrom('Shader', nil, Object)
 
+---@param name string
+---@return Love2DEngine.Shader
+function Shader.Find(name)
+    --TODO: Shader.Find
+end
+
 --TODO: Love2DEngine.Shader
 
 Love2DEngine.Shader = Shader

@@ -30,7 +30,7 @@ function GameObject:__ctor(...)
 end
 
 --- 工厂函数
----@generic T : GameObject
+---@generic T : Love2DEngine.GameObject
 ---@param cls T
 ---@param name string
 ---@return T
@@ -43,7 +43,7 @@ function GameObject.get(cls, name)
     return gameObject:init(name)
 end
 
----@generic T : GameObject
+---@generic T : Love2DEngine.GameObject
 ---@param obj T
 function GameObject.recycle(cls, obj)
     GameObject._gameObjects[obj.name] = nil
@@ -87,6 +87,12 @@ function GameObject.Find(name)
         return nil
     end
     return GameObject._gameObjects[name][1]
+end
+
+---@generic T:Love2DEngine.Object
+---@param t T
+function GameObject.FindObjectOfType(t)
+    Object.FindObjectOfType(t)
 end
 
 --TODO: Love2DEngine.GameObject

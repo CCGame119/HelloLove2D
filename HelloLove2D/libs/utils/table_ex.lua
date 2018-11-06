@@ -139,6 +139,16 @@ function table.indexOf(t, e)
     return -1
 end
 
+---@param t table
+---@param i number @start index
+---@param j number @end index, default: #t
+function table.removeRange(t, i, j)
+    j = j or #t
+    for k = j, i, -1 do
+        table.remove(t, k)
+    end
+end
+
 --- 打印lua table 内容
 ---@param table table  @lua table
 ---@param level number @缩进等级

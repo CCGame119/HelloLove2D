@@ -77,6 +77,8 @@ function BlendModeUtils.Apply(mat, blendMode)
 
     if bf.pma then
         mat:SetFloat('_ColorOption', 1)
+    else
+        mat:SetFloat('_ColorOption', 0)
     end
 end
 
