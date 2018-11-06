@@ -6,8 +6,9 @@
 
 local Class = require('libs.Class')
 
-local DisplayOptions = FairyGUI.DisplayOptions
 local Object = Love2DEngine.Object
+
+local DisplayOptions = FairyGUI.DisplayOptions
 local UpdateContext = FairyGUI.UpdateContext
 local BlendMode = FairyGUI.BlendMode
 local BlendModeUtils = FairyGUI.BlendModeUtils

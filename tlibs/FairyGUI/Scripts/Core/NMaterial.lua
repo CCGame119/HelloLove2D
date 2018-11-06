@@ -6,7 +6,6 @@
 
 local Class = require('libs.Class')
 
-local Shader = Love2DEngine.Shader
 local Material = Love2DEngine.Material
 local BlendMode = FairyGUI.BlendMode
 

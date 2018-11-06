@@ -7,7 +7,6 @@
 local Class = require('libs.Class')
 
 local Vector3 = Love2DEngine.Vector3
-local BoxCollider = Love2DEngine.BoxCollider
 local ColliderHitTest = FairyGUI.ColliderHitTest
 
 ---@class FairyGUI.BoxColliderHitTest:FairyGUI.ColliderHitTest

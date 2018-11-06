@@ -8,7 +8,6 @@ local Class = require('libs.Class')
 
 local LuaBehavior = Love2DEngine.LuaBehaviour
 local Event = Love2DEngine.Event
-local Stage = FairyGUI.Stage
 local Stats = FairyGUI.Stats
 
 ---@class FairyGUI.StageEngine:Love2DEngine.LuaBehaviour
@@ -23,14 +22,14 @@ function StageEngine:Start()
 end
 
 function StageEngine:LateUpdate()
-    Stage.inst:InternalUpdate()
+    FairyGUI.Stage.inst:InternalUpdate()
 
     self.ObjectsOnStage = Stats.ObjectCount
     self.GraphicsOnStage = Stats.GraphicsCount
 end
 
 function StageEngine:OnGUI()
-    Stage.inst:HandleGUIEvents(Event.current)
+    FairyGUI.Stage.inst:HandleGUIEvents(Event.current)
 end
 
 function StageEngine:OnApplicationQuit()

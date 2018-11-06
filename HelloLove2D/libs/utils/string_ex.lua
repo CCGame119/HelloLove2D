@@ -42,6 +42,14 @@ function string.trimBeg(str)
     return (str:gsub("^%s*(.-)", "%1"))
 end
 
+---@param str string
+function string.isNullOrEmpty(str)
+    if str == nil or str == '' then
+        return  true
+    end
+    return false
+end
+
 ---扩展string
 local mt = getmetatable('')
 

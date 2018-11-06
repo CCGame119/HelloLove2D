@@ -22,8 +22,6 @@ local Vector4 = Love2DEngine.Vector4
 local Vector3 = Love2DEngine.Vector3
 local Quaternion = Love2DEngine.Quaternion
 
-local Container = FairyGUI.Container
-
 
 ---@class FairyGUI.CaptureCamera:Love2DEngine.LuaBehaviour
 ---@field public cachedTransform Love2DEngine.Transform
@@ -94,6 +92,7 @@ end
 ---@param texture Love2DEngine.RenderTexture
 ---@param offset Love2DEngine.Vector2
 function CaptureCamera.Capture(target, texture, offset)
+    local Container = FairyGUI.Container
     CaptureCamera.CheckMain()
 
     local matrix = target.cachedTransform.localToWorldMatrix

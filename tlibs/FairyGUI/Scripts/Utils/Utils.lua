@@ -9,6 +9,15 @@ Utils = {name = 'Utils'}
 
 require('Utils.ToolSet')
 require('Utils.Timers')
+require('Utils.ByteBuffer')
+require('Utils.UBBParser')
+require('Utils.ZipReader')
+
+require('Utils.XML.XMLUtils')
+require('Utils.XML.XMLList')
+require('Utils.XML.XMLIterator')
+require('Utils.XML.XML')
+
 require('Utils.Html.IHtmlObject')
 require('Utils.Html.IHtmlPageContext')
 require('Utils.Html.HtmlButton')

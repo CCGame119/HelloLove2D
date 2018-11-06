@@ -25,7 +25,6 @@ local Rect = Love2DEngine.Rect
 local ToolSet = Utils.ToolSet
 local ShaderConfig = FairyGUI.ShaderConfig
 local Stats = FairyGUI.Stats
-local NMaterial = FairyGUI.NMaterial
 local UpdateContext = FairyGUI.UpdateContext
 local BlendMode = FairyGUI.BlendMode
 local BlendModeUtils = FairyGUI.BlendModeUtils

@@ -11,7 +11,6 @@ local rshift = bit.rshift
 local floor = math.floor
 
 local IHitTest = FairyGUI.IHitTest
-local ByteBuffer = Utils.ByteBuffer
 
 
 ---@class FairyGUI.PixelHitTestData:ClassType

@@ -6,7 +6,6 @@
 
 local Class = require('libs.Class')
 
-local RaycastHit = Love2DEngine.RaycastHit
 local Physics = Love2DEngine.Physics
 
 ---@class FairyGUI.HitTestContext:ClassType

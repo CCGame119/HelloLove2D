@@ -19,6 +19,10 @@ FairyGUI.EventModifiers = {
     FunctionKey = 64, -- 0x00000040
 }
 
+
+---=======================Utils======================
+require('Utils.Utils')
+
 ---======================Event======================
 require('Event.IEventDispatcher')
 require('Event.EventContext')
@@ -27,15 +31,31 @@ require('Event.EventBridge')
 require('Event.InputEvent')
 require('Event.EventDispatcher')
 
----Tween
+---======================Core.HitTest======================
+require('Core.HitTest.IHitTest')
+require('Core.HitTest.HitTestContext')
+require('Core.HitTest.PixelHitTest')
+require('Core.HitTest.RectHitTest')
+require('Core.HitTest.ColliderHitTest')
+require('Core.HitTest.BoxColliderHitTest')
+require('Core.HitTest.MeshColliderHitTest')
+
+---======================UI======================
+require('UI.EMRenderSupport')
+
+---======================Core.HitTest======================
+require('Core.BlendMode')
+require('Core.DisplayOptions')
+require('Core.Stats')
+require('Core.UpdateContext')
+require('Core.StageEngine')
+require('Core.StageCamera')
+require('Core.CaptureCamera')
+require('Core.ShaderConfig')
+require('Core.NMaterial')
+
+---======================Tween======================
 require('Tween.TweenValue')
-
----Html
-require('Utils.Utils')
-
-require('Event.InputEvent')
-require('Event.EventDispatcher')
-
 
 
 return FairyGUI

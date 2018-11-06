@@ -6,9 +6,6 @@
 
 local Class = require('libs.Class')
 
-local XML = Utils.XML
-local Enumerator = Utils.Enumerator
-
 ---========================Utils.XMLList.Enumerator==============================
 ---@class Utils.XMLList.Enumerator:ClassType
 ---@field private _source Utils.XML[]

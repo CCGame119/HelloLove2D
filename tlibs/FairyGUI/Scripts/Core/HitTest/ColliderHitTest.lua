@@ -6,7 +6,6 @@
 
 local Class = require('libs.Class')
 
-local Collider = Love2DEngine.Collider
 local RaycastHit = Love2DEngine.RaycastHit
 local IHitTest = FairyGUI.IHitTest
 local HitTestContext = FairyGUI.HitTestContext
