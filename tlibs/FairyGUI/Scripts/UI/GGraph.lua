@@ -11,7 +11,7 @@ local IColorGear = FairyGUI.IColorGear
 
 
 ---@class FairyGUI.GGraph:FairyGUI.GObject @implement IColorGear
-local GGraph = Class.inheritsFrom('GGraph', nil, GObject)
+local GGraph = Class.inheritsFrom('GGraph', nil, GObject {IColorGear})
 
 --TODO: FairyGUI.GGraph
 

@@ -97,12 +97,24 @@ function Class.init_set(cls, value_cls, sup_indexer)
 end
 
 ---创建类: 指定类名，类的初始化列表，并指定要继承的基类
+---@param cls_name string
 ---@param t table|nil @ 要创建的类的初始化表
 ---@param baseClass table|nil @ 基类
-function Class.inheritsFrom(cls_name, t, baseClass)
+---@param interfaces table @ 接口列表
+function Class.inheritsFrom(cls_name, t, baseClass, interfaces)
     -- set cls index
     local new_class = t or {}
     new_class.__cls_name = cls_name
+
+    -- interfaces
+    local __interfaces = nil
+    if interfaces then
+        __interfaces = {}
+        for i, v in ipairs(interfaces) do
+            __interfaces.__interfaces[v] = i
+        end
+    end
+    new_class.__interfaces = __interfaces
 
     -- declare new function
     function new_class.new(...)
@@ -127,17 +139,30 @@ function Class.inheritsFrom(cls_name, t, baseClass)
         return baseClass
     end
 
+    -- Return the interfaces list of the instance
+    function new_class:interfaces()
+        return __interfaces
+    end
+
     -- Return true if the caller is an instance of theClass
     function new_class:isa( theClass )
         local b_isa = false
 
         local cur_class = new_class
+        local cur_interfaces = __interfaces
 
-        while ( nil ~= cur_class ) and ( false == b_isa ) do
+        while ( nil ~= cur_class ) do
             if cur_class == theClass then
                 b_isa = true
+                break
+            elseif cur_interfaces ~= nil then
+                if cur_interfaces[theClass] ~= nil then
+                    b_isa = true
+                    break
+                end
             else
                 cur_class = cur_class:superClass()
+                cur_interfaces = cur_class:interfaces()
             end
         end
 
@@ -154,6 +179,7 @@ function Class.inheritsFrom(cls_name, t, baseClass)
     new_class.__newindex = __newindex
     return new_class
 end
+
 
 ---@generic T, K: ClassType
 ---@param data T

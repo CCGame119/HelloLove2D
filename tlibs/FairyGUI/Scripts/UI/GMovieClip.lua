@@ -11,7 +11,7 @@ local IAnimationGear = FairyGUI.IAnimationGear
 local IColorGear = FairyGUI.IColorGear
 
 ---@class FairyGUI.GMovieClip:FairyGUI.GObject @implement IAnimationGear, IColorGear
-local GMovieClip = Class.inheritsFrom('GMovieClip', nil, GObject)
+local GMovieClip = Class.inheritsFrom('GMovieClip', nil, GObject, {IAnimationGear, IColorGear})
 
 --TODO: FairyGUI.GMovieClip
 

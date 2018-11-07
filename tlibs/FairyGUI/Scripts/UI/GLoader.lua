@@ -16,7 +16,7 @@ local IAnimationGear = FairyGUI.IAnimationGear
 ---@field public timeScale number
 ---@field public ignoreEngineTimeScale boolean
 ---@field color Love2DEngine.Color
-local GLoader = Class.inheritsFrom('GLoader', nil, GObject)
+local GLoader = Class.inheritsFrom('GLoader', nil, GObject, {IAnimationGear, IColorGear})
 
 ---@param time number
 function IAnimationGear:Advance(time)

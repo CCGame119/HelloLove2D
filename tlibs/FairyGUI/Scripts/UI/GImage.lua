@@ -9,7 +9,7 @@ local GObject = FairyGUI.GObject
 local IColorGear = FairyGUI.IColorGear
 
 ---@class FairyGUI.GImage:FairyGUI.GObject @implement IColorGear
-local GImage = Class.inheritsFrom('GImage', nil, GObject)
+local GImage = Class.inheritsFrom('GImage', nil, GObject, {IColorGear})
 
 --TODO: FairyGUI.GImage
 

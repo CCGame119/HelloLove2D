@@ -10,7 +10,7 @@ local GComponent = FairyGUI.GComponent
 local IColorGear = FairyGUI.IColorGear
 
 ---@class FairyGUI.GButton:FairyGUI.GComponent @implement IColorGear
-local GButton = Class.inheritsFrom('GButton', nil, GComponent)
+local GButton = Class.inheritsFrom('GButton', nil, GComponent, {IColorGear})
 
 --TODO: FairyGUI.GButton
 

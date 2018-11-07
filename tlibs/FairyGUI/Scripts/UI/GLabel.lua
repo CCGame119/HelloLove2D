@@ -10,7 +10,7 @@ local GComponent = FairyGUI.GComponent
 local IColorGear = FairyGUI.IColorGear
 
 ---@class FairyGUI.GLabel:FairyGUI.GComponent @implement IColorGear
-local GLabel = Class.inheritsFrom('GLabel', nil, GComponent)
+local GLabel = Class.inheritsFrom('GLabel', nil, GComponent, {IColorGear})
 
 --TODO: FairyGUI.GLabel
 

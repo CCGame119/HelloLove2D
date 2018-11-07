@@ -38,7 +38,7 @@ end
 ---@class FairyGUI.GearSize:FairyGUI.GearBase @implement ITweenListener
 ---@field private _storage table<string, FairyGUI.GearSizeValue>
 ---@field private _default FairyGUI.GearSizeValue
-local GearSize = Class.inheritsFrom('GearSize', nil, GearBase)
+local GearSize = Class.inheritsFrom('GearSize', nil, GearBase, {ITweenListener})
 
 function GearSize:__ctor(owner)
     GearBase.__ctor(self, owner)
