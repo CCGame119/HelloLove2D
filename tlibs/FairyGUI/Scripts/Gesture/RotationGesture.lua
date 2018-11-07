@@ -6,13 +6,11 @@
 
 local Class = require('libs.Class')
 
-local Vector2 = Love2DEngine.Vector2
 local EventDispatcher = FairyGUI.EventDispatcher
 local EventListener = FairyGUI.EventListener
 local EventCallback1 = FairyGUI.EventCallback1
 local Stage = FairyGUI.Stage
 local GRoot = FairyGUI.GRoot
-local UIConfig = FairyGUI.UIConfig
 
 ---@class FairyGUI.RotationGesture:FairyGUI.EventDispatcher
 ---手指反向操作的手势。
@@ -30,6 +28,7 @@ local UIConfig = FairyGUI.UIConfig
 ---@field private _touchBegan boolean
 local RotationGesture = Class.inheritsFrom('RotationGesture', nil, EventDispatcher)
 
+---@param host FairyGUI.GObject
 function RotationGesture:__ctor(host)
     self.host = host
     self:Enable(true)

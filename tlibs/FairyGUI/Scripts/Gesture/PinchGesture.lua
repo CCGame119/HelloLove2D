@@ -8,7 +8,6 @@ local Class = require('libs.Class')
 
 local Vector2 = Love2DEngine.Vector2
 
-local EventDispatcher = FairyGUI.EventDispatcher
 local EventListener = FairyGUI.EventListener
 local EventCallback1 = FairyGUI.EventCallback1
 local Stage = FairyGUI.Stage
