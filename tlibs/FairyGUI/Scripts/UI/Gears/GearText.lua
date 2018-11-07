@@ -23,7 +23,30 @@ function GearText:Init()
     self._storage = {}
 end
 
---TODO: FairyGUI.GearText
+function GearText:AddStatus(pageId, buffer)
+    if nil == pageId then
+        self._default = buffer:ReadS()
+    else
+        self._storage[pageId] = buffer:ReadS()
+    end
+end
+
+function GearText:Apply()
+    self._owner._gearLocked = true
+
+    local cv = self._storage[self._controller.selectedPageId]
+    if cv == nil  then
+        cv = self._default
+    end
+
+    self._owner.text = cv
+    self._owner._gearLocked = false
+end
+
+function GearText:UpdateState()
+    self._storage[self._controller.selectedPageId] = self._owner.text
+end
+
 
 FairyGUI.GearText = GearText
 return GearText
