@@ -94,8 +94,6 @@ function GearBase:Apply() end
 
 function GearBase:UpdateState() end
 
---TODO: FairyGUI.GearBase
-
 local __get = Class.init_get(GearBase)
 local __set = Class.init_set(GearBase)
 
