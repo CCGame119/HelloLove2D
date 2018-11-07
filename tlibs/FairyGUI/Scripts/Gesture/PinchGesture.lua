@@ -55,25 +55,25 @@ end
 function PinchGesture:Enable(value)
     if (value) then
         if (self.host == GRoot.inst) then
-            Stage.inst.onTouchBegin:Add(self.__tDelegateouchBegin)
-            Stage.inst.onTouchMove:Add(self.__tDelegateouchMove)
-            Stage.inst.onTouchEnd:Add(self.__tDelegateouchEnd)
+            Stage.inst.onTouchBegin:Add(self.__touchBeginDelegate)
+            Stage.inst.onTouchMove:Add(self.__touchMoveDelegate)
+            Stage.inst.onTouchEnd:Add(self.__touchEndDelegate)
         else
-            self.host.onTouchBegin:Add(self.__tDelegateouchBegin)
-            self.host.onTouchMove:Add(self.__tDelegateouchMove)
-            self.host.onTouchEnd:Add(self.__tDelegateouchEnd)
+            self.host.onTouchBegin:Add(self.__touchBeginDelegate)
+            self.host.onTouchMove:Add(self.__touchMoveDelegate)
+            self.host.onTouchEnd:Add(self.__touchEndDelegate)
         end
     else
         self._started = false
         self._touchBegan = false
         if (self.host == GRoot.inst) then
-            Stage.inst.onTouchBegin:Remove(self.__tDelegateouchBegin)
-            Stage.inst.onTouchMove:Remove(self.__tDelegateouchMove)
-            Stage.inst.onTouchEnd:Remove(self.__tDelegateouchEnd)
+            Stage.inst.onTouchBegin:Remove(self.__touchBeginDelegate)
+            Stage.inst.onTouchMove:Remove(self.__touchMoveDelegate)
+            Stage.inst.onTouchEnd:Remove(self.__touchEndDelegate)
         else
-            self.host.onTouchBegin:Remove(self.__tDelegateouchBegin)
-            self.host.onTouchMove:Remove(self.__tDelegateouchMove)
-            self.host.onTouchEnd:Remove(self.__tDelegateouchEnd)
+            self.host.onTouchBegin:Remove(self.__touchBeginDelegate)
+            self.host.onTouchMove:Remove(self.__touchMoveDelegate)
+            self.host.onTouchEnd:Remove(self.__touchEndDelegate)
         end
     end
 end
