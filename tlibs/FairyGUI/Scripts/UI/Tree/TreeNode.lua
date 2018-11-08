@@ -48,7 +48,7 @@ function TreeNode:AddChild(child, index)
             if child.parent ~= nil then
                 child.parent:RemoveChild(child)
             end
-            table.insert(self._children, child, index)
+            table.insert(self._children, index, child)
             child.parent = self
             child.level = self.level + 1
             child:SetTree(self.tree)
@@ -163,7 +163,7 @@ function TreeNode:SetChildIndex(child, index)
         return
     end
     table.remove(self._children, oldIndex)
-    table.insert(self._children, child, index)
+    table.insert(self._children, index, child)
     if self.cell ~= nil and self.cell.parent ~= nil and self._expanded then
         self.tree:AfterMoved(child)
     end
