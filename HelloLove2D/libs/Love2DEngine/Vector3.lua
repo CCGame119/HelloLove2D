@@ -24,7 +24,7 @@ local type = type
 local rad2Deg = 57.295779513082
 local deg2Rad = 0.017453292519943
 
----@class Love2DEngine.Vector3
+---@class Love2DEngine.Vector3:ClassType
 ---@field public up Love2DEngine.Vector3
 ---@field public down Love2DEngine.Vector3
 ---@field public right Love2DEngine.Vector3
@@ -36,21 +36,14 @@ local deg2Rad = 0.017453292519943
 ---@field public magnitude number
 ---@field public normalized Love2DEngine.Vector3
 ---@field public sqrMagnitude number
-local Vector3 = {}
-local get = Class.init_get(Vector3)
+local Vector3 = Class.inheritsFrom('Vector3')
+local get = Class.init_get(Vector3, true)
+local set = Class.init_set(Vector3, true)
 
-Vector3.__index = function(t,k)
-	local var = rawget(Vector3, k)
-	
-	if var == nil then						
-		var = rawget(get, k)		
-		
-		if var ~= nil then
-			return var(t)				
-		end		
-	end
-	
-	return var
+function Vector3:__ctor(x, y, z)
+    self.x = x or 0
+    self.y = y or 0
+    self.z = z or 0
 end
 
 function Vector3.New(x, y, z)				
@@ -437,7 +430,7 @@ end
 
 
 Vector3.__tostring = function(self)
-	return "["..self.x..","..self.y..","..self.z.."]"
+	return "Vector3: ("..self.x..","..self.y..","..self.z..")"
 end
 
 Vector3.__div = function(va, d)

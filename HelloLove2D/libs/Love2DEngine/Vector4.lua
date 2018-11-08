@@ -12,23 +12,25 @@ local max 	= math.max
 local setmetatable = setmetatable
 local rawget = rawget
 
----@class Love2DEngine.Vector4
+---@class Love2DEngine.Vector4:ClassType
+---@field public x number
+---@field public y number
+---@field public z number
+---@field public w number
+---@field public zero Love2DEngine.Vector4
+---@field public one Love2DEngine.Vector4
 ---@field public magnitude number
-local Vector4 = {}
-local get = Class.init_get(Vector4)
+---@field public normalized Love2DEngine.Vector4
+---@field public sqrMagnitude number
+local Vector4 = Class.inheritsFrom('Vector4')
+local get = Class.init_get(Vector4, true)
+local set = Class.init_set(Vector4, true)
 
-Vector4.__index = function(t,k)
-	local var = rawget(Vector4, k)
-	
-	if var == nil then							
-		var = rawget(get, k)
-		
-		if var ~= nil then
-			return var(t)	
-		end
-	end
-	
-	return var
+function Vector4:__ctor(x, y, z, w)
+    self.x = x or 0
+    self.y = y or 0
+    self.z = z or 0
+    self.w = w or 0
 end
 
 Vector4.__call = function(t, x, y, z, w)
@@ -81,7 +83,7 @@ function Vector4:SetScale(scale)
 end
 
 function Vector4:Normalize()
-	local v = vector4.New(self.x, self.y, self.z, self.w)
+	local v = Vector4.New(self.x, self.y, self.z, self.w)
 	return v:SetNormalize()
 end
 
@@ -166,7 +168,7 @@ function Vector4.Max(lhs, rhs)
 end
 
 Vector4.__tostring = function(self)
-	return string.format("[%f,%f,%f,%f]", self.x, self.y, self.z, self.w)
+	return string.format("Vector4: (%f,%f,%f,%f)", self.x, self.y, self.z, self.w)
 end
 
 Vector4.__div = function(va, d)

@@ -20,21 +20,12 @@ local max = math.max
 ---@field public magnitude number
 ---@field public normalized Love2DEngine.Vector3
 ---@field public sqrMagnitude number
-local Vector2 = {}
-local get = Class.init_get(Vector2)
+local Vector2 = Class.inheritsFrom('Vector2')
+local get = Class.init_get(Vector2, true)
+local set = Class.init_set(Vector2, true)
 
-Vector2.__index = function(t,k)
-	local var = rawget(Vector2, k)
-	
-	if var == nil then
-		var = rawget(get, k)
-		
-		if var ~= nil then
-			return var(t)
-		end
-	end
-	
-	return var
+function Vector2:__ctor(x, y)
+    self.x, self.y = x, y
 end
 
 Vector2.__call = function(t, x, y)
@@ -281,7 +272,7 @@ function Vector2:Sub(b)
 end
 
 Vector2.__tostring = function(self)
-	return string.format("(%f,%f)", self.x, self.y)
+	return string.format("Vetor2: (%f,%f)", self.x, self.y)
 end
 
 Vector2.__div = function(va, d)

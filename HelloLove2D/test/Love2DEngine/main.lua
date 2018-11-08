@@ -10,5 +10,6 @@ require('libs.Love2DEngine.Love2DEngine')
 require('test.Love2DEngine.testRay')
 require('test.Love2DEngine.testRect')
 require('test.Love2DEngine.testMatrix4x4')
+require('test.Love2DEngine.testVectorN')
 
 return Love2DEngine_Cases

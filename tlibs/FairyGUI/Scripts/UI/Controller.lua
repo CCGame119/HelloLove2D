@@ -9,6 +9,7 @@ local Class = require('libs.Class')
 local EventDispatcher = FairyGUI.EventDispatcher
 
 ---@class FairyGUI.Controller:FairyGUI.EventDispatcher
+---@field public selectedPageId string
 local Controller = Class.inheritsFrom('Controller', nil, EventDispatcher)
 
 --TODO: FairyGUI.Controller

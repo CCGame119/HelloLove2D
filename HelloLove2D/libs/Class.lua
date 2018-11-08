@@ -111,7 +111,7 @@ function Class.inheritsFrom(cls_name, t, baseClass, interfaces)
     if interfaces then
         __interfaces = {}
         for i, v in ipairs(interfaces) do
-            __interfaces.__interfaces[v] = i
+            __interfaces[v] = i
         end
     end
     new_class.__interfaces = __interfaces

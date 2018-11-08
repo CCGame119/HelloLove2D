@@ -286,7 +286,7 @@ Matrix4x4.__tostring = function(mat)
     local r2 = string.format(fmt, mat.e21, mat.e22, mat.e23, mat.e24)
     local r3 = string.format(fmt, mat.e31, mat.e32, mat.e33, mat.e34)
     local r4 = string.format(fmt, mat.e41, mat.e42, mat.e43, mat.e44)
-    local str = string.format('%s\n%s\n%s\n%s\n', r1, r2, r3, r4)
+    local str = string.format('Matrix4x4:\n%s\n%s\n%s\n%s\n', r1, r2, r3, r4)
     return str
 end
 
