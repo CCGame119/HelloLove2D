@@ -33,6 +33,8 @@ local UpdateConext = FairyGUI.UpdateContext
 ---@field public numChildren number
 ---@field public renderMode Love2DEngine.RenderMode
 ---@field public fairyBatching boolean
+---@field public mask FairyGUI.DisplayObject
+---@field public clipRect Love2DEngine.Rect
 ---@field private _children FairyGUI.DisplayObject[]
 ---@field private _mask FairyGUI.DisplayObject
 ---@field private _clipRect Love2DEngine.Rect

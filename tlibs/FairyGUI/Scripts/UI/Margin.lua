@@ -7,6 +7,10 @@
 local Class = require('libs.Class')
 
 ---@class FairyGUI.Margin:ClassType
+---@field public left number
+---@field public right number
+---@field public top number
+---@field public bottom number
 local Margin = Class.inheritsFrom('Margin', {left = 0, right = 0, top = 0, bottom = 0})
 
 function Margin:__ctor(l,r,t,b)
