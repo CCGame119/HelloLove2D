@@ -14,7 +14,6 @@ local EventCallback1 = FairyGUI.EventCallback1
 ---@field public percent boolean
 ---@field public type FairyGUI.RelationType
 ---@field public axis number
----@field public isEmpty number
 local RelationDef = Class.inheritsFrom('RelationDef')
 
 ---@param source
@@ -26,6 +25,7 @@ end
 
 ---@class FairyGUI.RelationItem:ClassType
 ---@field public target FairyGUI.GObject
+---@field public isEmpty boolean
 ---@field private _owner FairyGUI.GObject
 ---@field private _target FairyGUI.GObject
 ---@field private _defs FairyGUI.RelationDef[]
