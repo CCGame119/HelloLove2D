@@ -36,7 +36,7 @@ function GTween.ToDouble(startValue, endValue, duration)
 end
 
 ---@param delay number
-function GTween.DelayCall(delay)
+function GTween.DelayedCall(delay)
     return TweenManager.CreateTween():SetDelay(delay)
 end
 
