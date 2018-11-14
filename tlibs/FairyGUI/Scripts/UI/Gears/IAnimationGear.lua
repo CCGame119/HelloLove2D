@@ -7,7 +7,7 @@
 local Class = require('libs.Class')
 
 ---@class FairyGUI.IAnimationGear:ClassType
----@field playing boolean
+---@field public playing boolean
 ---@field public frame number
 ---@field public timeScale number
 ---@field public ignoreEngineTimeScale boolean

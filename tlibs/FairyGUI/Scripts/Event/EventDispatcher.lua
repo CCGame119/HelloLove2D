@@ -57,6 +57,7 @@ function EventDispatcher:RemoveEventListeners(strType)
 end
 
 ---@param strType string
+---@return FairyGUI.EventBridge
 function EventDispatcher:TryGetEventBridge(strType)
     if nil == self._dic then return nil end
 
@@ -93,7 +94,7 @@ function EventDispatcher:InternalDispatchEvent(strType, bridge, data, initiator)
     if nil == bridge then bridge = self:TryGetEventBridge(self, strType) end
 
     local gBridge
-    if self.isa(DisplayObject) and nil ~= self.gOwner then
+    if self:isa(DisplayObject) and nil ~= self.gOwner then
         gBridge = self.gOwner:TryGetEventBridge(strType)
     end
 
@@ -138,16 +139,19 @@ function EventDispatcher:DispatchEvent(strTypeOrContext, data, initiator)
     local DisplayObject = FairyGUI.DisplayObject
     if type(strTypeOrContext) == 'string' then
         local strType = strTypeOrContext
-        return InternalDispatchEvent(strType, null, data, initiator)
+        return self:InternalDispatchEvent(strType, nil, data, initiator)
     end
 
     ---@type FairyGUI.EventContext
     local context = strTypeOrContext
 
     local bridge = self:TryGetEventBridge(context.type)
+
     local gBridge
-    if self.isa(DisplayObject) and nil ~= self.gOwner then
-        gBridge = self.gOwner:TryGetEventBridge(strType)
+    ---@type FairyGUI.DisplayObject
+    local self = self
+    if self:isa(DisplayObject) and nil ~= self.gOwner then
+        gBridge = self.gOwner:TryGetEventBridge(context.type)
     end
 
     local savedSender = context.sender

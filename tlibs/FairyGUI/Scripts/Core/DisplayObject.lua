@@ -381,7 +381,7 @@ function DisplayObject:EnterPaintingMode(requestorId, margin)
         end
         self.paintingGraphics.material = self._paintingMaterial
 
-        if self.isa(Container) then
+        if self:isa(Container) then
             self:SetChildrenLayer(CaptureCamera.hiddenLayer)
             self:UpdateBatchingFlags()
         else
@@ -412,7 +412,7 @@ function DisplayObject:LeavePaintingMode(requestorId)
         self.paintingGraphics:ClearMesh()
         self.paintingGraphics.enabled = false
 
-        if self.isa(Container) then
+        if self:isa(Container) then
             self:SetChildrenLayer(self.layer)
             self:UpdateBatchingFlags()
         else
