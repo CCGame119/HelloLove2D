@@ -11,9 +11,12 @@ local Delegate = require('libs.Delegate')
 local UILoadCallback = Delegate.newDelegate('UILoadCallback')
 
 ---@class FairyGUI.IUISource:ClassType
+---@field public fileName string
+---@field private loaded boolean
 local IUISource = Class.inheritsFrom('IUISource')
 
---TODO: FairyGUI.IUISource
+---@param callback FairyGUI.UILoadCallback
+function IUISource:Load(callback) end
 
 FairyGUI.UILoadCallback = UILoadCallback
 FairyGUI.IUISource = IUISource
