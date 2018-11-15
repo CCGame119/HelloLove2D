@@ -59,24 +59,25 @@ function ByteBuffer:ReadByte()
     return self._pointer
 end
 
----@param output_or_count byte[]|number
+---@overload fun(count:number)
+---@param output byte[]
 ---@param destIndex number
 ---@param count number
 ---@return byte[]
-function ByteBuffer:ReadBytes(output_or_count, destIndex, count)
-    if type(output_or_count) == 'number' then
-        count = output_or_count
+function ByteBuffer:ReadBytes(output, destIndex, count)
+    if type(output) == 'number' then
+        count = output
         destIndex = 0
         ---@type byte[]
-        output_or_count = {}
+        output = {}
     end
 
     if count > self._length + 1 - self._pointer then
         error('ArgumentOutOfRangeException')
     end
-    table.copy_l2(self._data, self._offset + self._pointer, output_or_count, destIndex, count)
+    table.copy_l2(self._data, self._offset + self._pointer, output, destIndex, count)
     self._pointer = self._pointer + count
-    return output_or_count
+    return output
 end
 
 ---@return Utils.ByteBuffer

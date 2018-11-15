@@ -46,24 +46,25 @@ local UpdateConext = FairyGUI.UpdateContext
 ---@field protected _panelOrder number
 local Container = Class.inheritsFrom('Container', nil, DisplayObject)
 
----@param gameObjectName_or_attachTarget nil|string|Love2DEngine.GameObject
-function Container:__ctor(gameObjectName_or_attachTarget)
+---@overload fun()
+---@overload fun(gameObjectName:string)
+---@param attachTarget Love2DEngine.GameObject
+function Container:__ctor(attachTarget)
     DisplayObject.__ctor(self)
 
-    if nil == gameObjectName_or_attachTarget then
+    if nil == attachTarget then
         self:CreateGameObject('Container')
         self:Init()
         return
     end
 
-    if type(gameObjectName_or_attachTarget) == 'string' then
-        local gameObjectName = gameObjectName_or_attachTarget
+    if type(attachTarget) == 'string' then
+        local gameObjectName = attachTarget
         self:CreateGameObject(gameObjectName)
         self:Init()
         return
     end
 
-    local attachTarget = gameObjectName_or_attachTarget
     self:SetGameObject(attachTarget)
     self:Init()
 end

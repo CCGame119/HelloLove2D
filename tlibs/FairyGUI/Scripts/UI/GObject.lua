@@ -578,18 +578,20 @@ function GObject:StopDrag()
     self:DragEnd()
 end
 
----@param pt_or_rect Love2DEngine.Vector2|Love2DEngine.Rect
+---@overload fun(pt:Love2DEngine.Vector2):Love2DEngine.Vector2
+---@overload fun(rect:Love2DEngine.Rect):Love2DEngine.Rect
+---@param rect Love2DEngine.Vector2|Love2DEngine.Rect
 ---@return Love2DEngine.Vector2|Love2DEngine.Rect
-function GObject:LocalToGlobal(pt_or_rect)
-    if pt_or_rect:isa(Vector2) then
-        local pt = pt_or_rect
+function GObject:LocalToGlobal(rect)
+    if rect:isa(Vector2) then
+        local pt = rect
         if self._pivotAsAnchor then
             pt.x = pt.x + self._width * self._pivotX
             pt.y = pt.y + self._height * self._pivotY
         end
         return self.displayObject:LocalToGlobal(pt)
     end
-    local rect = pt_or_rect
+
     local ret = Rect()
     local v = self:LocalToGlobal(Vector2(rect.xMin, rect.yMin))
     ret.xMin = v.x
@@ -600,11 +602,12 @@ function GObject:LocalToGlobal(pt_or_rect)
     return ret
 end
 
----@param pt_or_rect Love2DEngine.Vector2|Love2DEngine.Rect
----@return Love2DEngine.Vector2|Love2DEngine.Rect
-function GObject:GlobalToLocal(pt_or_rect)
-    if pt_or_rect:isa(Vector2) then
-        local pt = pt_or_rect
+---@overload fun(pt:Love2DEngine.Vector2):Love2DEngine.Vector2
+---@param rect Love2DEngine.Rect
+---@return Love2DEngine.Rect
+function GObject:GlobalToLocal(rect)
+    if rect:isa(Vector2) then
+        local pt = rect
         pt = self.displayObject:GlobalToLocal(pt)
         if self._pivotAsAnchor then
             pt.x = pt.x - self._width * self._pivotX
@@ -613,7 +616,6 @@ function GObject:GlobalToLocal(pt_or_rect)
         return pt
     end
 
-    local rect = pt_or_rect
     local ret = Rect()
     local v = self:LocalToGlobal(Vector2(rect.xMin, rect.yMin))
     ret.xMin = v.x

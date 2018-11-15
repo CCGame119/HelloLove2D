@@ -300,18 +300,20 @@ function Stage:InputString(val)
     end
 end
 
----@param screenPos Love2DEngine.Vector2|Love2DEngine.RaycastHit
+---@overload fun(screenPos:Love2DEngine.Vector2, buttonDown:boolean)
+---@overload fun(screenPos:Love2DEngine.Vector2, buttonDown:boolean, buttonUp:boolean)
+---@overload fun(hit:Love2DEngine.RaycastHit, buttonDown:boolean)
+---@param screenPos Love2DEngine.RaycastHit
 ---@param buttonDown boolean
 ---@param buttonUp boolean @default nil
-function Stage:SetCustomInput(screenPos_or_hit, buttonDown, buttonUp)
-    if Class.isa(screenPos_or_hit, RaycastHit) then
-        local hit = screenPos_or_hit
+function Stage:SetCustomInput(hit, buttonDown, buttonUp)
+    if Class.isa(hit, RaycastHit) then
         local screenPos = HitTestContext.cachedMainCamera:WorldToScreenPoint(hit.point)
         HitTestContext.CacheRaycastHit(HitTestContext.cachedMainCamera, hit)
         self:SetCustomInput(screenPos, buttonDown, buttonUp)
         return
     end
-    local screenPos = screenPos_or_hit
+    local screenPos = hit
     self._customInput = true
     if nil == buttonUp then
         self._customInputButtonDown = buttonDown

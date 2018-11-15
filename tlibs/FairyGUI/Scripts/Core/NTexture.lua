@@ -50,16 +50,20 @@ NTexture._empty = nil
 ---@type number
 NTexture._gCounter = 0
 
+---@overload fun(texture:Love2DEngine.Texture)
+---@overload fun(texture:Love2DEngine.Texture, region:Love2DEngine.Rect)
+---@overload fun(root:FairyGUI.NTexture, region:Love2DEngine.Rect, rotated:boolean)
 ---@param texture Love2DEngine.Texture|FairyGUI.NTexture
----@param alphaTexture_or_region Love2DEngine.Texture|Love2DEngine.Rect
----@param xSclae_or_rotated number|boolean
+---@param alphaTexture Love2DEngine.Texture|Love2DEngine.Rect
+---@param xScale number|boolean
 ---@param yScale number
-function NTexture:__ctor(texture_or_root, alphaTexture_or_region, xSclae_or_rotated, yScale)
-    if Class.isa(texture_or_root, NTexture) then
-        local root = texture_or_root
-        local region = alphaTexture_or_region
+function NTexture:__ctor(texture, alphaTexture, xScale, yScale)
+    if Class.isa(texture, NTexture) then
+        local root = texture
+        local region = alphaTexture
+        local rotated = xScale
         self._root = root
-        self.rotated = xSclae_or_rotated
+        self.rotated = rotated
         region.x = region.x + root._region.x
         region.y = region.y + root._region.y
         self.uvRect = Rect(region.x * root.uvRect.width / root.width, 1 - region.yMax * root.uvRect.height / root.height,
@@ -77,18 +81,17 @@ function NTexture:__ctor(texture_or_root, alphaTexture_or_region, xSclae_or_rota
         return
     end
 
-    local texture = texture_or_root
     self._root = self
     self._nativeTexture = texture
-    if Class.isa(alphaTexture_or_region, Rect) then
-        local region = alphaTexture_or_region
+    if Class.isa(alphaTexture, Rect) then
+        local region = alphaTexture
         self._region = region
         self.uvRect = Rect(region.x / self._nativeTexture.width, 1 - region.yMax / self._nativeTexture.height,
                 region.width / self._nativeTexture.width, region.height / self._nativeTexture.height)
     else
-        self._alphaTexture = alphaTexture_or_region or nil
-        self.uvRect = Rect(0, 0, xSclae_or_rotated or 1, yScale or 1)
-        self._region = Rect(0, 0, texture_or_root.width, texture_or_root.height)
+        self._alphaTexture = alphaTexture or nil
+        self.uvRect = Rect(0, 0, xScale or 1, yScale or 1)
+        self._region = Rect(0, 0, texture.width, texture.height)
     end
 end
 
@@ -224,8 +227,8 @@ function NTexture:Dispose()
     self._root = nil
 end
 
-NTexture.__call = function(t, texture_or_root, alphaTexture_or_region, xSclae_or_rotated, yScale)
-    return NTexture.new(texture_or_root, alphaTexture_or_region, xSclae_or_rotated, yScale)
+NTexture.__call = function(t, texture, alphaTexture, xScale, yScale)
+    return NTexture.new(texture, alphaTexture, xScale, yScale)
 end
 
 local __get = Class.init_get(NTexture, true)

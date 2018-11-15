@@ -84,11 +84,14 @@ function Transition:__ctor(owner)
     self._delayedCallDelegate2 = GTweenCallback1.new(self.OnDelayedPlayItem, self)
 end
 
----@param times number|FairyGUI.PlayCompleteCallback|nil
----@param delay number|nil
----@param startTime number|FairyGUI.PlayCompleteCallback|nil
----@param endTime number|nil
----@param onComplete FairyGUI.PlayCompleteCallback|nil
+---@overload fun()
+---@overload fun(onComplete:FairyGUI.PlayCompleteCallback)
+---@overload fun(times:number, delay:number, onComplete:FairyGUI.PlayCompleteCallback)
+---@param times number @default: 1
+---@param delay number @default: 0
+---@param startTime number @default: 0
+---@param endTime number @defalut: -1
+---@param onComplete FairyGUI.PlayCompleteCallback @default: nil
 function Transition:Play(times, delay, startTime, endTime, onComplete)
     if nil ~= endTime then
         self:_Play(times, delay, startTime, endTime, onComplete, false)
@@ -105,6 +108,8 @@ function Transition:Play(times, delay, startTime, endTime, onComplete)
     end
 end
 
+---@overload fun()
+---@overload fun(onComplete:FairyGUI.PlayCompleteCallback)
 ---@param times number|FairyGUI.PlayCompleteCallback|nil
 ---@param delay number|nil
 ---@param onComplete FairyGUI.PlayCompleteCallback|nil
@@ -148,7 +153,7 @@ end
 ---@param delay number
 ---@param startTime number
 ---@param endTime number
----@param onComplete FairyGUI.PlayCompleteCallback|nil
+---@param onComplete FairyGUI.PlayCompleteCallback
 ---@param reverse boolean
 function Transition:_Play(times, delay, startTime, endTime, onComplete, reverse)
     self:Stop(true, true)

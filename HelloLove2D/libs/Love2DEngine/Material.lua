@@ -12,9 +12,10 @@ local Object = Love2DEngine.Object
 ---@field mainTexture Love2DEngine.Texture
 local Material = Class.inheritsFrom('Material', nil, Object)
 
----@param name string|number
+---@overload fun(name:string)
+---@param id number
 ---@param value Love2DEngine.Texture
-function Material:SetTexture(name_or_id, value)
+function Material:SetTexture(id, value)
     --TODO: Material:SetTexture
 end
 
