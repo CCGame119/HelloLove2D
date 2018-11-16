@@ -11,7 +11,7 @@ local Stats = Class.inheritsFrom('Stats')
 
 Stats.ObjectCount = 0
 Stats.GraphicsCount = 0
-Stats.LatestGraphicsCreation = 0
+Stats.LatestObjectCreation = 0
 Stats.LatestGraphicsCreation = 0
 
 FairyGUI.Stats = Stats

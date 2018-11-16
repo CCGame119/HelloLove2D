@@ -11,6 +11,7 @@ local Behaviour = Love2DEngine.Behaviour
 ---@class Love2DEngine.LuaBehaviour:Love2DEngine.Behaviour
 local LuaBehaviour = Class.inheritsFrom('LuaBehaviour', nil, Behaviour)
 
+function LuaBehaviour:Awake() end
 function LuaBehaviour:Start() end
 function LuaBehaviour:OnEnable() end
 function LuaBehaviour:OnDisable() end
