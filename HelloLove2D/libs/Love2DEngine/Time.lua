@@ -18,6 +18,7 @@ local Class = require('libs.Class')
 ---@field public fixedDeltaTime number
 ---@field public timeScale number
 ---@field public frameCount number
+---@field public realtimeSinceStartup number
 local Time = Class.inheritsFrom('Time')
 
 --TODO: Love2DEngine.Time

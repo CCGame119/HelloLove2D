@@ -6,6 +6,7 @@
 local Class = require('libs.Class')
 
 local Rect = Love2DEngine.Rect
+local Vector2 = Love2DEngine.Vector2
 local Vector4 = Love2DEngine.Vector4
 
 local ChildrenRenderOrder = FairyGUI.ChildrenRenderOrder
@@ -23,6 +24,7 @@ local UIPackage = FairyGUI.UIPackage
 local UIObjectFactory = FairyGUI.UIObjectFactory
 local ToolSet = FairyGUI.ToolSet
 local ObjectType = FairyGUI.ObjectType
+local Controller = FairyGUI.Controller
 
 ---@class FairyGUI.GComponent:FairyGUI.GObject
 ---@field public rootContainer FairyGUI.Container @Root container.
@@ -926,7 +928,7 @@ end
 ---@param poolIndex number @default 0
 function GComponent:ConstructFromResource(objectPool, poolIndex)
     objectPool = objectPool or nil
-    poolIndex = poolIndex or 0
+    poolIndex = (poolIndex or 1) - 1
 
     self.gameObjectName = self.packageItem.name
 
