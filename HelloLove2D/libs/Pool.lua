@@ -33,9 +33,13 @@ function Pool:pop()
 end
 
 ---清空
-function Pool:clear()
+---@param callback fun(obj)
+function Pool:clear(callback)
     for i = #self._objs, 1, -1 do
-        table.remove(self._objs, i)
+        local obj = table.remove(self._objs, i)
+        if callback then
+            callback(obj)
+        end
     end
 end
 
