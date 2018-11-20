@@ -6,7 +6,7 @@
 
 local Class = require('libs.Class')
 local Pool = require('libs.Pool')
-local Assets = Love2DEngine.Assets
+local Resources = Love2DEngine.Resources
 local graphics = love.graphics
 
 local t = { x = 0, y = 0, speed = 0, uri = '', img = nil, __get={}}
@@ -44,9 +44,9 @@ function Sprite:init(x, y, speed, uri)
     local old_uri = self.uri
     self.uri = uri or self.uri
     if self.img and old_uri ~= self.uri then
-        Assets.returnImg(old_uri)
+        Resources.returnImg(old_uri)
     end
-    self.img = Assets.getImg(self.uri)
+    self.img = Resources.getImg(self.uri)
     --self.img = graphics.newImage(self.uri)
     self:updateWH()
     return self

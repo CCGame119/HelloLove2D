@@ -14,7 +14,7 @@ local DisplayOptions = FairyGUI.DisplayOptions
 local Color = Love2DEngine.Color
 local Rect = Love2DEngine.Rect
 local Object = Love2DEngine.Object
-local Assets = Love2DEngine.Assets
+local Resources = Love2DEngine.Resources
 
 local ShaderConfig = FairyGUI.ShaderConfig
 local MaterialManager = FairyGUI.MaterialManager
@@ -170,9 +170,9 @@ function NTexture:Unload(destroyMaterial)
                 Object.DestroyImmediate(self._alphaTexture, true)
             end
         elseif destroyMethod == DestroyMethod.Unload then
-            Assets.UnloadAsset(self._nativeTexture)
+            Resources.UnloadAsset(self._nativeTexture)
             if self._alphaTexture ~= nil then
-                Assets.UnloadAsset(self._alphaTexture)
+                Resources.UnloadAsset(self._alphaTexture)
             end
         end
 

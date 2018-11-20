@@ -4,6 +4,16 @@
 -- Date: 2018/9/20 15:05
 --
 
+---计算dict类型table的成员数量
+---@return number
+function table.count(t)
+    local cnt = 0
+    for i, v in pairs(t) do
+        cnt = cnt + 1
+    end
+    return cnt
+end
+
 ---list table copy
 ---@param source table
 ---@param dest table

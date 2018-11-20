@@ -7,7 +7,7 @@
 local Class = require('libs.Class')
 
 local AudioClip = Love2DEngine.AudioClip
-local Assets = Love2DEngine.Assets
+local Resources = Love2DEngine.Resources
 local Object = Love2DEngine.Object
 local DestroyMethod = FairyGUI.DestroyMethod
 
@@ -25,7 +25,7 @@ function NAudioClip:Unload()
     if self.nativeClip == nil then return end
 
     if self.destroyMethod == DestroyMethod.Unload then
-        Assets.UnloadAsset(self.nativeClip)
+        Resources.UnloadAsset(self.nativeClip)
     elseif self.destroyMethod == DestroyMethod.Destroy then
         Object.DestroyImmediate(self.nativeClip, true)
     end

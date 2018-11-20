@@ -6,12 +6,14 @@
 
 local Class = require('libs.Class')
 
----@class Love2DEngine.AssetType @ 资源类型
+---@class Love2DEngine.AssetType:enum @ 资源类型
 local AssetType = {
     image = 1,
     sfx = 2,
     shader = 3,
     mesh = 4,
+    text = 5,
+    tex2d = 6,
 }
 
 ---==============AssetItem=================
@@ -43,17 +45,17 @@ function AssetItem:release()
     self.refCount = self.refCount - 1
 end
 
----==============Assets=================
----@class Love2DEngine.Assets:ClassType
-local Assets = Class.inheritsFrom('Assets')
+---==============Resources=================
+---@class Love2DEngine.Resources:ClassType
+local Resources = Class.inheritsFrom('Resources')
 
 ---@type table<string, Love2DEngine.AssetItem> 图片资源列表
 local imgs = {}
-Assets.imgs = imgs
+Resources.imgs = imgs
 
 ---@param uri string
 ---@return image
-function Assets.getImg(uri)
+function Resources.getImg(uri)
     local img = imgs[uri]
     if nil == img then
         img = AssetItem.new(uri, AssetType.image)
@@ -62,7 +64,7 @@ function Assets.getImg(uri)
 end
 
 ---@param uri string
-function Assets.returnImg(uri)
+function Resources.returnImg(uri)
     local img = imgs[uri]
     if nil ~= img then
         img:release()
@@ -70,11 +72,11 @@ function Assets.returnImg(uri)
 end
 
 ---@param assetToUnload Love2DEngine.Object
-function Assets.UnloadAsset(assetToUnload)
-    --TODO: Assets.UnloadAsset
+function Resources.UnloadAsset(assetToUnload)
+    --TODO: Resources.UnloadAsset
 end
 
 Love2DEngine.AssetType = AssetType
 Love2DEngine.AssetItem = AssetItem
-Love2DEngine.Assets = Assets
-return Assets
+Love2DEngine.Resources = Resources
+return Resources
