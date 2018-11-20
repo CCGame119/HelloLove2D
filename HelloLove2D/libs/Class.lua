@@ -144,6 +144,10 @@ function Class.inheritsFrom(cls_name, t, baseClass, interfaces)
         return __interfaces
     end
 
+    function new_class:clsName()
+        return cls_name
+    end
+
     -- Return true if the caller is an instance of theClass
     function new_class:isa( theClass )
         local b_isa = false

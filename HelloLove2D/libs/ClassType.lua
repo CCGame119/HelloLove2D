@@ -29,10 +29,18 @@ function ClassType.__cls_ctor(cls) end
 ---构造回调
 function ClassType:__ctor(...) end
 ---类
-function ClassType:class(...) end
+---@generic T:ClassType
+---@return T
+function ClassType:class() end
 ---基类
-function ClassType:superClass(...) end
+---@generic T:ClassType
+---@return T
+function ClassType:superClass() end
+---类名
+---@return string
+function ClassType:clsName() end
 ---类型判断
-function ClassType:isa(...) end
+---@return boolean
+function ClassType:isa() end
 
 --endregion
