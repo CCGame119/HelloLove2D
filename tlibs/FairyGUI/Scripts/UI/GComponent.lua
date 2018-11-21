@@ -41,6 +41,8 @@ local Controller = FairyGUI.Controller
 ---@field public margin FairyGUI.Margin
 ---@field public childrenRenderOrder FairyGUI.ChildrenRenderOrder
 ---@field public apexIndex number
+---@field public numChildren number
+---@field public Controllers FairyGUI.Controller[]
 ---@field public clipSoftness Love2DEngine.Vector2
 ---@field public mask FairyGUI.DisplayObject
 ---@field public reverseMask boolean
