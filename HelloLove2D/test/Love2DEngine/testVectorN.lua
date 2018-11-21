@@ -12,9 +12,12 @@ function Love2DEngine_Cases.Vector2_case()
     math.randomseed(os.time())
     local x, y = math.random(), math.random()
     local vec = Vector2.new(x, y)
+
     if vec:isa(Vector2) then
         print(tostring(vec))
     end
+    vec[0], vec[1] = 100, 500
+    print(tostring(vec))
 end
 
 function Love2DEngine_Cases.Vector3_case()

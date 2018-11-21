@@ -47,7 +47,7 @@ function love.testCase()
     --FairyGUI_Cases.TweenValue_calse()
 
     --Love2DEngine_Cases.Matrix4x4_case()
-    --Love2DEngine_Cases.Vector2_case()
+    Love2DEngine_Cases.Vector2_case()
     --Love2DEngine_Cases.Vector3_case()
     --Love2DEngine_Cases.Vector4_case()
 end

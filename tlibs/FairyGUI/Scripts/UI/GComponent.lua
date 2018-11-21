@@ -825,14 +825,15 @@ function GComponent:SetBounds(ax, ay, aw, ah)
     end
 end
 
----@param size size
-function GComponent:GetSnappingPosition(size)
+---@param xValue number @ref
+---@param yValue number @ref
+---@return number, number
+function GComponent:GetSnappingPosition(xValue, yValue)
     local cnt = #self._children
     if (cnt == 0) then
-        return
+        return xValue, yValue
     end
 
-    local xValue, yValue = size.width, size.height
     self:EnsureBoundsCorrect()
 
     local obj = nil
@@ -890,7 +891,7 @@ function GComponent:GetSnappingPosition(size)
         end
     end
 
-    size.width, size.height = xValue, yValue
+    return xValue, yValue
 end
 
 ---@param child FairyGUI.GObject

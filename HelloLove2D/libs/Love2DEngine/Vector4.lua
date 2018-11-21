@@ -26,6 +26,39 @@ local Vector4 = Class.inheritsFrom('Vector4')
 local get = Class.init_get(Vector4, true)
 local set = Class.init_set(Vector4, true)
 
+---@param self Love2DEngine.Vector4
+---@param idx number
+get.__indexer = function(self, idx)
+    if idx == 0 then
+        return self.x
+    elseif idx == 1 then
+        return self.y
+    elseif idx == 2 then
+        return self.z
+    elseif idx == 3 then
+        return self.w
+    else
+        error("Index out of bounds: " .. idx)
+    end
+end
+
+---@param self Love2DEngine.Vector4
+---@param idx number
+---@param value number
+set.__indexer = function(self, idx, value)
+    if idx == 0 then
+        self.x = value
+    elseif idx == 1 then
+        self.y = value
+    elseif idx == 2 then
+        self.z = value
+    elseif idx == 3 then
+        self.w = value
+    else
+        error("Index out of bounds: " .. idx)
+    end
+end
+
 function Vector4:__ctor(x, y, z, w)
     self.x = x or 0
     self.y = y or 0

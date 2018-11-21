@@ -40,6 +40,35 @@ local Vector3 = Class.inheritsFrom('Vector3')
 local get = Class.init_get(Vector3, true)
 local set = Class.init_set(Vector3, true)
 
+---@param self Love2DEngine.Vector3
+---@param idx number
+get.__indexer = function(self, idx)
+    if idx == 0 then
+        return self.x
+    elseif idx == 1 then
+        return self.y
+    elseif idx == 2 then
+        return self.z
+    else
+        error("Index out of bounds: " .. idx)
+    end
+end
+
+---@param self Love2DEngine.Vector3
+---@param idx number
+---@param value number
+set.__indexer = function(self, idx, value)
+    if idx == 0 then
+        self.x = value
+    elseif idx == 1 then
+        self.y = value
+    elseif idx == 2 then
+        self.z = value
+    else
+        error("Index out of bounds: " .. idx)
+    end
+end
+
 function Vector3:__ctor(x, y, z)
     self.x = x or 0
     self.y = y or 0

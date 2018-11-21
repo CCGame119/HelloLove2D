@@ -21,8 +21,33 @@ local max = math.max
 ---@field public normalized Love2DEngine.Vector3
 ---@field public sqrMagnitude number
 local Vector2 = Class.inheritsFrom('Vector2')
-local get = Class.init_get(Vector2, true)
-local set = Class.init_set(Vector2, true)
+local get = Class.init_get(Vector2, true, true)
+local set = Class.init_set(Vector2, true, true)
+
+---@param self Love2DEngine.Vector2
+---@param idx number
+get.__indexer = function(self, idx)
+    if idx == 0 then
+        return self.x
+    elseif idx == 1 then
+        return self.y
+    else
+        error("Index out of bounds: " .. idx)
+    end
+end
+
+---@param self Love2DEngine.Vector2
+---@param idx number
+---@param value number
+set.__indexer = function(self, idx, value)
+    if idx == 0 then
+        self.x = value
+    elseif idx == 1 then
+        self.y = value
+    else
+        error("Index out of bounds: " .. idx)
+    end
+end
 
 function Vector2:__ctor(x, y)
     self.x, self.y = x, y
@@ -53,6 +78,7 @@ function Vector2:SqrMagnitude()
 	return self.x * self.x + self.y * self.y
 end
 
+---@return Love2DEngine.Vector2
 function Vector2:Clone()
 	return setmetatable({x = self.x, y = self.y}, Vector2)
 end
