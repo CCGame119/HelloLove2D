@@ -159,6 +159,14 @@ function table.removeRange(t, i, j)
     end
 end
 
+---@param t table
+---@param list table
+function table.addRange(t, list)
+    for i, item in ipairs(list) do
+        table.insert(t, item)
+    end
+end
+
 --- 打印lua table 内容
 ---@param table table  @lua table
 ---@param level number @缩进等级
