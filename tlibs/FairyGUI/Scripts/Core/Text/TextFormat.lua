@@ -65,7 +65,7 @@ end
 function TextFormat:CopyFrom(source)
     self.size = source.size
     self.font = source.font
-    self.color = source.color:Clone()
+    self.color:Assign(source.color)
     self.lineSpacing = source.lineSpacing
     self.letterSpacing = source.letterSpacing
     self.bold = source.bold

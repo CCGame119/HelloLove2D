@@ -33,6 +33,11 @@ function Color32:Clone()
     return Color32(self.r, self.g, self.b, self.a)
 end
 
+---@param c Love2DEngine.Color32
+function Color32:Assign(c)
+    self.r, self.g, self.b, self.a = c.r, c.g, c.b, c.a
+end
+
 
 Color32.__call = function(t, r, g, b, a)
     return Color32.new(r, g, b, a)

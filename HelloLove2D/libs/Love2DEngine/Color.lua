@@ -28,6 +28,11 @@ function Color:Clone()
     return Color.new(self.r, self.g, self.b, self.a)
 end
 
+---@param c Love2DEngine.Color
+function Color:Assign(c)
+    self.r, self.g, self.b, self.a = c.r, c.g, c.b, c.a
+end
+
 Color.__call = function(cls, r, g, b, a)
     return Color.new(r, g, b, a)
 end
