@@ -104,5 +104,104 @@ function GComboBox:__touchEnd(context) end
 
 --TODO: FairyGUI.GComboBox
 
+local __get = Class.init_get(GComboBox)
+local __set = Class.init_set(GComboBox)
+
+---@param self FairyGUI.GComboBox
+__get.icon = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string
+__set.icon = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.title = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string
+__set.title = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.text = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string
+__set.text = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.titleColor = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val Love2DEngine.Color
+__set.titleColor = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.titleFontSize = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val number
+__set.titleFontSize = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.items = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string[]
+__set.items = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.icons = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string[]
+__set.icons = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.values = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string[]
+__set.values = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.selectedIndex = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val number
+__set.selectedIndex = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.selectionController = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val FairyGUI.Controller
+__set.selectionController = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.value = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val string
+__set.value = function(self, val) end
+
+
+---@param self FairyGUI.GComboBox
+__get.popupDirection = function(self) end
+
+---@param self FairyGUI.GComboBox
+---@param val FairyGUI.PopupDirection
+__set.popupDirection = function(self, val) end
+
+
 FairyGUI.GComboBox = GComboBox
 return GComboBox

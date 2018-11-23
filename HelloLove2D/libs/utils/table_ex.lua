@@ -15,11 +15,19 @@ function table.count(t)
 end
 
 ---list table copy
+---@overload fun(source:table, dest:table)
 ---@param source table
 ---@param dest table
-function table.copy_l(source, dest)
-    for i, v in ipairs(source) do
-        dest[i] = v
+---@param callback fun(v:any):any
+function table.copy_l(source, dest, callback)
+    if nil == callback then
+        for i, v in ipairs(source) do
+            dest[i] = v
+        end
+    else
+        for i, v in ipairs(source) do
+            dest[i] = callback(v)
+        end
     end
 end
 

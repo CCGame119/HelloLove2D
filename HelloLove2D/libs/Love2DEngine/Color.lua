@@ -32,6 +32,12 @@ Color.__call = function(cls, r, g, b, a)
     return Color.new(r, g, b, a)
 end
 
+---@param a Love2DEngine.Color
+---@param b Love2DEngine.Color
+Color.__eq = function(a, b)
+    return a.r == b.r and a.g == b.g and a.b == b.b and a.a == b.a
+end
+
 --TODO: Love2DEngine.Color
 
 local __get = Class.init_get(Color, true)

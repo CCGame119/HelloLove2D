@@ -29,12 +29,24 @@ function Color32.FromColor(c)
     return Color32.new(math.clamp01(c.r) * 255, math.clamp01(c.g) * 255, math.clamp01(c.b) * 255, math.clamp01(c.a) * 255)
 end
 
-local __get = Class.init_get(Color32, true)
-local __set = Class.init_set(Color32, true)
+function Color32:Clone()
+    return Color32(self.r, self.g, self.b, self.a)
+end
+
 
 Color32.__call = function(t, r, g, b, a)
     return Color32.new(r, g, b, a)
 end
+
+---@param a Love2DEngine.Color32
+---@param b Love2DEngine.Color32
+Color32.__eq = function(a, b)
+    return a.r == b.r and a.g == b.g and a.b == b.b and a.a == b.a
+end
+
+local __get = Class.init_get(Color32, true)
+local __set = Class.init_set(Color32, true)
+
 
 Love2DEngine.Color32 = Color32
 setmetatable(Color32, Color32)
