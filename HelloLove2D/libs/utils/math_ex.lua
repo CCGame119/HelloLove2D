@@ -46,6 +46,12 @@ function math.round(val)
     return math.floor(val + 0.5)
 end
 
+---@param val number
+---@return boolean
+function math.isNaN(val)
+    return val == math.nan
+end
+
 math.Deg2Rad = 0.01745329
 math.Rad2Deg = 57.29578
 
