@@ -4,6 +4,9 @@
 -- Date: 2018/9/20 15:05
 --
 
+---@class String:string
+local string = string
+
 ---@param str string
 ---@param ch char
 ---@return string[]
@@ -48,6 +51,24 @@ function string.isNullOrEmpty(str)
         return  true
     end
     return false
+end
+
+---@param s string
+---@param subStr string
+---@param init string
+---@return number, number, string
+function string.indexOf(s, subStr, init)
+    local begPos = string.find(s, subStr, init, true)
+    begPos = begPos or -1
+    return begPos
+end
+
+---@param s string @ref
+---@param sub string
+---@return string
+function string.Append(s, substr)
+    s = s .. substr
+    return s
 end
 
 ---扩展string
