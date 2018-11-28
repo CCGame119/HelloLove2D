@@ -4,9 +4,6 @@
 -- Date: 2018/9/20 15:05
 --
 
----@class String:string
-local string = string
-
 ---@param str string
 ---@param ch char
 ---@return string[]
@@ -23,6 +20,13 @@ end
 ---@return boolean
 function string.endWith(str, ending)
     return ending == "" or str:sub(-#ending) == ending
+end
+
+---@param str string
+---@param starting string
+---@return boolean
+function string.startsWith(str, starting)
+    return starting == "" or str:sub(1, #starting) == starting
 end
 
 local whitespace = {[0x9]=1, [0xA]=1, [0xB]=1, [0xC]=1, [0xD]=1, [0x20]=1, [0x85]=1, [0xA0]=1, [0x1680]=1, [0x2000]=1, [0x2001]=1}

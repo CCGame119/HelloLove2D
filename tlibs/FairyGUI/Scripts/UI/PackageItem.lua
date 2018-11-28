@@ -37,7 +37,8 @@ local Class = require('libs.Class')
 ---@field public audioClip FairyGUI.NAudioClip
 local PackageItem = Class.inheritsFrom('PackageItem')
 
-function PackageItem:__ctor()
+---@return any
+function PackageItem:Load()
     return self.owner:GetItemAsset(self)
 end
 
