@@ -12,7 +12,7 @@ local Vector3 = Love2DEngine.Vector3
 ---@field insideUnitSphere Love2DEngine.Vector3
 local Random = Class.inheritsFrom('Random')
 
--- TODO: FairyGUI.Random
+--TODO: FairyGUI.Random
 
 local __get = Class.init_get(Random, true)
 

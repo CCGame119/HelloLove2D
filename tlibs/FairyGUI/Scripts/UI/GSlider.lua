@@ -76,7 +76,6 @@ function GSlider:__barTouchBegin(context)
 
 end
 
-
 --TODO: FairyGUI.GSlider
 
 local __get = Class.init_get(GSlider)
