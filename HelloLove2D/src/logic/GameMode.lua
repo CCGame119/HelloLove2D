@@ -161,6 +161,7 @@ function GameMode:onDraw()
     love.graphics.print("Sorce: " .. self.score, Screen.pos(0.02, 0.01))
     love.graphics.print("FPS: " .. love.timer.getFPS(), Screen.pos(0.8, 0.01))
     love.graphics.print("MEM: " .. collectgarbage('count'), Screen.pos(0.8, 0.025))
+    love.graphics.print("TIME: " .. love.timer.getTime(), Screen.pos(0.8, 0.040))
 end
 
 return GameMode

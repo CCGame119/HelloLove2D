@@ -61,7 +61,7 @@ function GObjectPool:GetObject(url)
 end
 
 ---@param obj FairyGUI.GObject
-function GObjectPool.ReturnObject(obj)
+function GObjectPool:ReturnObject(obj)
     local url = obj.resourceURL
     local arr = self._pool[url]
     if (nil ~= arr) then

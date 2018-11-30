@@ -30,6 +30,7 @@ function Debug.LogError(msg)
     print(msg)
 end
 
+Debug.Log = Debug.LogInfo
 
 --TODO: Love2DEngine.Debug
 

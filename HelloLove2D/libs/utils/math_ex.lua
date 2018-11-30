@@ -52,6 +52,15 @@ function math.isNaN(val)
     return val == math.nan
 end
 
+---按lua的索引从1开始的习惯来取模，当取模值为零的时候，返回b值
+---@param a number
+---@param b number
+---@return number
+function math.module(a, b)
+    local ret = a % b
+    ret = ret == 0 and b or ret
+end
+
 math.Deg2Rad = 0.01745329
 math.Rad2Deg = 57.29578
 

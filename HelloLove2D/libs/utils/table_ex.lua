@@ -148,6 +148,7 @@ end
 
 ---@param t table
 ---@param e any
+---@return number
 function table.indexOf(t, e)
     for i, v in ipairs(t) do
         if v == e then
@@ -155,6 +156,13 @@ function table.indexOf(t, e)
         end
     end
     return -1
+end
+
+---@param t table
+---@param e any
+---@return boolean
+function table.contain(t, e)
+    return -1 ~= table.indexOf(t, e)
 end
 
 ---@param t table
