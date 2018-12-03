@@ -12,7 +12,15 @@ local Class = require('libs.Class')
 ---@field public height number 图片高度。不设置（0）则表示使用原始高度。
 local Emoji = Class.inheritsFrom('Emoji')
 
---TODO: FairyGUI.Emoji
+---@param url string
+---@param width number
+---@param height number
+function Emoji:__ctor(url, width, height)
+    self.url = url
+    self.width = width or 0
+    self.height = height or 0
+end
+
 
 FairyGUI.Emoji= Emoji
 return Emoji
