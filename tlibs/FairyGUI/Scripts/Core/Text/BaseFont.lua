@@ -54,12 +54,13 @@ function BaseFont:PrepareCharacters(text)
 end
 
 ---@param ch char
----@param size size
----@return boolean
-function BaseFont:GetGlyphSize(ch, size)
-    size.width = 0
-    size.height = 0
-    return false
+---@param width number @ref
+---@param height number @ref
+---@return boolean, number, number
+function BaseFont:GetGlyphSize(ch, width, height)
+    width = 0
+    height = 0
+    return false, width, height
 end
 
 ---@param ch char
