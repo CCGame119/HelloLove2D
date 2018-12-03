@@ -145,7 +145,7 @@ DisplayObject._gInstanceCounter = 0
 --endregion
 
 --region 成员函数
-function DisplayObject:__ctor(...)
+function DisplayObject:__ctor()
     self._alpha = 1
     self._visible = true
     self._touchable = true
