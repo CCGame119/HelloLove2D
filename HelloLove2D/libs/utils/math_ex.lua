@@ -72,3 +72,7 @@ math.fminval = -3.402823E+38
 
 math.maxval = 2147483647
 math.minval = -2147483648
+
+short = {}
+short.maxval = 32767
+short.minval = -32768

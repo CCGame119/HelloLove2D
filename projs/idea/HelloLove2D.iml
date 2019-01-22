@@ -8,5 +8,6 @@
     <orderEntry type="jdk" jdkName="love-11.1.0-win64" jdkType="Lua SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="FairyGUI" exported="" scope="PROVIDED" />
+    <orderEntry type="library" name="love-11.1" level="project" />
   </component>
 </module>

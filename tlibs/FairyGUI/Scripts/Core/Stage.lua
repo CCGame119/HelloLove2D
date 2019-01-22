@@ -34,10 +34,12 @@ local GRoot = FairyGUI.GRoot
 local StageEngine = FairyGUI.StageEngine
 local UIContentScaler = FairyGUI.UIContentScaler
 local Timers = FairyGUI.Timers
+local TimerCallback = FairyGUI.TimerCallback
 local EventCallback1 = FairyGUI.EventCallback1
 local HitTestContext = FairyGUI.HitTestContext
 local DynamicFont = FairyGUI.DynamicFont
 local ToolSet = FairyGUI.ToolSet
+local UpdateContext = FairyGUI.UpdateContext
 
 --region FairyGUI.TouchInfo 声明
 ---@class FairyGUI.TouchInfo:ClassType
@@ -108,7 +110,7 @@ Stage._keyboard = nil
 ---@type FairyGUI.Stage
 Stage._inst = nil
 
-function Stage:Instantiate()
+function Stage.Instantiate()
     if (Stage._inst == nil) then
         Stage._inst = Stage.new()
         GRoot._inst = GRoot.new()
@@ -120,7 +122,7 @@ function Stage:Instantiate()
 end
 
 function Stage:__ctor()
-    Container:__ctor(self)
+    Container.__ctor(self)
     self._inst = self
     self.soundVolume = 1
 
@@ -160,7 +162,8 @@ function Stage:__ctor()
 
     self:EnableSound()
 
-    Timers.inst:Add(5, 0, self.RunTextureCollector);
+    self.RunTextureCollectorDelegate = TimerCallback.new(self.RunTextureCollector, self)
+    Timers.inst:Add(5, 0, self.RunTextureCollectorDelegate);
 
     SceneManager.sceneLoaded:Add(self.SceneManager_sceneLoaded, self)
 
@@ -870,8 +873,8 @@ function Stage:CreatePoolManager(name)
     return t
 end
 
-local __get = Class.init_get(Stage)
-local __set = Class.init_set(Stage)
+local __get = Class.init_get(Stage, false)
+local __set = Class.init_set(Stage, false)
 
 ---@param self FairyGUI.Stage
 __get.inst = function(self)
@@ -896,7 +899,7 @@ end
 __set.touchScreen = function(self, val)
     self._touchScreen = val
     if val then
-        self._keyboard = FairyGUI.TouchScreenKeyboard()
+        self._keyboard = FairyGUI.TouchScreenKeyboard.new()
         self.keyboardInput = true
     else
         self._keyboard = nil

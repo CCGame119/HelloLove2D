@@ -39,10 +39,6 @@ function InputEvent:__ctor(...)
     self.mouseWheelDelta = 0
 end
 
----InputEvent() constructor
-local mt = getmetatable(InputEvent)
-mt.__call = function(t) return InputEvent.new() end
-
 --=======================属性访问器=======================
 local get = Class.init_get(InputEvent)
 
@@ -74,6 +70,10 @@ get.alt = function(self)
     return 0 ~= band(self.modifiers, EventModifiers.Alt)
 end
 
+InputEvent.__call = function(t)
+    return InputEvent.new()
+end
 
 FairyGUI.InputEvent = InputEvent
+setmetatable(InputEvent, InputEvent)
 return InputEvent

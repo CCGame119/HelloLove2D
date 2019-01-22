@@ -11,7 +11,7 @@ local Object = Love2DEngine.Object
 ---@class Love2DEngine.Component:Love2DEngine.Object
 ---@field public gameObject Love2DEngine.GameObject
 ---@field public transform Love2DEngine.Transform
----@field private _gameObject Love2DEngine.GameObject
+---@field protected _gameObject Love2DEngine.GameObject
 local Component = Class.inheritsFrom('Component', nil, Object)
 
 ---@generic T:Love2DEngine.Component

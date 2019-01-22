@@ -14,7 +14,7 @@ local Class = require('libs.Class')
 local Margin = Class.inheritsFrom('Margin', {left = 0, right = 0, top = 0, bottom = 0})
 
 function Margin:__ctor(l,r,t,b)
-    self.left, self.right. self.top, self.bottom = l,r,t,b
+    self.left, self.right, self.top, self.bottom = l,r,t,b
 end
 
 ---@return FairyGUI.Margin

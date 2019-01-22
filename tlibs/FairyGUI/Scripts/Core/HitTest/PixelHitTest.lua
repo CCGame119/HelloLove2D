@@ -27,9 +27,9 @@ function PixelHitTestData:Load(ba)
     self.pixelWidth = ba:ReadInt()
     self.scale = 1 / ba:ReadByte()
     self.pixels = ba.buffer
-    self.pixelsLength = ba.ReadInt()
+    self.pixelsLength = ba:ReadInt()
     self.pixelsOffset = ba.position
-    ba.Skip(self.pixelsLength)
+    ba:Skip(self.pixelsLength)
 end
 
 ---@class FairyGUI.PixelHitTest:FairyGUI.IHitTest

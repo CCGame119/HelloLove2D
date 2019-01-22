@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="love-11.1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../love2dAPI/love-11.1.0" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

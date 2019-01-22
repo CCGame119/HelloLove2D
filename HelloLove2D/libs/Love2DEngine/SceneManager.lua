@@ -14,6 +14,7 @@ local LoveAction = Delegate.newDelegate('LoveAction')
 ---@field sceneLoaded Love2DEngine.SceneManager.LoveAction
 local SceneManager = Class.inheritsFrom('SceneManager')
 
+SceneManager.sceneLoaded = LoveAction.new()
 --TODO: Love2DEngine.SceneManager
 
 SceneManager.LoveAction = LoveAction

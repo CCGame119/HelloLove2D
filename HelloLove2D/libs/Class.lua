@@ -32,7 +32,7 @@ function Class.init_get(cls, value_cls, sup_indexer)
     if not value_cls then
         rawset(cls, '__index', __index_with_get)
     else
-        local __newindex_with_set_value = function(t, k)
+        local __newindex_with_get_value = function(t, k)
             if sup_indexer and type(k) == 'number' then
                 local indexder = rawget(__get, '__indexer')
                 if indexder ~= nil then
@@ -51,7 +51,7 @@ function Class.init_get(cls, value_cls, sup_indexer)
 
             return var
         end
-        rawset(cls, '__index', __newindex_with_set_value)
+        rawset(cls, '__index', __newindex_with_get_value)
     end
     return __get
 end
@@ -150,6 +150,7 @@ function Class.inheritsFrom(cls_name, t, baseClass, interfaces)
 
     -- Return true if the caller is an instance of theClass
     function new_class:isa( theClass )
+        assert(theClass ~= nil, 'theClass is nil')
         local b_isa = false
 
         local cur_class = new_class
@@ -164,10 +165,10 @@ function Class.inheritsFrom(cls_name, t, baseClass, interfaces)
                     b_isa = true
                     break
                 end
-            else
-                cur_class = cur_class:superClass()
-                cur_interfaces = cur_class:interfaces()
             end
+            cur_class = cur_class:superClass()
+            if cur_class == nil then break end
+            cur_interfaces = cur_class:interfaces()
         end
 
         return b_isa
@@ -195,7 +196,7 @@ function Class.isa(data, clazz)
     if clazz_type == 'table' then
         if data_type == 'table' and
                 data.isa and
-                data.isa(clazz) then
+                data:isa(clazz) then
             return true
         end
     else
@@ -220,6 +221,17 @@ __index = function (t, k, o)
             end
 
             mt = getmetatable(t)
+            if rawequal(mt, o) then -- 类属性
+                local v = rawget(t, k)
+                return v
+            end
+            if rawequal(mt, t) then -- 由于当前类使用setmetatable(cls, cls), 获取当前类的基类作为mt
+                mt = mt:superClass()
+                if mt == nil then -- 没有基类
+                    return nil
+                end
+            end
+
             h = mt.__index
             if h == nil then return nil end
         else
@@ -229,6 +241,7 @@ __index = function (t, k, o)
                 error("metatable must has a __index")
             end
         end
+
         if type(h) == "function" then
             return (h(mt, k, o or t))     -- call the handler
         else
@@ -248,6 +261,16 @@ __newindex = function(t, k, v, o)
     while t do
         if type(t) == 'table' then
             mt = getmetatable(t)
+            if rawequal(mt, o) then -- 类属性
+                rawset(o, k, v); return true
+            end
+            if rawequal(mt, t) then -- 由于当前类使用setmetatable(cls, cls), 获取当前类的基类作为mt
+                mt = mt:superClass()
+                if mt == nil then -- 没有基类
+                    rawset(o, k, v); return true
+                end
+            end
+
             h = mt.__newindex
             if h == nil then return false end
         else
@@ -262,7 +285,7 @@ __newindex = function(t, k, v, o)
             local rt = h(mt, k, v, o or t)
             if not rt then           -- call the handler
                 if rawequal(t, o) then
-                    rawset(o, k, v); return
+                    rawset(o, k, v); return true
                 end
             end
             return rt
@@ -293,6 +316,17 @@ __index_with_get = function(t, k, o)
             end
 
             mt = getmetatable(t)
+            if rawequal(mt, o) then -- 类属性
+                local v = rawget(t, k)
+                return v
+            end
+            if rawequal(mt, t) then -- 由于当前类使用setmetatable(cls, cls), 获取当前类的基类作为mt
+                mt = mt:superClass()
+                if mt == nil then -- 没有基类
+                    return nil
+                end
+            end
+
             h = mt.__index
             if h == nil then return nil end
         else
@@ -328,6 +362,16 @@ __newindex_with_set = function(t, k, v, o)
             end
 
             mt = getmetatable(t)
+            if rawequal(mt, o) then -- 类属性
+                rawset(o, k, v); return true
+            end
+            if rawequal(mt, t) then -- 由于当前类使用setmetatable(cls, cls), 获取当前类的基类作为mt
+                mt = mt:superClass()
+                if mt == nil then -- 没有基类
+                    rawset(o, k, v); return true
+                end
+            end
+
             h = mt.__newindex
             if h == nil then return false end
         else
@@ -342,7 +386,7 @@ __newindex_with_set = function(t, k, v, o)
             local rt = h(mt, k, v, o or t)
             if not rt then           -- call the handler
                 if rawequal(t, o) then
-                    rawset(o, k, v); return
+                    rawset(o, k, v); return true
                 end
             end
             return rt

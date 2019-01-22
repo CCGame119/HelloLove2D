@@ -94,7 +94,7 @@ end
 function StageCamera.CheckMainCamera()
     if GameObject.Find(StageCamera.Name) == nil then
         local layer = LayerMask.NameToLayer(StageCamera.LayerName)
-        self:CreateCamera(StageCamera.Name, lshift(layer, 1))
+        StageCamera.CreateCamera(StageCamera.Name, lshift(layer, 1))
     end
     HitTestContext.cachedMainCamera = Camera.main
 end
@@ -118,7 +118,7 @@ function StageCamera.CreateCamera(name, cullingMask)
     camera.orthographicSize = StageCamera.DefaultCameraSize
     camera.nearClipPlane = -30
     camera.farClipPlane = 30
-    cameraObject.AddComponent(StageCamera)
+    cameraObject:AddComponent(StageCamera)
 
     return camera
 end

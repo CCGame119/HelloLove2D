@@ -34,11 +34,10 @@ local FillUtils = FairyGUI.FillUtils
 
 --endregion
 
---region FairyGUI.NGraphics.MeshModifier
-
 ---@class FairyGUI.NGraphics.MeshModifier:Delegate @fun()
 local MeshModifier = Delegate.newDelegate('MeshModifier')
 
+--region FairyGUI.NGraphics.StencilEraser
 ---@class FairyGUI.StencilEraser:ClassType
 ---@field public gameObject Love2DEngine.GameObject
 ---@field public meshFilter Love2DEngine.MeshFilter
@@ -159,7 +158,7 @@ function NGraphics:__ctor(gameObject)
     --self.meshRenderer.receiveShadows = false
     self.mesh = Mesh.new()
     self.mesh.name = gameObject.name
-    self.meshRenderer:MarkDynamic()
+    self.mesh:MarkDynamic()
 
     self.meshFilter.hideFlags = DisplayOptions.hideFlags;
     self.meshRenderer.hideFlags = DisplayOptions.hideFlags;
@@ -956,10 +955,15 @@ __set.alpha = function(self, val)
     end
 end
 
+NGraphics.__call = function (t, gameObject)
+    return NGraphics.new(gameObject)
+end
+
 --endregion
 --endregion
 
 NGraphics.MeshModifier = MeshModifier
-FairyGUI.NGraphics = NGraphics
 FairyGUI.StencilEraser = StencilEraser
+FairyGUI.NGraphics = NGraphics
+setmetatable(NGraphics, NGraphics)
 return NGraphics

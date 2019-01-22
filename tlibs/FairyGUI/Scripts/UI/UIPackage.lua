@@ -30,11 +30,14 @@ local NGraphics = FairyGUI.NGraphics
 local MovieClip = FairyGUI.MovieClip
 local BitmapFont = FairyGUI.BitmapFont
 local ShaderConfig = FairyGUI.ShaderConfig
+local PackageItem = FairyGUI.PackageItem
+local ObjectType = FairyGUI.ObjectType
+local PixelHitTestData = FairyGUI.PixelHitTestData
 
 ---@class FairyGUI.UIPackage.CreateObjectCallback:Delegate @fun(result:FairyGUI.GObject):string
 local CreateObjectCallback = Delegate.newDelegate('CreateObjectCallback')
 
----@class FairyGUI.UIPackage.LoadResource:Delegate @fun(name:string, type:Love2DEngine.AssetType):FairyGUI.DestroyMethod|any
+---@class FairyGUI.UIPackage.LoadResource:Delegate @fun(name:string, extension:string, type:Love2DEngine.AssetType):FairyGUI.DestroyMethod|any
 local LoadResource = Delegate.newDelegate('LoadResource')
 
 ---@class FairyGUI.UIPackage.AtlasSprite:ClassType
@@ -112,12 +115,12 @@ function UIPackage.AddPackage(assetPath, loadFunc)
         return UIPackage._packageInstById[assetPath]
     end
 
-    local dm, asset = loadFunc(assetPath .. '_fui', ".bytes", AssetType.text)
+    local dm, asset = loadFunc(assetPath .. '_fui.bytes', AssetType.text)
     if asset == nil then
         error("FairyGUI: Cannot load ui package in '" .. assetPath .. "'")
     end
 
-    local buffer = ByteBuffer.new(asset.bytes)
+    local buffer = ByteBuffer.new(asset)
 
     local pkg = UIPackage.new()
     pkg._loadFunc = loadFunc
@@ -193,7 +196,7 @@ function UIPackage.CreateObject(pkgName, resName, userClass)
     ---@type FairyGUI.PackageItem
     local pi = nil
     if type(resName) == 'string' then
-        pi = UIPackage._itemsByName[resName]
+        pi = self._itemsByName[resName]
         if nil == pi then
             Debug.LogError("FairyGUI: resource not found - " .. resName .. " in " .. self.name)
             return nil
@@ -276,6 +279,7 @@ end
 ---@param resName string
 ---@return any
 function UIPackage.GetItemAsset(pkgName, resName)
+    local pkg = pkgName
     if type(pkgName) == 'string' then
         local pkg = UIPackage.GetByName(pkgName)
         if nil ~= pkg then
@@ -287,9 +291,9 @@ function UIPackage.GetItemAsset(pkgName, resName)
     ---@type FairyGUI.UIPackage
     local self = pkgName
     ---@type FairyGUI.PackageItem
-    local pi = nil
+    local pi = resName
     if type(resName) == 'string' then
-        pi = UIPackage._itemsByName[resName]
+        pi = pkg._itemsByName[resName]
         if nil == pi then
             Debug.LogError("FairyGUI: Resource not found - " .. resName .. " in " .. self.name)
             return nil
@@ -421,8 +425,146 @@ function UIPackage.SetStringsSource(source)
     TranslationHelper.LoadFromXML(source)
 end
 
-function UIPackage:LoadPackage(buffer, packageSource, assetNamePrefex)
+---@param buffer Utils.ByteBuffer
+---@param packageSource string
+---@param assetNamePrefix string
+---@return boolean
+function UIPackage:LoadPackage(buffer, packageSource, assetNamePrefix)
+    -- TODO: UIPackage:LoadPackage(buffer, packageSource, assetNamePrefex)
+    if (buffer:ReadUint() ~= 0x46475549) then
+        error("FairyGUI: old package format found in '" .. packageSource .. "'")
+    end
 
+    buffer.version = buffer:ReadInt()
+    buffer:ReadBool() -- compressed
+    self.id = buffer:ReadString()
+    self.name = buffer:ReadString()
+    if table:contain(self._packageInstById, self.id) and self.name ~= self._packageInstById[self.id].name then
+        Debug.LogWarn("FairyGUI: Package id conflicts, '" .. self.name .. "' and '" .. self._packageInstById[self.id].name .. "'")
+        return false
+    end
+    buffer:Skip(20)
+    local indexTablePos = buffer.position
+    local cnt
+
+    buffer:Seek(indexTablePos, 4)
+    cnt = buffer:ReadInt()
+    ---@type string[]
+    local stringTable = {}
+    for i = 1, cnt do
+        stringTable[i] = buffer:ReadString()
+    end
+    buffer.stringTable = stringTable
+
+    buffer:Seek(indexTablePos, 1)
+
+    ---@type FairyGUI.PackageItem
+    local pi
+    if assetNamePrefix == nil then
+        assetNamePrefix = string.empty
+    elseif assetNamePrefix:len() > 0 then
+        assetNamePrefix = assetNamePrefix .. "_"
+    end
+
+    cnt = buffer:ReadShort()
+    for i = 1, cnt do
+        local nextPos = buffer:ReadInt()
+        nextPos = nextPos + buffer.position
+
+        pi = PackageItem.new()
+
+        pi.owner = self
+        pi.type = buffer:ReadByte()
+        pi.id = buffer:ReadS()
+        pi.name = buffer:ReadS()
+        buffer:ReadS() --path
+        pi.file = buffer:ReadS()
+        pi.exported = buffer:ReadBool()
+        pi.width = buffer:ReadInt()
+        pi.height = buffer:ReadInt()
+
+        local type = pi.type
+        if type == PackageItemType.Image then
+            pi.objectType = ObjectType.Image
+            local scaleOption = buffer:ReadByte()
+            if scaleOption == 1 then
+                local rect = Rect(buffer:ReadInt(), buffer:ReadInt(), buffer:ReadInt(), buffer:ReadInt())
+                pi.scale9Grid = rect
+
+                pi.tileGridIndice = buffer:ReadInt()
+            elseif scaleOption == 2 then
+                pi.scaleByTile = true
+            end
+
+            buffer:ReadBool() -- smoothing
+        elseif type == PackageItemType.MovieClip then
+            buffer:ReadBool() -- smoothing
+            pi.objectType = ObjectType.MovieClip
+            pi.rawData = buffer:ReadBuffer()
+        elseif type == PackageItemType.Font then
+            pi.rawData = buffer:ReadBuffer()
+        elseif type == PackageItemType.Component then
+            local extension = buffer:ReadByte()
+            if extension > 0 then
+                pi.objectType = extension
+            else
+                pi.objectType = ObjectType.Component
+            end
+            pi.rawData = buffer:ReadBuffer()
+
+            UIObjectFactory.ResolvePackageItemExtension(pi)
+        elseif type == PackageItemType.Atlas or
+               type == PackageItemType.Sound or
+               type == PackageItemType.Misc then
+            pi.file = assetNamePrefix .. pi.file
+        end
+
+        table.insert(self._items, pi)
+        self._itemsById[pi.id] = pi
+        if pi.name ~= nil then
+            self._itemsByName[pi.name] = pi
+        end
+
+        buffer.position = nextPos
+    end
+
+    buffer:Seek(indexTablePos, 2)
+    cnt = buffer:ReadShort()
+    for i = 1, cnt do
+        local nextPos = buffer:ReadShort()
+        nextPos = nextPos + buffer.position
+
+        local itemId = buffer:ReadS()
+        pi = self._itemsById[buffer:ReadS()]
+
+        local sprite = AtlasSprite.new()
+        sprite.atlas = pi
+        sprite.rect:Set(buffer:ReadInt(), buffer:ReadInt(), buffer:ReadInt(), buffer:ReadInt())
+        sprite.rotated = buffer:ReadBool()
+        self._sprites[itemId] = sprite
+
+        buffer.position = nextPos
+    end
+
+    if buffer:Seek(indexTablePos, 3) then
+        cnt = buffer:ReadShort()
+        for i = 1, cnt do
+            local nextPos = buffer:ReadInt()
+            nextPos = nextPos + buffer.position
+
+            pi = self._itemsById[buffer:ReadS()]
+            if pi ~= nil then
+                if pi.type == PackageItemType.Image then
+                    pi.pixelHitTestData = PixelHitTestData.new()
+                    pi.pixelHitTestData:Load(buffer)
+                end
+            end
+
+            buffer.position = nextPos
+        end
+    end
+
+    return true
 end
 
 ---@param p1 FairyGUI.PackageItem
@@ -513,14 +655,14 @@ end
 ---@param itemId string
 ---@return FairyGUI.PackageItem
 function UIPackage:GetItem(itemId)
-    local pi = UIPackage._itemsById[itemId]
+    local pi = self._itemsById[itemId]
     return pi
 end
 
 ---@param itemName string
 ---@return FairyGUI.PackageItem
 function UIPackage:GetItemByName(itemName)
-    local pi = UIPackage._itemsByName[itemName]
+    local pi = self._itemsByName[itemName]
     return pi
 end
 
@@ -530,7 +672,7 @@ function UIPackage:LoadAtlas(item)
     local revFile = string.reverse(item.file)
     local extIdx = string.find(revFile, '.', 1, true)
     local ext = item.file(len - extIdx + 1)
-    local fileName = item.file(1, revFile - extIdx)
+    local fileName = item.file(1, #revFile - extIdx)
 
     ---@type FairyGUI.NTexture
     local tex, alphaTex = nil
@@ -547,7 +689,7 @@ function UIPackage:LoadAtlas(item)
 
     if nil ~= tex then
         local fileName = item .. "!a" .. '.' .. ext
-        alphaTex, dm = self._loadFunc(fileName, AssetType.tex2d)
+        alphaTex, dm = self._loadFunc(fileName, ext, AssetType.tex2d)
     end
 
     if nil == tex then
@@ -788,11 +930,11 @@ __get.customId = function(self) return self._customId end
 ---@param val string
 __set.customId = function(self, val)
     if self._customId ~= nil then
-        UIPackage._packageInstById[self._customId] = nil
+        self._packageInstById[self._customId] = nil
     end
     self._customId = val
     if self._customId ~= nil then
-        UIPackage._packageInstById[self._customId] = self
+        self._packageInstById[self._customId] = self
     end
 end
 

@@ -57,6 +57,11 @@ function string.isNullOrEmpty(str)
     return false
 end
 
+function string.isHighSurrogate(ch)
+    -- TODO: string.isHighSurrogate(ch)
+    return false
+end
+
 ---@param s string
 ---@param subStr string
 ---@param init string
@@ -74,6 +79,8 @@ function string.Append(s, substr)
     s = s .. substr
     return s
 end
+
+string.empty = ''
 
 ---扩展string
 local mt = getmetatable('')

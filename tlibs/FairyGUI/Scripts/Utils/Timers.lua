@@ -35,8 +35,8 @@ Timers._inst = nil
 Timers.catchCallbackExceptions = true
 
 function Timers:__ctor()
-    self._inst = self
-    self.gameObject = GameObject:get("[FairyGUI.Timers]")
+    Timers._inst = self
+    self.gameObject = GameObject:get("FairyGUI.Timers")
     self.gameObject.hideFlags = HideFlags.HideInHierarchy
     self.gameObject:SetActive(true)
     --Object.DontDestroyOnLoad(gameObject)
@@ -58,7 +58,7 @@ function Timers:Add(interval, Repeat, callback, callbackParam)
         Debug.LogWarn("timer callback is null, " .. interval + "," .. Repeat)
         return
     end
-    assert(not callback:isa(TimerCallback), "type mismatch")
+    assert(callback:isa(TimerCallback), "type mismatch")
 
     local t = self._items[callback]
     if nil ~= t then

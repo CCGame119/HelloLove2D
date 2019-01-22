@@ -28,7 +28,7 @@ function Screen.updateHW()
     Screen.h = graphics.getHeight()
 end
 
-local __get = Class.init_get(Screen)
+local __get = Class.init_get(Screen, true)
 
 __get.width = function(self)
     return self.w

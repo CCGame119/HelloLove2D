@@ -46,30 +46,36 @@ end
 ---@field public stencilReferenceValue number
 ---@field public alpha number
 ---@field public grayed boolean
----@field public current FairyGUI.UpdateContext
----@field public frameId number
----@field public working boolean
----@field public OnBegin FairyGUI.EventCallback0
----@field public OnEnd FairyGUI.EventCallback0
+---@field public current FairyGUI.UpdateContext @static
+---@field public frameId number @static
+---@field public working boolean @static
+---@field public OnBegin FairyGUI.EventCallback0 @static
+---@field public OnEnd FairyGUI.EventCallback0 @static
 ---@field private _clipStack FairyGUI.UpdateContext.ClipInfo[]
 ---@field private _tmpBegin FairyGUI.EventCallback0
 local UpdateContext = Class.inheritsFrom('UpdateContext')
 
+--region UpdateContext 类静态成员
+---@type FairyGUI.UpdateContext
+UpdateContext.current = nil
+UpdateContext.frameId = 0
+UpdateContext.working = false
+UpdateContext.OnBegin = EventCallback0.new()
+UpdateContext.OnEnd = EventCallback0.new()
+--endregion
+
 function UpdateContext:__ctor(...)
     self._clipStack = {}
-    self.frameId = 1
+    UpdateContext.frameId = 1
     self.ClipInfo = ClipInfo.new()
-
-    self.OnBegin = EventCallback0.new()
-    self.OnEnd = EventCallback0.new()
 end
 
 function UpdateContext:Begin()
-    self.current = self
+    UpdateContext.current = self
 
-    self.frameId = self.frameId + 1
-    if self.frameId == 0 then
-        self.frameId = 1
+    UpdateContext.frameId = UpdateContext.frameId + 1
+    if UpdateContext.frameId == 0 then
+        UpdateContext.frameId = 1
     end
     self.renderingOrder = 0
     self.batchingDepth = 0
@@ -84,26 +90,26 @@ function UpdateContext:Begin()
     Stats.ObjectCount = 0
     Stats.GraphicsCount = 0
 
-    self._tmpBegin = self.OnBegin:Clone()
-    self.OnBegin:Clear()
+    self._tmpBegin = UpdateContext.OnBegin:Clone()
+    UpdateContext.OnBegin:Clear()
 
     --允许OnBegin里再次Add，这里没有做死锁检查
     while not self._tmpBegin.isEmpty do
         self._tmpBegin:Invoke()
-        self._tmpBegin = self.OnBegin:Clone()
-        self.OnBegin:Clear()
+        self._tmpBegin = UpdateContext.OnBegin:Clone()
+        UpdateContext.OnBegin:Clear()
     end
-    self.working = true
+    UpdateContext.working = true
 end
 
 function UpdateContext:End()
-    self.working = false
+    UpdateContext.working = false
 
-    if not self.OnEnd.isEmpty then
-        self.OnEnd:Invoke()
+    if not UpdateContext.OnEnd.isEmpty then
+        UpdateContext.OnEnd:Invoke()
     end
 
-    self.OnEnd:Clear()
+    UpdateContext.OnEnd:Clear()
 end
 
 ---@param clipId number

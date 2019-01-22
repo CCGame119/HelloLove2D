@@ -41,8 +41,10 @@ end
 function EventBridge:Add(callback)
     if callback:isa(EventCallback0) then
         self._callback0:Add(callback)
+        return
     elseif callback:isa(EventCallback1) then
         self._callback1:Add(callback)
+        return
     end
     assert(false, "type mismatch")
 end

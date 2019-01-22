@@ -78,7 +78,8 @@ function EventListener:Clear()
     self._bridge:Clear()
 end
 
----@param data any|nil
+---@overload fun()
+---@param data any
 ---@return boolean
 function EventListener:Call(data)
     return self.owner:InternalDispatchEvent(self._type, self._bridge, data)

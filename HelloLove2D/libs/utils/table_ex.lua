@@ -160,6 +160,18 @@ end
 
 ---@param t table
 ---@param e any
+---@return any @element
+function table.removeElement(t, e)
+    for i, v in ipairs(t) do
+        if v == e then
+            return table.remove(t, i)
+        end
+    end
+    return nil
+end
+
+---@param t table
+---@param e any
 ---@return boolean
 function table.contain(t, e)
     return -1 ~= table.indexOf(t, e)

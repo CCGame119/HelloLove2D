@@ -12,22 +12,22 @@ local Debug = Class.inheritsFrom('Debug')
 
 ---@param msg string
 function Debug.LogDebug(msg)
-    print(msg)
+    print(string.format('[DEBUG]: %s', msg))
 end
 
 ---@param msg string
 function Debug.LogInfo(msg)
-    print(msg)
+    print(string.format('[INFO]: %s', msg))
 end
 
 ---@param msg string
 function Debug.LogWarn(msg)
-    print(msg)
+    print(string.format('[WARN]: %s', msg))
 end
 
 ---@param msg string
 function Debug.LogError(msg)
-    print(msg)
+    print(string.format('[ERROR]: %s', msg))
 end
 
 Debug.Log = Debug.LogInfo

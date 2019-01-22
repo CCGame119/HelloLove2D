@@ -9,7 +9,8 @@ local Delegate = require('libs.Delegate')
 
 local Shader = Love2DEngine.Shader
 local Debug = Love2DEngine.Debug
-local DisplayOptions = Love2DEngine.DisplayOptions
+
+local DisplayOptions = FairyGUI.DisplayOptions
 
 ---@class FairyGUI.ShaderConfig:ClassType
 ---@field imageShader string
@@ -27,7 +28,8 @@ ShaderConfig.bmFontShader = "FairyGUI/Image"
 
 ---@param name string
 function ShaderConfig.GetShader(name)
-    local shader = Shader.Get(name)
+    ---@type Love2DEngine.Shader
+    local shader = ShaderConfig.Get(name)
     if nil == shader then
         Debug.LogWarn("FairyGUI: shader not found: " .. name)
         shader = Shader.Find("UI/Default")

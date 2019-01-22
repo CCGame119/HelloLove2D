@@ -231,7 +231,7 @@ NTexture.__call = function(t, texture, alphaTexture, xScale, yScale)
     return NTexture.new(texture, alphaTexture, xScale, yScale)
 end
 
-local __get = Class.init_get(NTexture, true)
+local __get = Class.init_get(NTexture, false)
 
 __get.Empty = function(self)
     if NTexture._empty == nil then

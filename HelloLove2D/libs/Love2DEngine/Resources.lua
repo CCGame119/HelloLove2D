@@ -6,6 +6,8 @@
 
 local Class = require('libs.Class')
 
+local Debug = Love2DEngine.Debug
+
 ---@class Love2DEngine.AssetType:enum @ 资源类型
 local AssetType = {
     image = 1,
@@ -68,6 +70,26 @@ function Resources.returnImg(uri)
     local img = imgs[uri]
     if nil ~= img then
         img:release()
+    end
+end
+
+---@param name string
+---@param extension string
+---@param type Love2DEngine.AssetType
+function Resources.Load(uri, type)
+    uri = "Assets/" .. uri
+    if AssetType.text == type then
+        local file = love.filesystem.newFile(uri)
+        local ok, err = file:open('r')
+        if not ok then
+            Debug.LogError(err)
+            return nil
+        end
+        local data, size = file:read()
+        file:close()
+        return data, size
+    elseif AssetType.tex2d == type then
+
     end
 end
 

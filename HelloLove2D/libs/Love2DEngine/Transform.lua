@@ -23,7 +23,28 @@ local Matrix4x4 = Love2DEngine.Matrix4x4
 ---@field public localScale Love2DEngine.Vector3
 ---@field public parent Love2DEngine.Transform
 ---@field public localToWorldMatrix Love2DEngine.Matrix4x4
-local Transform = Class.inheritsFrom('Transform')
+---@field public x number local position x
+---@field public y number local position y
+---@field public z number local position z
+---@field public rx number local EulerAngles rx
+---@field public ry number local EulerAngles ry
+---@field public rz number local EulerAngles rz
+---@field public rx number local Scale sx
+---@field public ry number local Scale sy
+---@field public rz number local Scale sz
+---@field public childs Love2DEngine.Transform[]
+local Transform = Class.inheritsFrom('Transform', {
+    x = 0, y = 0, z = 0,
+    rx = 0, ry = 0, rz = 0,
+    sx = 1, sy = 1, sz = 1,
+})
+
+function Transform:__ctor(...)
+    self.childs = {}
+    if Transform.root then
+        self:SetParent(Transform.root)
+    end
+end
 
 ---Transforms position from local space to world space
 ---@param x_v number|Love2DEngine.Vector3
@@ -58,15 +79,29 @@ end
 ---@param parent Love2DEngine.Transform
 ---@param worldPositionStays boolean @default: true
 function Transform:SetParent(parent, worldPositionStays)
+    parent = parent or Transform.root
     local p = self.localPosition
     local s = self.localScale
     local q = self.localRotation
+    if self.parent then
+        self.parent:RemoveChild(self)
+    end
     self.parent = parent
+    self.parent:AddChild(self)
     if not worldPositionStays then
         self.localPosition = p
         self.localScale = s
         self.localRotation = q
     end
+end
+
+---@param child Love2DEngine.Transform
+function Transform:AddChild(child)
+    table.insert(self.childs, child)
+end
+
+function Transform:RemoveChild(child)
+    table.removeElement(self.childs, child)
 end
 
 --TODO: Love2DEngine.Transform
@@ -145,6 +180,9 @@ __get.localToWorldMatrix = function(self)
     local mat = Matrix4x4.Translate(self.position)
     return mat
 end
+
+---虚拟根节点
+Transform.root = Transform.new()
 
 Love2DEngine.Transform = Transform
 return Transform

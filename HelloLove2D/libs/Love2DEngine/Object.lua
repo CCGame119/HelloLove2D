@@ -7,13 +7,15 @@
 local Class = require('libs.Class')
 local Pool = require('libs.Pool')
 
+local HideFlags = Love2DEngine.HideFlags
+
 local GameObject = Love2DEngine.GameObject
 
 ---@class Love2DEngine.Object:ClassType
 ---@field public name string
----@field public hideFlags Love2DEngine.HideFlags
+---@field public hideFlags number @default Love2DEngine.HideFlags.None
 ---@field protected pool Pool @class static
-local Object = Class.inheritsFrom('Object')
+local Object = Class.inheritsFrom('Object', {hideFlags = HideFlags.None})
 
 --- 回调：类类型构造函数
 ---@generic T:Love2DEngine.Object
@@ -62,6 +64,11 @@ end
 ---@param t T
 function Object.FindObjectOfType(t)
     --TODO: Object.FindObjectOfType
+end
+
+---@param t Love2DEngine.Object
+function Object.DontDestroyOnLoad(t)
+    --TODO: Object.DontDestroyOnLoad
 end
 
 --TODO: Love2DEngine.Object

@@ -5,6 +5,8 @@ local GameMode = require('src.logic.GameMode')
 require('test.Love2DEngine.main')
 require('test.Love2D.main')
 require('test.FairyGUI.main')
+local GRoot = FairyGUI.GRoot
+local RenderingPipeLine = Love2DEngine.RenderingPipeLine
 
 mx, my = 0, 0
 
@@ -13,6 +15,9 @@ function love.load()
     GameMode:onLoad()
 
     love.testCase()
+
+    local winA = FairyGUI_Cases.Window1.new()
+    winA:Show()
 end
 
 -- Updating
@@ -38,7 +43,7 @@ end
 function love.draw()
 
     GameMode:onDraw()
-
+    RenderingPipeLine.onDraw()
     Love2D_Cases.graphics_case.newText_cases()
 end
 

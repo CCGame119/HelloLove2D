@@ -31,6 +31,14 @@ local HideFlags = {
 HideFlags.DontSave = bor(HideFlags.DontUnloadUnusedAsset, HideFlags.DontSaveInBuild, HideFlags.DontSaveInEditor) -- 0x00000034
 HideFlags.HideAndDontSave = bor(HideFlags.DontSave, HideFlags.NotEditable, HideFlags.HideInHierarchy) -- 0x0000003D
 
+---@class Love2DEngine.FontStyle:enum
+local FontStyle = {
+    Normal = 0,
+    Bold = 1,
+    Italic = 2,
+    BoldAndItalic = 3,
+}
+
 Love2DEngine.RenderMode = RenderMode
 Love2DEngine.HideFlags = HideFlags
 --endregion
@@ -38,10 +46,10 @@ Love2DEngine.HideFlags = HideFlags
 --region Love2DEngine 模块初始化
 require('libs.Love2DEngine.Debug')
 require('libs.Love2DEngine.Resources')
+require('libs.Love2DEngine.Application')
 
 require('libs.Love2DEngine.Color')
 require('libs.Love2DEngine.Color32')
-
 require('libs.Love2DEngine.Vector2')
 require('libs.Love2DEngine.Vector3')
 require('libs.Love2DEngine.Vector4')
@@ -52,14 +60,25 @@ require('libs.Love2DEngine.Matrix4x4')
 require('libs.Love2DEngine.Transform')
 
 require('libs.Love2DEngine.Shader')
+require('libs.Love2DEngine.LayerMask')
+require('libs.Love2DEngine.TextureFormat')
 
 require('libs.Love2DEngine.Object')
 require('libs.Love2DEngine.GameObject')
-
+require('libs.Love2DEngine.Texture2D')
+require('libs.Love2DEngine.Mesh')
+require('libs.Love2DEngine.MeshFilter')
+require('libs.Love2DEngine.Rendering.Rendering')
+require('libs.Love2DEngine.Rendering.MeshRenderer')
+require('libs.Love2DEngine.Camera')
+require('libs.Love2DEngine.AudioClip')
+require('libs.Love2DEngine.AudioSource')
 require('libs.Love2DEngine.Devices.Screen')
 require('libs.Love2DEngine.Devices.Input')
 
-require('libs.Love2DEngine.Rendering.Rendering')
+require('libs.Love2DEngine.SceneManager')
+require('libs.Love2DEngine.Rendering.RenderingPipeLine')
+
 --endregion
 
 return Love2DEngine

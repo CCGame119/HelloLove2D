@@ -8,19 +8,16 @@ local functor = require('libs.functor')
 
 ---@class Delegate:ClassType @C#委托模拟
 ---@field public isEmpty boolean
----@field private _funcs table<functor, functor>
+---@field private _funcs table<_xpcall, _xpcall>
 ---@field private _count number
 ---@field private deleg_name string
-local Delegate = {
-    _funcs = {},
-    _count = 0,
-    deleg_name = 'Delegate'
-}
-Delegate = Class.inheritsFrom('Delegate', Delegate)
+local Delegate = Class.inheritsFrom('Delegate', {deleg_name = 'Delegate'})
 
 ---@param func fun()
 ---@param obj any
 function Delegate:__ctor(func, obj)
+    self._count = 0
+    self._funcs = {}
     if nil ~= func then
         self:Add(func, obj)
     end
@@ -29,7 +26,7 @@ end
 ---@param deleg_name string
 ---@param t table @ 初始化列表
 function Delegate.newDelegate(deleg_name, t)
-    local delegate = Class.inheritsFrom('Delegate', t, Delegate)
+    local delegate = Class.inheritsFrom(deleg_name, t, Delegate)
     delegate.deleg_name = deleg_name
     delegate.__call = Delegate.__call
     return delegate
@@ -58,9 +55,16 @@ function Delegate:Remove(func, obj)
 end
 
 function Delegate:Invoke(...)
+    if self._count <= 0  then return nil end
+
+    local retTable
     for _, v in pairs(self._funcs) do
-        v(...)
+        retTable = {v(...)}
     end
+    if #retTable > 0 then
+        return unpack(retTable)
+    end
+    return nil
 end
 
 ---@generic T:Delegate

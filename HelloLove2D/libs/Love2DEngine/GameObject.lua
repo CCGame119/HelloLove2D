@@ -13,19 +13,16 @@ local Object = Love2DEngine.Object
 ---@class Love2DEngine.GameObject:Love2DEngine.Object
 ---@field public transform Love2DEngine.Transform
 ---@field public layer number
----@field private _active boolean
+---@field public active boolean
 ---@field private _components table<T, Love2DEngine.Component[]>
 local GameObject = Class.inheritsFrom('GameObject', nil, Object)
 
 --创建的游戏对象，建议都通过pool的方式获取，不允许私自创建
 ---@type table<string, Love2DEngine.GameObject[]>
-GameObject._gameObjects = {}
-
+GameObject._gameObjectsGroupByName = {}
 
 --- 回调：GameObject
 function GameObject:__ctor(...)
-    self._components = {}
-    self.transform = self:AddComponent(Transform)
     self:init(...)
 end
 
@@ -35,30 +32,36 @@ end
 ---@param name string
 ---@return T
 function GameObject.get(cls, name)
+    ---@type Love2DEngine.GameObject
     local gameObject = cls.pool:pop()
-    if GameObject._gameObjects[name] == nil then
-        GameObject._gameObjects[name] = {}
+    if GameObject._gameObjectsGroupByName[name] == nil then
+        GameObject._gameObjectsGroupByName[name] = {}
     end
-    table.insert(GameObject._gameObjects[name], gameObject)
+    table.insert(GameObject._gameObjectsGroupByName[name], gameObject)
     return gameObject:init(name)
 end
 
 ---@generic T : Love2DEngine.GameObject
 ---@param obj T
 function GameObject.recycle(cls, obj)
-    GameObject._gameObjects[obj.name] = nil
+    local group = GameObject._gameObjectsGroupByName[obj.name]
+    table.removeElement(group, obj)
     cls.pool:push(obj)
 end
 
 ---@param name string
 function GameObject:init(name)
-    self.name = name or self.name
+    self.name = name or self.name or 'GameObject'
+    self.active = true
+    self._components = {}
+    self.transform = self:AddComponent(Transform)
+    self.transform:SetParent()
     return self
 end
 
 ---@param active boolean
 function GameObject:SetActive(active)
-    self._active = active
+    self.active = active
 end
 
 ---@generic T:Love2DEngine.Component
@@ -83,10 +86,10 @@ end
 ---@param name string
 ---@return Love2DEngine.GameObject
 function GameObject.Find(name)
-    if GameObject._gameObjects[name] == nil then
+    if GameObject._gameObjectsGroupByName[name] == nil then
         return nil
     end
-    return GameObject._gameObjects[name][1]
+    return GameObject._gameObjectsGroupByName[name][1]
 end
 
 ---@generic T:Love2DEngine.Object

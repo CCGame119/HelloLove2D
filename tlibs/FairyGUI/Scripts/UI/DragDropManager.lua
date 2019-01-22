@@ -97,8 +97,8 @@ function DragDropManager:__dragEnd(evt)
 end
 
 
-local __get = Class.init_get(DragDropManager, true)
-local __set = Class.init_set(DragDropManager, true)
+local __get = Class.init_get(DragDropManager, false)
+local __set = Class.init_set(DragDropManager, false)
 
 ---@param self FairyGUI.DragDropManager
 __get.inst = function(self)

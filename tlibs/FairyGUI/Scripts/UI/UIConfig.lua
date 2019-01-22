@@ -11,6 +11,7 @@ local LuaBehavior = Love2DEngine.LuaBehaviour
 local Color = Love2DEngine.Color
 local Color32 = Love2DEngine.Color32
 
+local ScrollBarDisplayType = FairyGUI.ScrollBarDisplayType
 local UIPackage = FairyGUI.UIPackage
 
 ---@class FairyGUI.UIConfig.SoundLoader:Delegate @fun(url):FairyGUI.NAudioClip

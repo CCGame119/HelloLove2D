@@ -24,25 +24,35 @@ local Color32 = Love2DEngine.Color32
 ---@field private _pointer number
 ---@field private _offset number
 ---@field private _length number
----@field private _data byte[]
+---@field private _data string
 local ByteBuffer = Class.inheritsFrom('ByteBuffer')
+
+---获取数据的byte值
+---@param idx number
+function ByteBuffer:byte(idx)
+    return string.byte(self._data[idx])
+end
 
 ---@type byte[] @byte[8]
 ByteBuffer.temp = {0, 0, 0, 0, 0, 0, 0, 0}
 
----@param data byte[]
+---@param data string
 ---@param offset number @default: 0
 ---@param length number @default: -1
 function ByteBuffer:__ctor(data, offset, length)
+    offset = offset or 0
+    length = length or -1
+
     self._data = data
-    self._pointer = 0
+    self._pointer = 1
     self._offset = offset
     if length < 0 then
         self._length = #data - offset
     else
         self._length = length
-        self.littleEndian = false
     end
+
+    self.littleEndian = false
 end
 
 ---@param count number
@@ -54,9 +64,9 @@ end
 
 ---@return byte
 function ByteBuffer:ReadByte()
-    local b =  self._data[self._offset + self._pointer]
+    local b =  self:byte(self._offset + self._pointer)
     self._pointer = self._pointer + 1
-    return self._pointer
+    return b
 end
 
 ---@overload fun(count:number)
@@ -97,7 +107,7 @@ end
 
 ---@return boolean
 function ByteBuffer:ReadBool()
-    local result = self._data[self._offset + self._pointer] == 1
+    local result = self:byte(self._offset + self._pointer) == 1
     self._pointer = self._pointer + 1
     return result
 end
@@ -107,9 +117,9 @@ function ByteBuffer:ReadShort()
     local startIndex = self._offset + self._pointer
     self._pointer = self._pointer + 2
     if self.littleEndian then
-        return bor(self._data[startIndex], lshift(self._data[startIndex + 1], 8))
+        return bor(self:byte(startIndex), lshift(self:byte(startIndex + 1), 8))
     end
-    return bor(lshift(self._data[startIndex], 8), self._data[startIndex + 1])
+    return bor(lshift(self:byte(startIndex), 8), self:byte(startIndex + 1))
 end
 
 ByteBuffer.ReadUshort = ByteBuffer.ReadShort
@@ -119,10 +129,18 @@ function ByteBuffer:ReadInt()
     local i = self._offset + self._pointer
     self._pointer = self._pointer + 4
 
+    local ret = 0
     if self.littleEndian then
-        return bor(self._data[i], lshift(self._data[i + 1], 8), lshift(self._data[i + 2], 16), lshift(self._data[i + 3], 24))
+        ret = bor(self:byte(i),
+                lshift(self:byte(i + 1), 8),
+                lshift(self:byte(i + 2), 16),
+                lshift(self:byte(i + 3), 24))
     end
-    return bor(lshift(self._data[i], 24), lshift(self._data[i + 1], 16), lshift(self._data[i + 2], 8), self._data[i + 3])
+    ret = bor(lshift(self:byte(i), 24),
+              lshift(self:byte(i + 1), 16),
+              lshift(self:byte(i + 2), 8),
+                     self:byte(i + 3))
+    return ret
 end
 
 ByteBuffer.ReadUint = ByteBuffer.ReadInt
@@ -134,19 +152,25 @@ function ByteBuffer:ReadLong()
     self._pointer = self._pointer + 8
 
     if self.littleEndian then
-        return bor(self._data[i], lshift(self._data[i + 1], 8), lshift(self._data[i + 2], 16), lshift(self._data[i + 3], 24),
-                lshift(self._data[i + 4], 32), lshift(self._data[i + 5], 40), lshift(self._data[i + 6], 48), lshift(self._data[i + 7], 56))
+        return bor(self:byte(i), lshift(self:byte(i + 1), 8), lshift(self:byte(i + 2), 16), lshift(self:byte(i + 3), 24),
+                lshift(self:byte(i + 4), 32), lshift(self:byte(i + 5), 40), lshift(self:byte(i + 6), 48), lshift(self:byte(i + 7), 56))
     end
-    return bor(lshift(self._data[i], 56), lshift(self._data[i + 1], 48), lshift(self._data[i + 2], 40), lshift(self._data[i + 3], 32),
-            lshift(self._data[i + 4], 24), lshift(self._data[i + 5], 16), lshift(self._data[i + 6], 8), self._data[i + 7])
+    return bor(lshift(self:byte(i), 56), lshift(self:byte(i + 1), 48), lshift(self:byte(i + 2), 40), lshift(self:byte(i + 3), 32),
+            lshift(self:byte(i + 4), 24), lshift(self:byte(i + 5), 16), lshift(self:byte(i + 6), 8), self:byte(i + 7))
 end
 
 ByteBuffer.ReadDouble = ByteBuffer.ReadLong
 
 ---@return string
 function ByteBuffer:ReadString(len)
-    local bytes = self:ReadBytes(len)
-    return string.char(unpack(bytes))
+    if nil == len then
+        len = self:ReadUshort()
+    end
+    local i = self._offset + self._pointer
+    local j = i + len - 1
+    local str = self._data(i, j)
+    self._pointer = self._pointer + len
+    return str
 end
 
 ---@return string
@@ -158,7 +182,7 @@ function ByteBuffer:ReadS()
     if index == 65533 then
         return ''
     end
-    return self.stringTable[index]
+    return self.stringTable[index + 1]
 end
 
 ---@param val string
@@ -172,10 +196,10 @@ end
 ---@return Love2DEngine.Color32
 function ByteBuffer:ReadColor()
     local startIndex = self._offset + self._pointer
-    local r = self._data[startIndex]
-    local g = self._data[startIndex + 1]
-    local b = self._data[startIndex + 2]
-    local a = self._data[startIndex + 3]
+    local r = self:byte(startIndex)
+    local g = self:byte(startIndex + 1)
+    local b = self:byte(startIndex + 2)
+    local a = self:byte(startIndex + 3)
     self._pointer = self._pointer + 4
 
     return Color32(r, g, b, a)
@@ -187,10 +211,10 @@ end
 function ByteBuffer:Seek(indexTablePos, blockIndex)
     local tmp = self._pointer
     self._pointer = indexTablePos
-    local segCount = self._data[self._offset + self._pointer]
+    local segCount = self:byte(self._offset + self._pointer)
     self._pointer = self._pointer + 1
     if blockIndex < segCount then
-        local useShort = self._data[self._offset + self._pointer] == 1
+        local useShort = self:byte(self._offset + self._pointer) == 1
         self._pointer = self._pointer + 1
         local newPos
         if useShort then

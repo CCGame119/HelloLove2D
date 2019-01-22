@@ -6,6 +6,8 @@
 
 local Class = require('libs.Class')
 
+local Vector4 = Love2DEngine.Vector4
+
 local RelationType = FairyGUI.RelationType
 local EventCallback1 = FairyGUI.EventCallback1
 
@@ -34,6 +36,8 @@ local RelationItem = Class.inheritsFrom('RelationItem')
 
 ---@param owner FairyGUI.GObject
 function RelationItem:__ctor(owner)
+    self._targetData = Vector4.zero
+
     self._owner = owner
     self._defs = {}
 
@@ -504,7 +508,7 @@ end
 ---@param target FairyGUI.GObject
 function RelationItem:AddRefTarget(target)
     local _owner = self._owner
-    local _target = self.__target
+    local _target = self._target
     local _targetData = self._targetData
 
     if (target ~= _owner.parent) then

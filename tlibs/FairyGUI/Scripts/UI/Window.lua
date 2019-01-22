@@ -304,7 +304,7 @@ __set.contentPane = function(self, val)
         end
         self._contentPane = val
         if (self._contentPane ~= nil) then
-            self.gameObjectName = "Window - " + self._contentPane.gameObjectName
+            self.gameObjectName = "Window - " .. self._contentPane.gameObjectName
             self._contentPane.gameObjectName = "ContentPane"
 
             self:AddChild(self._contentPane)
