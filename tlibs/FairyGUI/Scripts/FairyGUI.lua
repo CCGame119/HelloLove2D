@@ -40,8 +40,13 @@ require('Core.HitTest.ColliderHitTest')
 require('Core.HitTest.BoxColliderHitTest')
 require('Core.HitTest.MeshColliderHitTest')
 
+---======================Core======================
+require('Core.NTexture')
+
 ---======================UI======================
 require('UI.EMRenderSupport')
+require('UI.AsyncCreationHelper')
+require('UI.UIPackage')
 
 ---======================Core.HitTest======================
 require('Core.BlendMode')

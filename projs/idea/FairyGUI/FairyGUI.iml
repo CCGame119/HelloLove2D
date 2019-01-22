@@ -8,5 +8,6 @@
     <content url="file://$MODULE_DIR$/../../../tlibs/FairyGUI/assets" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="love-11.1" level="project" />
   </component>
 </module>

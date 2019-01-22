@@ -31,6 +31,14 @@ local HideFlags = {
 HideFlags.DontSave = bor(HideFlags.DontUnloadUnusedAsset, HideFlags.DontSaveInBuild, HideFlags.DontSaveInEditor) -- 0x00000034
 HideFlags.HideAndDontSave = bor(HideFlags.DontSave, HideFlags.NotEditable, HideFlags.HideInHierarchy) -- 0x0000003D
 
+---@class Love2DEngine.FontStyle:enum
+local FontStyle = {
+    Normal = 0,
+    Bold = 1,
+    Italic = 2,
+    BoldAndItalic = 3,
+}
+
 Love2DEngine.RenderMode = RenderMode
 Love2DEngine.HideFlags = HideFlags
 --endregion

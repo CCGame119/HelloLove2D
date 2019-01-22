@@ -65,4 +65,9 @@ function love.conf(t)
     --在发行游戏时，把不需要的模块设置为false是一件值得鼓励的事。这将减少启动时间（稍微的）和减少内存占用（稍微的）。
     t.modules.joystick = false
     t.modules.physics = false
+
+    t.gammacorrect = true
+
+    t.window.resizable = true
+    t.window.highdpi = true
 end

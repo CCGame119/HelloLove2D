@@ -34,6 +34,9 @@ ByteBuffer.temp = {0, 0, 0, 0, 0, 0, 0, 0}
 ---@param offset number @default: 0
 ---@param length number @default: -1
 function ByteBuffer:__ctor(data, offset, length)
+    offset = offset or 0
+    length = length or -1
+
     self._data = data
     self._pointer = 0
     self._offset = offset

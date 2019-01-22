@@ -20,4 +20,7 @@ FairyGUI_Cases.callback0 = callback0
 
 require('test.FairyGUI.testTweenValue')
 
+FairyGUI.UIPackage.AddPackage('UI/Basics')
+require("test.FairyGUI.Window1")
+
 return FairyGUI_Cases

@@ -5,6 +5,7 @@ local GameMode = require('src.logic.GameMode')
 require('test.Love2DEngine.main')
 require('test.Love2D.main')
 require('test.FairyGUI.main')
+local GRoot = FairyGUI.GRoot
 
 mx, my = 0, 0
 
@@ -13,6 +14,8 @@ function love.load()
     GameMode:onLoad()
 
     love.testCase()
+
+    GRoot.inst:ShowWindow()
 end
 
 -- Updating

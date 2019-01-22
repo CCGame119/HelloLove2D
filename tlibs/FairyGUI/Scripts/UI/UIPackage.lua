@@ -34,7 +34,7 @@ local ShaderConfig = FairyGUI.ShaderConfig
 ---@class FairyGUI.UIPackage.CreateObjectCallback:Delegate @fun(result:FairyGUI.GObject):string
 local CreateObjectCallback = Delegate.newDelegate('CreateObjectCallback')
 
----@class FairyGUI.UIPackage.LoadResource:Delegate @fun(name:string, type:Love2DEngine.AssetType):FairyGUI.DestroyMethod|any
+---@class FairyGUI.UIPackage.LoadResource:Delegate @fun(name:string, extension:string, type:Love2DEngine.AssetType):FairyGUI.DestroyMethod|any
 local LoadResource = Delegate.newDelegate('LoadResource')
 
 ---@class FairyGUI.UIPackage.AtlasSprite:ClassType
@@ -95,8 +95,8 @@ function UIPackage.GetByName(name)
     return pkg
 end
 
-UIPackage._DefloadFuncDelegate = LoadResource.new(function(name, type)
-    return DestroyMethod.Unload, Resources.Load(name, type)
+UIPackage._DefloadFuncDelegate = LoadResource.new(function(name, extension, type)
+    return DestroyMethod.Unload, Resources.Load(name, extension, type)
 end)
 
 ---Add a UI package from a path relative to Unity Resources path.
@@ -117,7 +117,7 @@ function UIPackage.AddPackage(assetPath, loadFunc)
         error("FairyGUI: Cannot load ui package in '" .. assetPath .. "'")
     end
 
-    local buffer = ByteBuffer.new(asset.bytes)
+    local buffer = ByteBuffer.new(asset)
 
     local pkg = UIPackage.new()
     pkg._loadFunc = loadFunc
@@ -422,7 +422,7 @@ function UIPackage.SetStringsSource(source)
 end
 
 function UIPackage:LoadPackage(buffer, packageSource, assetNamePrefex)
-
+    -- TODO: UIPackage:LoadPackage(buffer, packageSource, assetNamePrefex)
 end
 
 ---@param p1 FairyGUI.PackageItem

@@ -59,7 +59,7 @@ end
 
 function Delegate:Invoke(...)
     for _, v in pairs(self._funcs) do
-        v(...)
+        return v(...)
     end
 end
 

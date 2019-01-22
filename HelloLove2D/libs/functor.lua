@@ -15,22 +15,29 @@ end
 local _xpcall = {}
 
 _xpcall.__call = function(self, ...)
+    local ret
     if jit then
         if nil == self.obj then
-            return xpcall(self.func, Debug.traceback or traceback, ...)
+            ret = { xpcall(self.func, Debug.traceback or traceback, ...) }
         else
-            return xpcall(self.func, Debug.traceback or traceback, self.obj, ...)
+            ret = { xpcall(self.func, Debug.traceback or traceback, self.obj, ...) }
         end
     else
         local args = {...}
 
         if nil == self.obj then
             local func = function() self.func(unpack(args)) end
-            return xpcall(func, traceback)
+            ret = { xpcall(func, traceback)}
         else
             local func = function() self.func(self.obj, unpack(args)) end
-            return xpcall(func, traceback)
+            ret = { xpcall(func, traceback) }
         end
+    end
+    if ret[1] then
+        table.remove(ret, 1)
+        return unpack(ret)
+    else
+        return nil
     end
 end
 
