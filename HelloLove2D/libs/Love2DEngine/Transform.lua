@@ -42,7 +42,7 @@ local Transform = Class.inheritsFrom('Transform', {
 function Transform:__ctor(...)
     self.childs = {}
     if Transform.root then
-        self:SetParent(Transform.root)
+        Transform.root:AddChild(self)
     end
 end
 
@@ -79,15 +79,24 @@ end
 ---@param parent Love2DEngine.Transform
 ---@param worldPositionStays boolean @default: true
 function Transform:SetParent(parent, worldPositionStays)
-    parent = parent or Transform.root
     local p = self.localPosition
     local s = self.localScale
     local q = self.localRotation
-    if self.parent then
-        self.parent:RemoveChild(self)
+    if self.parent ~= parent then
+        if self.parent then
+            self.parent:RemoveChild(self)
+        else
+            if parent then
+                Transform.root:RemoveChild(self)
+            end
+        end
+        self.parent = parent
+        if self.parent then
+            self.parent:AddChild(self)
+        else
+            Transform.root:AddChild(self)
+        end
     end
-    self.parent = parent
-    self.parent:AddChild(self)
     if not worldPositionStays then
         self.localPosition = p
         self.localScale = s

@@ -114,6 +114,15 @@ end
 
 ---@return number
 function ByteBuffer:ReadShort()
+    local val = self:ReadUshort()
+    if val <= short.maxval then
+        return val
+    end
+
+    return val - ushort.maxval - 1
+end
+
+function ByteBuffer:ReadUshort()
     local startIndex = self._offset + self._pointer
     self._pointer = self._pointer + 2
     if self.littleEndian then
@@ -121,8 +130,6 @@ function ByteBuffer:ReadShort()
     end
     return bor(lshift(self:byte(startIndex), 8), self:byte(startIndex + 1))
 end
-
-ByteBuffer.ReadUshort = ByteBuffer.ReadShort
 
 ---@return number
 function ByteBuffer:ReadInt()

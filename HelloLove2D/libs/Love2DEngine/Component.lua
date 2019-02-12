@@ -23,7 +23,7 @@ end
 
 --TODO: Love2DEngine.Component
 ---Component is a weak value table
-Component.__mode = 'v'
+--Component.__mode = 'v'
 
 local __get = Class.init_get(Component)
 local __set = Class.init_set(Component)

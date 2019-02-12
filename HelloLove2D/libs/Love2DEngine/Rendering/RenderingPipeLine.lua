@@ -9,11 +9,13 @@ local Class = require('libs.Class')
 local GameObject = Love2DEngine.GameObject
 local Transform = Love2DEngine.Transform
 local MeshRenderer = Love2DEngine.MeshRenderer
+local Time = Love2DEngine.Time
 
 ---@class Love2DEngine.RenderingPipeLine:ClassType
 local RenderingPipeLine = Class('RenderingPipeLine')
 
 function RenderingPipeLine.onDraw()
+    Time.frameCount = Time.frameCount + 1
     RenderingPipeLine.__onDrawHierarchy(Transform.root)
 end
 

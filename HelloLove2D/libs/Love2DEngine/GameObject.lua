@@ -6,15 +6,18 @@
 
 local Class = require('libs.Class')
 local Pool = require('libs.Pool')
+
 local Transform = Love2DEngine.Transform
 local Object = Love2DEngine.Object
+local LuaBehaviour = Love2DEngine.LuaBehaviour
 
 ---@generic T:Love2DEngine.Component
 ---@class Love2DEngine.GameObject:Love2DEngine.Object
 ---@field public transform Love2DEngine.Transform
 ---@field public layer number
 ---@field public active boolean
----@field private _components table<T, Love2DEngine.Component[]>
+---@field private _components table<string, Love2DEngine.Component[]>
+---@field private _luaBehaviours Love2DEngine.LuaBehaviour[]
 local GameObject = Class.inheritsFrom('GameObject', nil, Object)
 
 --创建的游戏对象，建议都通过pool的方式获取，不允许私自创建
@@ -54,8 +57,10 @@ function GameObject:init(name)
     self.name = name or self.name or 'GameObject'
     self.active = true
     self._components = {}
-    self.transform = self:AddComponent(Transform)
-    self.transform:SetParent()
+    self._luaBehaviours = {}
+    if self.transform == nil then
+        self.transform = self:AddComponent(Transform)
+    end
     return self
 end
 
@@ -68,9 +73,13 @@ end
 ---@param t T
 ---@return T
 function GameObject:AddComponent(t)
+    local clsName = t:clsName()
     local comp = t.new()
-    if self._components[t] == nil then self._components[t] = {} end
-    table.insert(self._components[t], comp)
+    if self._components[clsName] == nil then self._components[clsName] = {} end
+    table.insert(self._components[clsName], comp)
+    if comp:isa(LuaBehaviour) then
+        table.insert(self._luaBehaviours, comp)
+    end
     comp.gameObject = self
     return comp
 end
@@ -79,8 +88,9 @@ end
 ---@param t T
 ---@return T
 function GameObject:GetComponent(t)
-    if self._components[t] == nil then return nil end
-    return self._components[t][1]
+    local clsName = t:clsName()
+    if self._components[clsName] == nil then return nil end
+    return self._components[clsName][1]
 end
 
 ---@param name string

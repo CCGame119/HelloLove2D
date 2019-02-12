@@ -29,7 +29,9 @@ local setmetatable = setmetatable
 ---@field private _YMin number
 ---@field private _Width number
 ---@field private _Height number
-local Rect = Class.inheritsFrom('Rect')
+local Rect = Class.inheritsFrom('Rect', {
+    _XMin = 0, _YMin = 0, _Width = 0, _Height = 0,
+})
 
 --endregion
 

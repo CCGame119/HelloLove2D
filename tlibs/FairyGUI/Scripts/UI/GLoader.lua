@@ -71,7 +71,12 @@ local VertAlignType = FairyGUI.VertAlignType
 ---@field private _content FairyGUI.MovieClip
 ---@field private _errorSign FairyGUI.GObject
 ---@field private _content2 FairyGUI.GComponent
-local GLoader = Class.inheritsFrom('GLoader', nil, GObject, {IAnimationGear, IColorGear})
+local GLoader = Class.inheritsFrom('GLoader', {
+    _autoSize = false, _fill = FillType.None,
+    _shrinkOnly = false, _updatingLayout = false,
+    _contentWidth = 0, _contentHeight = 0,
+    _contentSourceWidth = 0, _contentSourceHeight = 0,
+}, GObject, {IAnimationGear, IColorGear})
 
 ---@type FairyGUI.GObjectPool
 GLoader.errorSignPool = nil

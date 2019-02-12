@@ -15,6 +15,7 @@ local Vector4 = Love2DEngine.Vector4
 local Rect = Love2DEngine.Rect
 local Debug = Love2DEngine.Debug
 local Time = Love2DEngine.Time
+local Application = Love2DEngine.Application
 
 local EventDispatcher = FairyGUI.EventDispatcher
 local EventListener = FairyGUI.EventListener
@@ -31,6 +32,7 @@ local Timers = FairyGUI.Timers
 local GObject = FairyGUI.GObject
 local Stage = FairyGUI.Stage
 local UpdateContext = FairyGUI.UpdateContext
+local Margin = FairyGUI.Margin
 
 ---@class FairyGUI.ScrollPane:FairyGUI.EventDispatcher
 ---@field public onScroll FairyGUI.EventListener @在滚动时派发该事件。
@@ -118,12 +120,25 @@ local UpdateContext = FairyGUI.UpdateContext
 ---@field private _owner FairyGUI.GComponent
 ---@field private _maskContainer FairyGUI.Container
 ---@field private _container FairyGUI.Container
----@field private _hzScrollBar GScrollBar
----@field private _vtScrollBar GScrollBar
+---@field private _hzScrollBar FairyGUI.GScrollBar
+---@field private _vtScrollBar FairyGUI.GScrollBar
 ---@field private _header FairyGUI.GComponent
 ---@field private _footer FairyGUI.GComponent
 ---@field private _pageController FairyGUI.Controller
-local ScrollPane = Class.inheritsFrom('ScrollPane', nil, EventDispatcher)
+local ScrollPane = Class.inheritsFrom('ScrollPane', {
+    _scrollType = ScrollType.Both, _scrollStep = 0, _mouseWheelStep = 0,
+    _bouncebackEffect = false, _touchEffect = false, _scrollBarDisplayAuto = false,
+    _vScrollNone = false, _hScrollNone = false, _needRefresh = false,
+    _refreshBarAxis = 0, _decelerationRate = 0,
+    _displayOnLeft = false, _snapToItem = false, _displayInDemand = false, _mouseWheelEnabled = false,
+    _softnessOnTopOrLeftSide = false, _pageMode = false, _inertiaDisabled = false, _maskDisabled = false,
+    _decelerationRate = 0, _xPos = 0, _yPos = 0,
+    _velocityScale = 0, _lastMoveTime = 0,
+    _isMouseMoved = false, _isHoldAreaDone = false,
+    _aniFlag = 0, _scrollBarVisible = false, _loop = 0,
+    _headerLockedSize = 0, _footerLockedSize = 0,
+    _tweening = 0
+}, EventDispatcher)
 
 ScrollPane._gestureFlag = 0
 ScrollPane.TWEEN_TIME_GO = 0.5  -- 调用SetPos(ani)时使用的缓动时间
@@ -132,6 +147,22 @@ ScrollPane.PULL_RATIO = 0.5  -- 下拉过顶或者上拉过底时允许超过的
 
 ---@param owner FairyGUI.GComponent
 function ScrollPane:__ctor(owner)
+    self._scrollBarMargin = Margin.zero
+
+    self._viewSize = Vector2.zero
+    self._contentSize = Vector2.zero
+    self._overlapSize = Vector2.zero
+    self._containerPos = Vector2.zero
+    self._beginTouchPos = Vector2.zero
+    self._lastTouchPos = Vector2.zero
+    self._lastTouchGlobalPos = Vector2.zero
+    self._velocity = Vector2.zero
+
+    self._tweenStart = Vector2.zero
+    self._tweenChange = Vector2.zero
+    self._tweenTime = Vector2.zero
+    self._tweenDuration = Vector2.zero
+
     self.onScroll = EventListener.new(self, "onScroll")
     self.onScrollEnd = EventListener.new(self, "onScrollEnd")
     self.onPullDownRelease = EventListener.new(self, "onPullDownRelease")
@@ -637,8 +668,8 @@ function ScrollPane:AdjustMaskContainer()
         mx = self._owner.margin.left
     end
     my = self._owner.margin.top
-    mx = mx + self._owner.self._alignOffset.x
-    my = my + self._owner.self._alignOffset.y
+    mx = mx + self._owner._alignOffset.x
+    my = my + self._owner._alignOffset.y
 
     self._maskContainer:SetXY(mx, my)
 end
@@ -677,13 +708,13 @@ function ScrollPane:SetSize(aWidth, aHeight)
     self._viewSize.x = aWidth
     self._viewSize.y = aHeight
     if (self._hzScrollBar ~= nil and not self._hScrollNone) then
-        self._viewSize.y = y - self._hzScrollBar.height
+        self._viewSize.y = self._viewSize.y - self._hzScrollBar.height
     end
     if (self._vtScrollBar ~= nil and not self._vScrollNone) then
-        self._viewSize.x = x - self._vtScrollBar.width
+        self._viewSize.x = self._viewSize.x - self._vtScrollBar.width
     end
-    self._viewSize.x = x - (self._owner.margin.left + self._owner.margin.right)
-    self._viewSize.y = y - (self._owner.margin.top + self._owner.margin.bottom)
+    self._viewSize.x = self._viewSize.x - (self._owner.margin.left + self._owner.margin.right)
+    self._viewSize.y = self._viewSize.y - (self._owner.margin.top + self._owner.margin.bottom)
 
     self._viewSize.x = math.max(1, self._viewSize.x)
     self._viewSize.y = math.max(1, self._viewSize.y)
@@ -825,7 +856,7 @@ function ScrollPane:HandleSizeChanged()
     end
 
     if (not self._maskDisabled) then
-        self._maskContainer.clipRect = Rect(-self._owner.self._alignOffset.x, -self._owner.self._alignOffset.y, self._viewSize.x, self._viewSize.y)
+        self._maskContainer.clipRect = Rect(-self._owner._alignOffset.x, -self._owner._alignOffset.y, self._viewSize.x, self._viewSize.y)
     end
 
     if (self._scrollType == ScrollType.Horizontal or self._scrollType == ScrollType.Both) then
@@ -849,9 +880,9 @@ function ScrollPane:HandleSizeChanged()
         max = max + self._footerLockedSize
     end
     if (self._refreshBarAxis == 0) then
-        self._container.SetXY(math.clamp(self._container.x, -max, self._headerLockedSize), math.clamp(self._container.y, -self._overlapSize.y, 0))
+        self._container:SetXY(math.clamp(self._container.x, -max, self._headerLockedSize), math.clamp(self._container.y, -self._overlapSize.y, 0))
     else
-        self._container.SetXY(math.clamp(self._container.x, -self._overlapSize.x, 0), math.clamp(self._container.y, -max, self._headerLockedSize))
+        self._container:SetXY(math.clamp(self._container.x, -self._overlapSize.x, 0), math.clamp(self._container.y, -max, self._headerLockedSize))
     end
 
     if (self._header ~= nil) then

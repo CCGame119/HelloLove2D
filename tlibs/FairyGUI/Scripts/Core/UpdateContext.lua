@@ -65,6 +65,7 @@ UpdateContext.OnEnd = EventCallback0.new()
 --endregion
 
 function UpdateContext:__ctor(...)
+    self.clipInfo = ClipInfo.new()
     self._clipStack = {}
     UpdateContext.frameId = 1
     self.ClipInfo = ClipInfo.new()

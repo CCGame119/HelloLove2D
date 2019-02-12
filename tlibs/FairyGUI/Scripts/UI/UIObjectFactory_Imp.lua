@@ -83,7 +83,7 @@ end
 ---@return FairyGUI.GObject
 function UIObjectFactory.NewObject(pi)
     local type = nil
-    if pi:isa(PackageItem) then
+    if Class.isa(pi, PackageItem) then
         if pi.extensionCreator ~= nil then
             Stats.LatestObjectCreation = Stats.LatestObjectCreation + 1
             return pi.extensionCreator()

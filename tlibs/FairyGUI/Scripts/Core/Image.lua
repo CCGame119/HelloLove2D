@@ -211,10 +211,10 @@ function Image:Rebuild()
     end
 
     if self._fillMethod ~= FillMethod.None then
-        self.graphics.DrawRectWithFillMethod(self._contentRect, uvRect, self._color,
+        self.graphics:DrawRectWithFillMethod(self._contentRect, uvRect, self._color,
                 self._fillMethod, self._fillAmount, self._fillOrigin, self._fillClockwise)
     elseif self._texture.width == self._contentRect.width and self._texture.height == self._contentRect.height then
-        self.graphics.DrawRect(self._contentRect, uvRect, self._color)
+        self.graphics:DrawRect(self._contentRect, uvRect, self._color)
     elseif self._scaleByTile then
         --如果纹理是repeat模式，而且单独占满一张纹理，那么可以用repeat的模式优化显示
         if self._texture.nativeTexture ~= nil and self._texture.nativeTexture.wrapMode == TextureWrapMode.Repeat

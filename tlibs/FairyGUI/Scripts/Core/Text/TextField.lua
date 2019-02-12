@@ -17,11 +17,10 @@ local HtmlParser = Utils.HtmlParser
 local DisplayObject = FairyGUI.DisplayObject
 local TextFormat = FairyGUI.TextFormat
 local UIContentScaler = FairyGUI.UIContentScaler
-local NGraphics = FairyGUI.NGraphics
 local InputTextField = FairyGUI.InputTextField
 local UIConfig = FairyGUI.UIConfig
 local FontManager = FairyGUI.FontManager
-local GlyphInfo = FairyGUI.GlyphInfo
+local GlyphInfo = FairyGUI.BaseFont.GlyphInfo
 local AutoSizeType = FairyGUI.AutoSizeType
 local VertAlignType = FairyGUI.VertAlignType
 local DynamicFont = FairyGUI.DynamicFont
@@ -120,6 +119,8 @@ TextField.BOLD_OFFSET = {
 }
 
 function TextField:__ctor()
+    DisplayObject.__ctor(self)
+
     self._touchDisabled = true
 
     self._textFormat = TextFormat.new()
@@ -135,7 +136,7 @@ function TextField:__ctor()
     self._lines = {}
 
     self:CreateGameObject("TextField")
-    self.graphics = NGraphics.new(self.gameObject)
+    self.graphics = FairyGUI.NGraphics.new(self.gameObject)
 end
 
 ---@param richTextField FairyGUI.RichTextField
@@ -192,7 +193,7 @@ end
 ---@param endLine number
 ---@param endCharX number
 ---@param clipped boolean
----@param resultRects Love2dEngine.Rect[]
+---@param resultRects Love2DEngine.Rect[]
 function TextField:GetLinesShape(startLine, startCharX, endLine, endCharX,
                                  clipped, resultRects)
     local line1 = self._lines[startLine]
@@ -656,7 +657,7 @@ __set.textFormat = function(self, val)
     self._textFormat = val
     local fontName = self._textFormat.font
     if string.isNullOrEmpty(fontName) then
-        fontName = UIConfig.defaultFont
+        fontName = FairyGUI.UIConfig.defaultFont
     end
     if self._font == nil or self._font.name ~= fontName then
         self._font = FontManager.GetFont(fontName)

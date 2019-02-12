@@ -3,6 +3,7 @@
 -- AUTHOR: ChenCY
 -- Date: 2018/9/26 13:17
 --
+local Class = require('libs.Class')
 
 local keyboard = love.keyboard
 local mouse = love.mouse
@@ -16,8 +17,8 @@ local TouchPhase = {
     Canceled = 4,
 }
 
----@class Input:table @虚拟摇杆
-local Input = {}
+---@class Love2DEngine.Input:ClassType @虚拟摇杆
+local Input = Class.inheritsFrom('Input')
 
 --- 获取摇杆水平和垂直输入比值
 ---@return number, number @rx: 水平输入比值，ry: 垂直输入比值
@@ -41,10 +42,28 @@ function Input.isFireKeyDown()
 end
 
 --- 重置按钮
-function Input:isResetDown()
+function Input.isResetDown()
     return keyboard.isDown('r')
+end
+
+---@param keyCode Love2DEngine.KeyCode
+function Input.GetKeyUp(keyCode)
+    return not keyboard.isDown()
+end
+
+---@param keyCode Love2DEngine.KeyCode
+function Input.GetKeyDown(keyCode)
+    return keyboard.isDown()
+end
+
+local __get = Class.init_get(Input, true)
+
+__get.touchCount = function(self)
+    local touches = love.touch.getTouches()
+    return #touches
 end
 
 Love2DEngine.TouchPhase = TouchPhase
 Love2DEngine.Input = Input
+setmetatable(Input, Input)
 return Input

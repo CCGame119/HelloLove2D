@@ -45,6 +45,7 @@ local NTexture = FairyGUI.NTexture
 local UIConfig = FairyGUI.UIConfig
 local UpdateContext = FairyGUI.UpdateContext
 local Stats = FairyGUI.Stats
+local StageEngine = FairyGUI.StageEngine
 --endregion
 
 ---@class FairyGUI.DisplayObject:FairyGUI.EventDispatcher
@@ -94,7 +95,7 @@ local Stats = FairyGUI.Stats
 ---@field public material Love2DEngine.Material
 ---@field public shader Love2DEngine.Shader
 ---@field public renderingOrder number
----@field public layer int
+---@field public layer number
 ---@field public isDisposed boolean
 ---@field public topmost FairyGUI.Container
 ---@field public stage FairyGUI.Stage
@@ -162,6 +163,7 @@ function DisplayObject:__ctor()
 
     self.onPaint = EventCallback0.new()
 
+    self.onClick = EventListener.new(self, 'onClick')
     self.onRightClick = EventListener.new(self, 'onRightClick')
     self.onTouchBegin = EventListener.new(self, 'onTouchBegin')
     self.onTouchMove = EventListener.new(self, 'onTouchMove')
@@ -606,7 +608,7 @@ end
 ---@param py number
 ---@param targetSpace FairyGUI.DisplayObject
 ---@param rect Love2DEngine.Rect
-function DisplayObject:TranformRectPoint(px, py, targetSpace, rect)
+function DisplayObject:TransformRectPoint(px, py, targetSpace, rect)
     local v = self.cachedTransform:TransformPoint(px, -py, 0)
     if targetSpace ~= nil then
         v = targetSpace.cachedTransform:InverseTransformPoint(v)
@@ -635,7 +637,7 @@ function DisplayObject:Update(context)
     if self.graphics ~= nil then
         self.graphics.alpha = context.alpha * self._alpha
         self.graphics.grayed = context.grayed or self._grayed
-        self.graphics:UPdateMaterial(context)
+        self.graphics:UpdateMaterial(context)
     end
 
     if self._paintingMode ~= 0 then
@@ -1061,7 +1063,7 @@ end
 __set.pivot = function(self, val)
     local _pivot = self._pivot
     local _contentRect = self._contentRect
-    local deltaPivot = Vector2()
+    local deltaPivot = Vector3.zero
     deltaPivot.x = (val.x - _pivot.x)*_contentRect.width
     deltaPivot.y = (-val.y + _pivot.y)*_contentRect.height
     local oldOffset = self._pivotOffset

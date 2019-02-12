@@ -7,6 +7,7 @@ require('test.Love2D.main')
 require('test.FairyGUI.main')
 local GRoot = FairyGUI.GRoot
 local RenderingPipeLine = Love2DEngine.RenderingPipeLine
+local LuaBehaviour = Love2DEngine.LuaBehaviour
 
 mx, my = 0, 0
 
@@ -36,14 +37,14 @@ function love.update(dt)
         FairyGUI_Cases.callback0:Invoke(dt)
     end
 
+    LuaBehaviour.UpdateBehaviours(dt)
     GameMode:onUpdate(dt)
 end
 
 -- 渲染颜色矩形.
 function love.draw()
-
-    GameMode:onDraw()
     RenderingPipeLine.onDraw()
+    GameMode:onDraw()
     Love2D_Cases.graphics_case.newText_cases()
 end
 

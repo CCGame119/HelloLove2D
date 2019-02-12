@@ -9,7 +9,7 @@ local Class = require('libs.Class')
 ---@class FairyGUI.IKeyBoard:ClassType
 ---@field public done boolean
 ---@field public supportsCaret boolean @是否支持在光标处输入。如果为true，GetInput返回的是在当前光标处需要插入的文本，如果为false，GetInput返回的是整个文本。
-local IKeyboard = Class.inheritsFrom('IKeyboard')
+local IKeyBoard = Class.inheritsFrom('IKeyboard')
 
 ---用户输入的文本。
 ---@return string

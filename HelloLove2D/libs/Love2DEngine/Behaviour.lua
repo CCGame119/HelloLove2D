@@ -9,9 +9,15 @@ local Class = require('libs.Class')
 local Component = Love2DEngine.Component
 
 ---@class Love2DEngine.Behaviour:Love2DEngine.Component
-local Behaviour = Class.inheritsFrom('Behaviour',  nil, Component)
+---@field public enabled boolean
+---@field public isActiveAndEnabled boolean
+local Behaviour = Class.inheritsFrom('Behaviour',  {
+    isActiveAndEnabled = false
+}, Component)
 
---TODO: Love2DEngine.Behaviour
+function Behaviour:__ctor()
+    self.enabled = true
+end
 
 Love2DEngine.Behaviour = Behaviour
 return Behaviour

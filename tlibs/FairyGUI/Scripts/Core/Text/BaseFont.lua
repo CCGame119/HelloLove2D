@@ -12,7 +12,7 @@ local TextFormat = FairyGUI.TextFormat
 local NTexture = FairyGUI.NTexture
 local PackageItem = FairyGUI.PackageItem
 
----@class FairyGUI.GlyphInfo:ClassType
+---@class FairyGUI.BaseFont.GlyphInfo:ClassType
 ---@field public vert Love2DEngine.Rect
 ---@field public uv Love2DEngine.Vector2[]
 ---@field public width number
@@ -20,7 +20,7 @@ local PackageItem = FairyGUI.PackageItem
 ---@field public channel number
 local GlyphInfo = Class.inheritsFrom('GlyphInfo')
 
-function GlyphInfo.__ctor()
+function GlyphInfo:__ctor()
     self.vert = Rect.zero
     self.uv = {Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero}
     self.width = 0
@@ -64,7 +64,7 @@ function BaseFont:GetGlyphSize(ch, width, height)
 end
 
 ---@param ch char
----@param glyph FairyGUI.GlyphInfo
+---@param glyph FairyGUI.BaseFont.GlyphInfo
 ---@return boolean
 function BaseFont:GetGlyph(ch, glyph)
     return false

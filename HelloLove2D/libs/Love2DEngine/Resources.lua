@@ -7,58 +7,22 @@
 local Class = require('libs.Class')
 
 local Debug = Love2DEngine.Debug
-
----@class Love2DEngine.AssetType:enum @ 资源类型
-local AssetType = {
-    image = 1,
-    sfx = 2,
-    shader = 3,
-    mesh = 4,
-    text = 5,
-    tex2d = 6,
-}
-
----==============AssetItem=================
----@class Love2DEngine.AssetItem:ClassType
----@field uri string @资源uri
----@field type number @资源类型
----@field obj userdata @资源类型
----@field refCount number @引用计数
----@field refTime number @最后一次被引用时间
-local AssetItem = Class.inheritsFrom('AssetItem')
-
-function AssetItem:__ctor(uri, type)
-    self.refCount = 0
-    self.refTime = 0
-    self.uri = uri
-    self.type = type
-    if AssetType.image == type then
-        self.obj = love.graphics.newImage(uri)
-    end
-end
-
-function AssetItem:retain()
-    self.refCount = self.refCount + 1
-    self.refTime = os.time()
-    return self.obj
-end
-
-function AssetItem:release()
-    self.refCount = self.refCount - 1
-end
+local AssetItem = Love2DEngine.AssetItem
+local AssetType = Love2DEngine.AssetType
+local Texture2D = Love2DEngine.Texture2D
 
 ---==============Resources=================
 ---@class Love2DEngine.Resources:ClassType
 local Resources = Class.inheritsFrom('Resources')
 
 ---@type table<string, Love2DEngine.AssetItem> 图片资源列表
-local imgs = {}
-Resources.imgs = imgs
+local AssetsPool = {}
+Resources.AssetsPool = AssetsPool
 
 ---@param uri string
----@return image
+---@return Love2DEngine.AssetItem
 function Resources.getImg(uri)
-    local img = imgs[uri]
+    local img = AssetsPool[uri]
     if nil == img then
         img = AssetItem.new(uri, AssetType.image)
     end
@@ -67,7 +31,7 @@ end
 
 ---@param uri string
 function Resources.returnImg(uri)
-    local img = imgs[uri]
+    local img = AssetsPool[uri]
     if nil ~= img then
         img:release()
     end
@@ -76,6 +40,7 @@ end
 ---@param name string
 ---@param extension string
 ---@param type Love2DEngine.AssetType
+---@return any
 function Resources.Load(uri, type)
     uri = "Assets/" .. uri
     if AssetType.text == type then
@@ -89,7 +54,7 @@ function Resources.Load(uri, type)
         file:close()
         return data, size
     elseif AssetType.tex2d == type then
-
+        return Texture2D.new(Resources.getImg(uri))
     end
 end
 
@@ -98,7 +63,5 @@ function Resources.UnloadAsset(assetToUnload)
     --TODO: Resources.UnloadAsset
 end
 
-Love2DEngine.AssetType = AssetType
-Love2DEngine.AssetItem = AssetItem
 Love2DEngine.Resources = Resources
 return Resources

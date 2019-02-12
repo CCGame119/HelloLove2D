@@ -16,7 +16,7 @@ local t = { x = 0, y = 0, speed = 0, uri = '', img = nil, __get={}}
 ---@field public y number @ 坐标y
 ---@field public speed number @ 速度
 ---@field public uri number @ 资源uri
----@field private img number @ 资源
+---@field private img Love2DEngine.AssetItem @ 资源
 ---@field private pool Pool @ 对象池
 local Sprite = Class.inheritsFrom('Sprite', t)
 
@@ -44,10 +44,9 @@ function Sprite:init(x, y, speed, uri)
     local old_uri = self.uri
     self.uri = uri or self.uri
     if self.img and old_uri ~= self.uri then
-        Resources.returnImg(old_uri)
+        self.img:release()
     end
     self.img = Resources.getImg(self.uri)
-    --self.img = graphics.newImage(self.uri)
     self:updateWH()
     return self
 end
@@ -55,15 +54,15 @@ end
 --- 渲染精灵
 function Sprite:onDraw()
     if self.img then
-        graphics.draw(self.img, self.x, self.y)
+        graphics.draw(self.img.obj, self.x, self.y)
     end
 end
 
 --- 更新宽高
 function Sprite:updateWH()
     if self.img then
-        self.w = self.img:getWidth()
-        self.h = self.img:getHeight()
+        self.w = self.img.width
+        self.h = self.img.height
     else
         self.w, self.h = 0, 0
     end

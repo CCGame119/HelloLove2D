@@ -45,7 +45,7 @@ Love2DEngine.HideFlags = HideFlags
 
 --region Love2DEngine 模块初始化
 require('libs.Love2DEngine.Debug')
-require('libs.Love2DEngine.Resources')
+require('libs.Love2DEngine.Time')
 require('libs.Love2DEngine.Application')
 
 require('libs.Love2DEngine.Color')
@@ -59,23 +59,32 @@ require('libs.Love2DEngine.Ray')
 require('libs.Love2DEngine.Matrix4x4')
 require('libs.Love2DEngine.Transform')
 
+require('libs.Love2DEngine.AssetItem')
 require('libs.Love2DEngine.Shader')
+require('libs.Love2DEngine.Material')
 require('libs.Love2DEngine.LayerMask')
 require('libs.Love2DEngine.TextureFormat')
 
+require('libs.Love2DEngine.Devices.KeyCode')
+require('libs.Love2DEngine.Devices.Screen')
+require('libs.Love2DEngine.Devices.Input')
+
 require('libs.Love2DEngine.Object')
+require('libs.Love2DEngine.Component')
+require('libs.Love2DEngine.Behaviour')
+require('libs.Love2DEngine.LuaBehaviour')
 require('libs.Love2DEngine.GameObject')
 require('libs.Love2DEngine.Texture2D')
 require('libs.Love2DEngine.Mesh')
 require('libs.Love2DEngine.MeshFilter')
 require('libs.Love2DEngine.Rendering.Rendering')
+require('libs.Love2DEngine.Rendering.Renderer')
 require('libs.Love2DEngine.Rendering.MeshRenderer')
 require('libs.Love2DEngine.Camera')
 require('libs.Love2DEngine.AudioClip')
 require('libs.Love2DEngine.AudioSource')
-require('libs.Love2DEngine.Devices.Screen')
-require('libs.Love2DEngine.Devices.Input')
 
+require('libs.Love2DEngine.Resources')
 require('libs.Love2DEngine.SceneManager')
 require('libs.Love2DEngine.Rendering.RenderingPipeLine')
 

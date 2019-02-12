@@ -97,7 +97,7 @@ end
 
 ---@return Love2DEngine.Texture2D
 function NTexture.CreateEmptyTexture()
-    local emptyTexture = Texture2D.new(1, 1, TextureFormat.RGB24, false)
+    local emptyTexture = Texture2D.new(1, 1, TextureFormat.RGB24)
     emptyTexture.name = 'White Texture'
     emptyTexture.hideFlags = DisplayOptions.hideFlags
     emptyTexture:SetPixel(0, 0, Color.white)

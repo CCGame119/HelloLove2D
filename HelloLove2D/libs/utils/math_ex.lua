@@ -76,3 +76,7 @@ math.minval = -2147483648
 short = {}
 short.maxval = 32767
 short.minval = -32768
+
+ushort = {}
+ushort.maxval = 65535
+ushort.minval = 0

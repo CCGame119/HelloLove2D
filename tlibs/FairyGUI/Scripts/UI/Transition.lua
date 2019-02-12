@@ -1025,7 +1025,7 @@ function Transition:ApplyValue(item)
             ---@type FairyGUI.TValue_Sound
             local value = item.value
             if (value.audioClip == nil) then
-                if (UIConfig.soundLoader == nil or value.sound:StartsWith(UIPackage.URL_PREFIX)) then
+                if (UIConfig.soundLoader == nil or value.sound:startsWith(UIPackage.URL_PREFIX)) then
                     value.audioClip = UIPackage.GetItemAssetByURL(value.sound)
                 else
                     value.audioClip = UIConfig.soundLoader(value.sound)

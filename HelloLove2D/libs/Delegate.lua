@@ -90,7 +90,7 @@ end
 local __get = Class.init_get(Delegate)
 
 __get.isEmpty = function(self)
-    return self.__count == 0
+    return self._count == 0
 end
 
 return Delegate

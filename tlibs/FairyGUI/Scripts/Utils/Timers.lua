@@ -24,7 +24,7 @@ local TimerCallback = Delegate.newDelegate('TimerCallback')
 ---@field private _toRemove FairyGUI.Anymous_T[]
 ---@field private _pool Pool<FairyGUI.Anymous_T>
 ---@field private _engine FairyGUI.TimersEngine
----@field private gameObject GameObject
+---@field private gameObject Love2DEngine.GameObject
 local Timers = Class.inheritsFrom('Timers')
 
 Timers.Repeat = 0
@@ -188,8 +188,8 @@ function Timers:Update()
 
     for i, v in ipairs(self._toRemove) do
         if v.deleted and v.callback ~= nil then
-            self:ReturnToPool(self._items[v.callback])
             self._items[v.callback] = nil
+            self:ReturnToPool(v)
         end
     end
     self._toRemove = {}

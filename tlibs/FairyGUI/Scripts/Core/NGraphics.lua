@@ -103,12 +103,19 @@ __set.enabled = function(self, val) self.meshRenderer.enabled = val end
 ---@field private _shader string
 ---@field private _material Love2DEngine.Material
 ---@field private _customMatarial boolean
----@field private _manager MaterialManager
+---@field private _manager FairyGUI.MaterialManager
 ---@field private _materialKeywords string[]
 ---@field private _alpha number
 ---@field private _alphaBackup number[] @透明度改变需要通过修改顶点颜色实现，但顶点颜色本身可能就带有透明度，所以这里要有一个备份
 ---@field private _stencilEraser FairyGUI.StencilEraser
-local NGraphics = Class.inheritsFrom('NGraphics')
+local NGraphics = Class.inheritsFrom('NGraphics', {
+    vertCount = 0,
+    grayed = false,
+    blendMode = BlendMode.Normal,
+    dontClip = false,
+    maskFrameId = 0,
+    _customMatarial = false,
+})
 
 --endregion
 
@@ -219,7 +226,7 @@ function NGraphics:UpdateMaterial(context)
     local nm = nil
     if not self._customMatarial then
         if self._manager ~= nil then
-            nm = self._manager.GetMaterial(self, context)
+            nm = self._manager:GetMaterial(self, context)
             self._material = nm.material
             if self._material ~= self.meshRenderer.sharedMaterial then
                 self.meshRenderer.sharedMaterial = self._material
@@ -393,8 +400,8 @@ end
 
 ---@param vertRect Love2DEngine.Rect
 ---@param uvRect Love2DEngine.Rect
----@param color Love2DEngine.C
-function NGraphics:DrawRect(vertRect, uvRect, color)
+---@param color Love2DEngine.Color
+function NGraphics:_DrawRect(vertRect, uvRect, color)
     --当四边形发生形变时，只用两个三角面表达会造成图形的变形较严重，这里做一个优化，自动增加更多的面
     if (self.vertexMatrix ~= nil) then
         self:Alloc(9)
@@ -431,12 +438,18 @@ function NGraphics:DrawRect(vertRect, uvRect, color)
     self:FillColors(color)
 end
 
+---@overload fun(vertRect:Love2DEngine.Rect, uvRect:Love2DEngine.Rect, color:Love2DEngine.Color)
 ---@param vertRect Love2DEngine.Rect
 ---@param uvRect Love2DEngine.Rect
 ---@param lineSize number
 ---@param lineColor Love2DEngine.Color
 ---@param fillColor Love2DEngine.Color
 function NGraphics:DrawRect(vertRect, uvRect, lineSize, lineColor, fillColor)
+    if Class.isa(lineSize, Color) then
+        self:_DrawRect(vertRect, uvRect, lineSize)
+        return
+    end
+
     if lineSize == 0 then
         self:DrawRect(vertRect, uvRect, fillColor)
     else
@@ -815,7 +828,7 @@ end
 
 function NGraphics:ClearMesh()
     if self.vertCount > 0 then
-        vertCount = 0
+        self.vertCount = 0
         self.mesh:Clear()
         self.meshFilter.mesh = self.mesh
     end

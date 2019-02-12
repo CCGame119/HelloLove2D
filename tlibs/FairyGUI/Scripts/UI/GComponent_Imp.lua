@@ -10,6 +10,8 @@ local Rect = Love2DEngine.Rect
 local Vector2 = Love2DEngine.Vector2
 local Vector4 = Love2DEngine.Vector4
 
+local ToolSet = Utils.ToolSet
+
 local ChildrenRenderOrder = FairyGUI.ChildrenRenderOrder
 local Margin = FairyGUI.Margin
 local EventCallback0 = FairyGUI.EventCallback0
@@ -23,7 +25,6 @@ local PixelHitTest = FairyGUI.PixelHitTest
 local TranslationHelper = FairyGUI.TranslationHelper
 local UIPackage = FairyGUI.UIPackage
 local UIObjectFactory = FairyGUI.UIObjectFactory
-local ToolSet = FairyGUI.ToolSet
 local ObjectType = FairyGUI.ObjectType
 local Controller = FairyGUI.Controller
 local GGroup = FairyGUI.GGroup
@@ -65,10 +66,13 @@ local GComponent = FairyGUI.GComponent
 function GComponent:__ctor()
     GObject.__ctor(self)
 
+    self._alignOffset = Vector2.zero
+    self._clipSoftness = Vector2.zero
+
     self._children = {}
     self._controllers = {}
     self._transitions = {}
-    self._margin = Margin.new()
+    self._margin = Margin.zero
     self._buildDelegate = EventCallback0.new(self.BuildNativeDisplayList, self)
 
     self.onDrop = EventListener.new(self, "onDrop")
@@ -527,7 +531,7 @@ function GComponent:ChildStateChanged(child)
     local cnt = #self._children
 
     if child:isa(GGroup) then
-        for i, g in ipairs(self._children) do
+        for i, g in pairs(self._children) do
             if (g.group == child) then
                 self:ChildStateChanged(g)
             end
@@ -542,9 +546,8 @@ function GComponent:ChildStateChanged(child)
     if (child.internalVisible) then
         if (child.displayObject.parent == nil) then
             if (self._childrenRenderOrder == ChildrenRenderOrder.Ascent) then
-                local index = 0
-                for i, g in ipairs(self._children) do
-
+                local index = 1
+                for i, g in pairs(self._children) do
                     if (g == child) then
                         break
                     end
@@ -555,7 +558,7 @@ function GComponent:ChildStateChanged(child)
                 end
                 self.container:AddChildAt(child.displayObject, index)
             elseif (self._childrenRenderOrder == ChildrenRenderOrder.Descent) then
-                local index = 0
+                local index = 1
                 for i = cnt, 1, -1 do
                     local g = self._children[i]
                     if (g == child) then
@@ -1083,7 +1086,7 @@ function GComponent:ConstructFromResource(objectPool, poolIndex)
 
         child = self._children[i]
         child:Setup_AfterAdd(buffer, buffer.position)
-        child.self.underConstruct = false
+        child.underConstruct = false
         if (child.displayObject ~= nil) then
             ToolSet.SetParent(child.displayObject.cachedTransform, self.displayObject.cachedTransform)
         end

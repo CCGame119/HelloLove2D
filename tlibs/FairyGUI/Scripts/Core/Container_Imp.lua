@@ -48,6 +48,8 @@ local Container = FairyGUI.Container
 function Container:__ctor(attachTarget)
     DisplayObject.__ctor(self)
 
+    self._clipRect = Rect.zero
+
     if nil == attachTarget then
         self:CreateGameObject('Container')
         self:Init()
@@ -171,9 +173,9 @@ function Container:RemoveChildAt(index, dispose)
         local child = self._children[index]
         if self.stage ~= nil and not child._disposed then
             if child:isa(Container) then
-                child.onRemoveFromStage:BroadcastCall()
+                child.onRemovedFromStage:BroadcastCall()
             else
-                child.onRemoveFromStage:Call()
+                child.onRemovedFromStage:Call()
             end
         end
         table.remove(self._children, index)
@@ -484,7 +486,7 @@ end
 function Container:Update(context)
     if self._disabled then return end
 
-    DisplayObject.Update(context)
+    DisplayObject.Update(self, context)
 
     if self._cacheAsBitmap and self._paintingMode ~= 0 and self._paintingFlag == 2 then
         if not self.onUpdate.isEmpty then

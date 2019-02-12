@@ -221,8 +221,8 @@ function Controller:Setup(buffer)
 end
 
 
-local __get = Class.init_get('Controller')
-local __set = Class.init_set('Controller')
+local __get = Class.init_get(Controller)
+local __set = Class.init_set(Controller)
 
 ---@param self FairyGUI.Controller
 __get.selectedIndex = function(self) return self._selectedIndex end
@@ -248,14 +248,14 @@ __set.selectedIndex = function(self, val)
 end
 
 ---@param self FairyGUI.Controller
-__get.selectedPage = function(self) return
+__get.selectedPage = function(self)
     return self._pageNames[self._selectedIndex]
 end
 
 ---@param self FairyGUI.Controller
 ---@param val string
 __set.selectedPage = function(self, val)
-    local i = self._pageNames:indexOf(val)
+    local i = table.indexOf(self._pageNames, val)
     if i == -1 then
         i = 1
     end
@@ -263,12 +263,12 @@ __set.selectedPage = function(self, val)
 end
 
 ---@param self FairyGUI.Controller
-__get.previousPage = function(self) return
+__get.previousPage = function(self)
     return self._pageNames[self._previousIndex]
 end
 
 ---@param self FairyGUI.Controller
-__get.pageCount = function(self) return
+__get.pageCount = function(self)
     return #self._pageIds
 end
 

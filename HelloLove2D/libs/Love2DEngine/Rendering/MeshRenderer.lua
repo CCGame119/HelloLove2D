@@ -18,7 +18,7 @@ function MeshRenderer:OnRender()
     local transform = go.transform
     if go and transform then
         local pos = transform.position
-        graphics.draw(self.img, pos.x, pos.y)
+        --graphics.draw(self.img, pos.x, pos.y)
     end
 end
 

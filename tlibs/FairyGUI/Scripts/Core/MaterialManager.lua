@@ -62,6 +62,8 @@ function MaterialManager:GetMaterial(graphics, context)
         else
             if context.clipInfo.soft then
                 collectionIndex = graphics.grayed and 6 or 5
+            else
+                collectionIndex = graphics.grayed and 4 or 3
             end
         end
     else
@@ -108,7 +110,7 @@ function MaterialManager:GetMaterial(graphics, context)
         end
     else
         result = self:CreateMaterial()
-        local keywords = MaterialManager.internalKeywordCount[collectionIndex]
+        local keywords = MaterialManager.internalKeywords[collectionIndex]
         if keywords ~=nil then
             cnt = #keywords
             for i = 1, cnt do
@@ -118,11 +120,13 @@ function MaterialManager:GetMaterial(graphics, context)
         result.frameId = frameId
         result.clipId = clipId
         result.blendMode = blendMode
-        if BlendModeUtils.Factors[result.blendMode].pma then
+        if BlendModeUtils.Factors[result.blendMode + 1].pma then
             result.material:EnableKeyword("COLOR_FILTER")
         end
         table.insert(items, result)
     end
+
+    return result
 end
 
 function MaterialManager:CreateMaterial()

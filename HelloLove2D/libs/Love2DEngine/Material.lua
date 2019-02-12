@@ -19,6 +19,18 @@ function Material:SetTexture(id, value)
     --TODO: Material:SetTexture
 end
 
+---@param name string
+---@param value Love2DEngine.Vector4
+function Material:SetVector(name, value)
+    --TODO: Material:SetVector
+end
+
+---@param name string
+---@param value number
+function Material:SetInt(name, value)
+    --TODO: Material:SetInt
+end
+
 ---@param keyword string
 function Material:EnableKeyword(keyword)
     --TODO: Material:EnableKeyword

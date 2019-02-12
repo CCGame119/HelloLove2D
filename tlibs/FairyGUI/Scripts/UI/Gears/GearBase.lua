@@ -47,7 +47,7 @@ function GearBase:Setup(buffer)
     self._controller = self._owner.parent:GetControllerAt(buffer:ReadShort())
     self:Init()
 
-    if self:isa(GearDisplay) then
+    if self:isa(FairyGUI.GearDisplay) then
         local cnt = buffer:ReadShort()
         local pages = {}
         for i = 1, cnt do

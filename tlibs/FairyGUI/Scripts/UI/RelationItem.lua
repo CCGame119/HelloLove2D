@@ -140,13 +140,13 @@ function RelationItem:ApplyOnSelfSizeChanged(dWidth, dHeight, applyPivot)
         return
     end
 
-    local type = info.type
     local _owner = self._owner
 
     local ox = _owner.x
     local oy = _owner.y
 
     for i, info in ipairs(self._defs) do
+        local type = info.type
         if type == RelationType.Center_Center then
             _owner.x = _owner.x - (0.5 - (applyPivot and _owner.pivotX or 0)) * dWidth
         elseif type == RelationType.Right_Center or
@@ -227,7 +227,7 @@ end
 ---@param info FairyGUI.RelationDef
 function RelationItem:ApplyOnSizeChanged(info)
     local _owner = self._owner
-    local _target = self.__target
+    local _target = self._target
     local _targetData = self._targetData
 
 
@@ -590,7 +590,7 @@ function RelationItem:__targetSizeChanged(context)
     local ow = _owner._rawWidth
     local oh = _owner._rawHeight
 
-    local cnt = _defs.Count
+    local cnt = self._defs.Count
     for i, info in ipairs(self._defs) do
         self:ApplyOnSizeChanged(info)
     end

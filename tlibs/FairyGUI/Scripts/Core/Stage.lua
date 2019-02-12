@@ -18,6 +18,7 @@ local LayerMask = Love2DEngine.LayerMask
 local GameObject = Love2DEngine.GameObject
 local Object = Love2DEngine.Object
 local Vector3 = Love2DEngine.Vector3
+local Vector2 = Love2DEngine.Vector2
 local Screen = Love2DEngine.Screen
 local AudioSource = Love2DEngine.AudioSource
 local RaycastHit = Love2DEngine.RaycastHit
@@ -80,7 +81,7 @@ local TouchInfo = Class.inheritsFrom('TouchInfo')
 ---@field public focused FairyGUI.DisplayObject
 ---@field public touchPosition Love2DEngine.Vector2
 ---@field public touchCount number
----@field public keyboard FairyGUI.IKeyboard
+---@field public keyboard FairyGUI.IKeyBoard
 ---@field private _touchTarget FairyGUI.DisplayObject
 ---@field private _focused FairyGUI.DisplayObject
 ---@field private _lastInput FairyGUI.InputTextField
@@ -99,13 +100,17 @@ local TouchInfo = Class.inheritsFrom('TouchInfo')
 ---@field private _audio Love2DEngine.AudioSource
 ---@field private _toCollectTextures FairyGUI.NTexture[]
 ---@field private _keyboardInput boolean
-local Stage = Class.inheritsFrom('Stage', nil, Container)
+local Stage = Class.inheritsFrom('Stage', {
+    _touchCount = 0,
+    _frameGotHitTarget = 0, _frameGotTouchPosition = 0,
+    _customInput = 0, _customInputButtonDown = false,
+}, Container)
 --endregion
 
 --region FairyGUI.Stage 实现
 
 Stage._touchScreen = false
----@type FairyGUI.IKeyboard
+---@type FairyGUI.IKeyBoard
 Stage._keyboard = nil
 ---@type FairyGUI.Stage
 Stage._inst = nil
@@ -123,6 +128,10 @@ end
 
 function Stage:__ctor()
     Container.__ctor(self)
+
+    self._touchPosition = Vector2.zero
+    self._customInputPos = Vector2.zero
+
     self._inst = self
     self.soundVolume = 1
 
@@ -355,7 +364,7 @@ function Stage:GetHitTarget()
 
     if (self._customInput) then
         local pos = self._customInputPos
-        pos.y = stageHeight - pos.y
+        pos.y = self.stageHeight - pos.y
 
         local touch = self._touches[1]
         self._touchTarget = self:HitTest(pos, true)
@@ -475,7 +484,7 @@ function Stage:HandleEvents()
         self:HandleMouseEvents()
     end
 
-    if self._focused:isa(FairyGUI.InputTextField) then
+    if Class.isa(self._focused, FairyGUI.InputTextField) then
         self:HandleTextInput()
     end
 end
@@ -530,7 +539,7 @@ end
 
 function Stage:HandleCustomInput()
     local pos = self._customInputPos
-    pos.y = stageHeight - pos.y
+    pos.y = self.stageHeight - pos.y
     local touch = self._touches[1]
 
     if (touch.x ~= pos.x or touch.y ~= pos.y) then
@@ -692,7 +701,7 @@ function Stage:HandleRollOver(touch)
     element = touch.target
     local i
     while (element ~= nil) do
-        i = self._rollOutChain:indexOf(element)
+        i = table.indexOf(self._rollOutChain, element)
         if (i ~= -1) then
             self._rollOutChain:removeRange(i)
             break
@@ -810,7 +819,7 @@ end
 
 ---@param texture FairyGUI.NTexture
 function Stage:MonitorTexture(texture)
-    if (self._toCollectTextures:indexOf(texture) == -1) then
+    if (table.indexOf(self._toCollectTextures, texture) == -1) then
         table.insert(self._toCollectTextures, texture)
     end
 end

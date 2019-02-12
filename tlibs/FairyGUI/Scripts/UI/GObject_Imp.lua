@@ -537,7 +537,7 @@ function GObject:HandleControllerChanged(c)
     self._handlingController = true
     for i, gear in pairs(self._gears) do
         if (gear ~= nil and gear.controller == c) then
-            gear.Apply()
+            gear:Apply()
         end
     end
     self._handlingController = false
@@ -1456,7 +1456,7 @@ end
 ---@param self FairyGUI.GObject
 __get.resourceURL = function(self)
     if self.packageItem ~= nil then
-        return UIPackage.URL_PREFIX + self.packageItem.owner.id + self.packageItem.id
+        return UIPackage.URL_PREFIX .. self.packageItem.owner.id .. self.packageItem.id
     end
     return nil
 end

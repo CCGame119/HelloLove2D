@@ -42,7 +42,7 @@ end
 ---@return FairyGUI.BaseFont
 function FontManager.GetFont(name)
     local ret
-    if (name.StartsWith(UIPackage.URL_PREFIX)) then
+    if (name:startsWith(UIPackage.URL_PREFIX)) then
         ret = UIPackage.GetItemAssetByURL(name)
         if (ret ~= nil) then
             return ret

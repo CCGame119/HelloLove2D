@@ -4,14 +4,15 @@
 -- Date: 2018/10/17 10:08
 --
 
----@class Love2DEngine.TextureFormat:enum
+---@class Love2DEngine.TextureFormat:enums
 local TextureFormat = {
-    Alpha8 = 1,
-    ARGB4444 = 2,
+    Normal = 'normal',
+    Alpha8 = 'r8',
+    ARGB4444 = 'rgba4',
     RGB24 = 3,
-    RGBA32 = 4,
-    ARGB32 = 5,
-    RGB565 = 7,
+    RGBA32 = 'rgba8',
+    ARGB32 = 'rgba8',
+    RGB565 = 'rgb565',
     R16 = 9,
     DXT1 = 10, -- 0x0000000A
     DXT5 = 12, -- 0x0000000C

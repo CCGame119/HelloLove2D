@@ -9,6 +9,7 @@
 ---@class namespace:table @名称空间
 ---@class byte:number @字节类型
 ---@class enum:table<string,number> @枚举类型
+---@class enums:table<string,string> @枚举类型
 ---@class char:string
 
 ---@class size:table
