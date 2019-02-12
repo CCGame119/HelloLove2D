@@ -10,10 +10,7 @@ local Vector3 = Love2DEngine.Vector3
 local Rect = Love2DEngine.Rect
 local Screen = Love2DEngine.Screen
 
-local EventDispatcher = FairyGUI.EventDispatcher
 local EventListener = FairyGUI.EventListener
-local GComponent = FairyGUI.GComponent
-local GearBase = FairyGUI.GearBase
 local Relations = FairyGUI.Relations
 local GList = FairyGUI.GList
 local GGroup = FairyGUI.GGroup
@@ -279,7 +276,7 @@ end
 ---Set the object in middle of the parent or GRoot if the parent is not set.
 ---@param restraint boolean @default false
 function GObject:Center(restraint)
-    ---@type GComponent
+    ---@type FairyGUI.GComponent
     local r
     if (self.parent ~= nil) then
         r = self.parent
@@ -993,65 +990,65 @@ end
 --endregion
 
 --region Tween Helpers
----@param endValue Vector2
+---@param endValue Love2DEngine.Vector2
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenMove(endValue, duration)
     return GTween.To(self.xy, endValue, duration):SetTarget(self, TweenPropType.XY)
 end
 
 ---@param endValue number
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenMoveX(endValue, duration)
     return GTween.To(self._x, endValue, duration):SetTarget(self, TweenPropType.X)
 end
 
 ---@param endValue number
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenMoveY(endValue, duration)
     return GTween.To(self._y, endValue, duration):SetTarget(self, TweenPropType.Y)
 end
 
----@param endValue Vector2
+---@param endValue Love2DEngine.Vector2
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenScale(endValue, duration)
     return GTween.To(self.scale, endValue, duration):SetTarget(self, TweenPropType.Scale)
 end
 
 ---@param endValue number
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenScaleX(endValue, duration)
     return GTween.To(self._scaleX, endValue, duration):SetTarget(self, TweenPropType.ScaleX)
 end
 
 ---@param endValue number
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenScaleY(endValue, duration)
     return GTween.To(self._scaleY, endValue, duration):SetTarget(self, TweenPropType.ScaleY)
 end
 
----@param endValue Vector2
+---@param endValue Love2DEngine.Vector2
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenResize(endValue, duration)
     return GTween.To(self.size, endValue, duration):SetTarget(self, TweenPropType.Size)
 end
 
 ---@param endValue number
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenFade(endValue, duration)
     return GTween.To(self._alpha, endValue, duration):SetTarget(self, TweenPropType.Alpha)
 end
 
 ---@param endValue number
 ---@param duration number
----@return GTweener
+---@return FairyGUI.GTweener
 function GObject:TweenRotate(endValue, duration)
     return GTween.To(self._rotation, endValue, duration):SetTarget(self, TweenPropType.Rotation)
 end

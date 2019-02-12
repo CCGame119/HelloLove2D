@@ -33,7 +33,7 @@ local whitespace = {[0x9]=1, [0xA]=1, [0xB]=1, [0xC]=1, [0xD]=1, [0x20]=1, [0x85
 ---@param ch char
 ---@return boolean
 function string.isSpace(ch)
-    local ret = whitespace[string.char(ch)]
+    local ret = whitespace[string.byte(ch)]
     return ret == 1
 end
 

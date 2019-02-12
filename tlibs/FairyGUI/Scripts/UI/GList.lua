@@ -1814,7 +1814,7 @@ function GList:HandleAlign(contentWidth, contentHeight)
         end
     end
 
-    if (contentWidth < self.self.viewWidth) then
+    if (contentWidth < self.viewWidth) then
         if (self._align == AlignType.Center) then
             newOffset.x = math.floor((self.viewWidth - contentWidth) / 2)
         elseif (self._align == AlignType.Right) then
@@ -1838,7 +1838,6 @@ function GList:UpdateBounds()
     end
 
     local cnt = #self._children
-    local i
     local j = 0
     local child
     local curX = 0

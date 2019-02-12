@@ -608,7 +608,7 @@ function Container:DoFairyBatching()
     local cnt = #self._descendants
 
     ---@type number
-    local i, j, k, m
+    local k, m
     local curMat, testMat, lastMat -- object
     ---@type FairyGUI.DisplayObject
     local current, test
@@ -634,6 +634,7 @@ function Container:DoFairyBatching()
                     if lastMat ~= testMat then
                         lastMat = testMat
                         m = j + 1
+                        m = math.min(m, cnt)
                     end
 
                     if curMat == testMat then
@@ -686,11 +687,11 @@ function Container:CollectChildren(initiator, outlineChanged)
                 end
             elseif child ~= initiator._mask then
                 if outlineChanged or child._outlineChanged then
-                    local rect = container:GetBounds(initiator)
-                    container._internal_bounds[1] = rect.xMin
-                    container._internal_bounds[2] = rect.yMin
-                    container._internal_bounds[3] = rect.xMax
-                    container._internal_bounds[4] = rect.yMax
+                    local rect = child:GetBounds(initiator)
+                    child._internal_bounds[1] = rect.xMin
+                    child._internal_bounds[2] = rect.yMin
+                    child._internal_bounds[3] = rect.xMax
+                    child._internal_bounds[4] = rect.yMax
                 end
                 table.insert(initiator._descendants, child)
             end

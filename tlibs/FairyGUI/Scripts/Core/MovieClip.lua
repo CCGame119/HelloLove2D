@@ -46,7 +46,15 @@ local Frame = Class.inheritsFrom('Frame')
 ---@field private _repeatedCount number
 ---@field private _displayFrame number
 ---@field private _timerDelegate FairyGUI.TimerCallback
-local MovieClip = Class.inheritsFrom('MovieClip', nil, Image)
+local MovieClip = Class.inheritsFrom('MovieClip', {
+    swing = false,
+    repeatDelay = 0,
+    frameCount = 0,
+    _frame = 0,
+    _playing = false,
+    _start = 0, _end = 0, _times = 0, _endAt = 0, _status = 0, _frameElapsed = 0, _reversed = false,
+    _repeatedCount = 0, _displayFrame = 0
+}, Image)
 
 function MovieClip:__ctor()
     Image.__ctor(self)

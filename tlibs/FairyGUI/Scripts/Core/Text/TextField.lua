@@ -9,6 +9,7 @@ require('Utils.Html.HtmlElement')
 
 local Color = Love2DEngine.Color
 local Rect = Love2DEngine.Rect
+local Vector2 = Love2DEngine.Vector2
 
 local ToolSet = Utils.ToolSet
 local HtmlElementType = Utils.HtmlElementType
@@ -35,12 +36,23 @@ local RTLSupport = FairyGUI.RTLSupport
 ---@field public charCount number @行包括的字符个数
 ---@field public y number @行的y轴位置
 ---@field public y2 number @行的y轴位置的备份
-local LineInfo = Class.inheritsFrom('LineInfo')
+local LineInfo = Class.inheritsFrom('LineInfo', {
+    width = 0, height = 0,
+    textHeight = 0,
+    charIndex = 0, charCount = 0,
+    y = 0, y2 = 0
+})
+
+function LineInfo:__ctor()
+
+end
 
 LineInfo.pool = {}
 
 ---@return FairyGUI.TextField.LineInfo
-function LineInfo.Borrow() end
+function LineInfo.Borrow()
+    return LineInfo.new()
+end
 
 ---@param value FairyGUI.TextField.LineInfo
 function LineInfo.Return(value)
@@ -103,7 +115,15 @@ local CharPosition = Class.inheritsFrom('CharPosition')
 ---@field private _renderScale number
 ---@field private _parsedText string
 ---@field private _richTextField FairyGUI.RichTextField
-local TextField = Class.inheritsFrom('TextField', nil, DisplayObject)
+local TextField = Class.inheritsFrom('TextField', {
+    _verticalAlign = VertAlignType.Top,
+    _input = false,
+    _autoSize = AutoSizeType.None,
+    _wordWrap = false, _singleLine = false, _html = false, _rtl = false,
+    _stroke = 0,
+    _textWidth = 0, _textHeight = 0, _minHeight = 0,
+    _textChanged = false, _yOffset = 0
+}, DisplayObject)
 
 TextField.GUTTER_X = 2
 TextField.GUTTER_Y = 2
@@ -120,6 +140,8 @@ TextField.BOLD_OFFSET = {
 
 function TextField:__ctor()
     DisplayObject.__ctor(self)
+
+    self._shadowOffset = Vector2.zero
 
     self._touchDisabled = true
 

@@ -5,7 +5,6 @@
 --
 
 local Class = require('libs.Class')
-local Delegate = require('libs.Delegate')
 
 local UIPackage = FairyGUI.UIPackage
 local Stats = FairyGUI.Stats
@@ -14,6 +13,8 @@ local ObjectType = FairyGUI.ObjectType
 
 ---@class FairyGUI.UIObjectFactory:ClassType
 local UIObjectFactory = FairyGUI.UIObjectFactory
+local GComponentCreator = UIObjectFactory.GComponentCreator
+local GLoaderCreator = UIObjectFactory.GLoaderCreator
 
 ---@type table<string, FairyGUI.UIObjectFactory.GComponentCreator>
 UIObjectFactory.packageItemExtensions = {}
@@ -28,7 +29,7 @@ UIObjectFactory.defaultCreators = {}
 ---@param url string
 ---@param type ClassType
 function UIObjectFactory.SetPackageItemExtension(url, type)
-    local creator = nil
+    local creator
     if not Class.isa(type, GComponentCreator) then
         creator = UIObjectFactory.defaultCreators[type:clsName()]
         if nil == creator then
@@ -53,7 +54,7 @@ end
 ---@overload fun(creator:FairyGUI.UIObjectFactory.GLoaderCreator)
 ---@param type ClassType
 function UIObjectFactory.SetLoaderExtension(type)
-    local creator = nil
+    local creator
     if not Class.isa(type, GLoaderCreator) then
         creator = UIObjectFactory.defaultLoaderCreators[type:clsName()]
         if nil == creator then
@@ -82,7 +83,7 @@ end
 ---@param pi FairyGUI.PackageItem
 ---@return FairyGUI.GObject
 function UIObjectFactory.NewObject(pi)
-    local type = nil
+    local type
     if Class.isa(pi, PackageItem) then
         if pi.extensionCreator ~= nil then
             Stats.LatestObjectCreation = Stats.LatestObjectCreation + 1

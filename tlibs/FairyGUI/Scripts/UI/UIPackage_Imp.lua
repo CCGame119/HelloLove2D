@@ -728,7 +728,7 @@ function UIPackage:LoadMoveClip(item)
     local spriteId
     ---@type FairyGUI.MovieClip.Frame
     local frame
-    ---@type FairyGUI.AtlasSprite
+    ---@type FairyGUI.UIPackage.AtlasSprite
     local sprite
 
     for i = 1, frameCount do
@@ -784,7 +784,7 @@ function UIPackage:LoadFont(item)
     local texScaleY = 1
     ---@type FairyGUI.NTexture
     local mainTexture = nil
-    ---@type FairyGUI.AtlasSprite
+    ---@type FairyGUI.UIPackage.AtlasSprite
     local mainSprite = self._sprites[item.id]
     if (ttf and nil ~= mainSprite) then
         mainTexture = self:GetItemAsset(mainSprite.atlas)

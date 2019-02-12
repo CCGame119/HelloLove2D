@@ -908,12 +908,12 @@ __set.size = function(self, val)
 end
 
 ---@param self FairyGUI.DisplayObject
-__get.ScaleX = function(self)
+__get.scaleX = function(self)
     return self.cachedTransform.localScale.x
 end
 
 ---@param self FairyGUI.DisplayObject
-__set.ScaleX = function(self, val)
+__set.scaleX = function(self, val)
     local scale = self.cachedTransform.localScale
     scale.x = self:ValidateScale(val)
     scale.z = scale.x
@@ -923,12 +923,12 @@ __set.ScaleX = function(self, val)
 end
 
 ---@param self FairyGUI.DisplayObject
-__get.ScaleY = function(self)
+__get.scaleY = function(self)
     return self.cachedTransform.localScale.y
 end
 
 ---@param self FairyGUI.DisplayObject
-__set.ScaleY = function(self, val)
+__set.scaleY = function(self, val)
     local scale = self.cachedTransform.localScale
     scale.y = self:ValidateScale(val)
     self.cachedTransform.localScale = scale
